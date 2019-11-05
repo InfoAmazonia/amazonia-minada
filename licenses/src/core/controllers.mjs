@@ -111,5 +111,4 @@ export const importInvasions = async () => {
    catch(ex) {
       console.log(ex);
    }
-   
 }

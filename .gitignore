@@ -1,3 +1,17 @@
+#files
+files/invasoes/*.csv
+files/invasoes/*.json
+files/licencas/tmp
+files/licencas/*.dbf
+files/licencas/*.shp
+files/unidadesconservacao/tmp
+files/unidadesconservacao/*.dbf
+files/unidadesconservacao/*.shp
+files/unidadesconservacao/*.csv
+files/unidadesconservacao/*.json
+
+#data
+sysbkp/data
 # Logs
 logs
 *.log
