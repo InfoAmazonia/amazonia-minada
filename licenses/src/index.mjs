@@ -15,10 +15,12 @@ import {
 
 process.env.TZ = 'America/Sao_Paulo';
 
+import { getInvasions } from './core/services.mjs';
+
 mongoose.connect(database.uri, database.options)
    .then(async () => {
       console.log('ICFJ application running...');
-      
+      // const invasions = await getInvasions({ tweeted: false });
       scheduleUpdateInvasions(invasions => {
          scheduleTweetNewInvasionsPT(invasions);
          scheduleTweetNewInvasionsEN(invasions);

@@ -25,7 +25,7 @@ export const scheduleUpdateInvasions = (cb) => {
 }
 
 export const scheduleTweetNewInvasionsPT = (invasions) => {   
-   let hour = 9;
+   let hour = 10;
 
    invasions.forEach(invasion => {
       /**
@@ -44,11 +44,11 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
          const link = linksUCs[slug];
          
          let requirerName = NOME;
-         let status = `⚠ ALERTA! Nova licença de ${Math.round(AREA_K2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+         let status = `⚠ ALERTA! Nova licença de ${parseFloat(AREA_K2).toFixed(2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
 
          if(status.length >= 280){
             requirerName = clipName(requirerName, status.length - 280);
-            status = `⚠ ALERTA! Nova licença de ${Math.round(AREA_K2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            status = `⚠ ALERTA! Nova licença de ${parseFloat(AREA_K2).toFixed(2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
          }
          
          const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
@@ -59,7 +59,7 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
 }
 
 export const scheduleTweetNewInvasionsEN = (invasions) => {   
-   let hour = 9;
+   let hour = 10;
 
    invasions.forEach(invasion => {
       /**
@@ -78,11 +78,11 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
          const link = linksUCs[slug];
          
          let requirerName = NOME;
-         let status = `⚠ ALERT! New record of ${EN_FASE} for ${EN_SUBS} with ${Math.round(AREA_K2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName}.  #MinedAmazon ${link}`;
+         let status = `⚠ ALERT! New record of ${EN_FASE} for ${EN_SUBS} with ${parseFloat(AREA_K2).toFixed(2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName}. #MinedAmazon ${link}`;
          
          if(status.length >= 280){
             requirerName = clipName(requirerName, status.length - 280);
-            let status = `⚠ ALERT! New record of ${EN_FASE} for ${EN_SUBS} with ${Math.round(AREA_K2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName}.  #MinedAmazon ${link}`;            
+            status = `⚠ ALERT! New record of ${EN_FASE} for ${EN_SUBS} with ${parseFloat(AREA_K2).toFixed(2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName} #MinedAmazon ${link}`;            
          }
          
          const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };

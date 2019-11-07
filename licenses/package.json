@@ -21,6 +21,7 @@
     "production": "node --experimental-modules ./src/index.mjs",
     "development": "nodemon --experimental-modules ./src/index.mjs",
     "seeds": "node --experimental-modules ./src/seeds.mjs",
+    "tweet": "node --experimental-modules ./src/tweet.mjs",
     "make-files": "node --experimental-modules ./src/make-files.mjs"
   },
   "nodemonConfig": {

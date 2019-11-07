@@ -43,11 +43,11 @@ const getAbrev = (nome, getPreposition = false) => {
 }
 
 const clipName = (str, size) => {
-   if(size <= 0)
+   if(size < 0)
       return str;
 
-   /** size minus dots */
-   size = size - 3;
+   /** size minus 3 dots + 1 removed from sentence + 3 treshhold = < 280 */
+   size = size + 6;
    
    return str.substring(0, str.length - size).trim() + "...";   
 }

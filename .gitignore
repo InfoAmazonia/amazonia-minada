@@ -4,11 +4,11 @@ files/invasoes/*.json
 files/licencas/tmp
 files/licencas/*.dbf
 files/licencas/*.shp
-files/unidadesconservacao/tmp
-files/unidadesconservacao/*.dbf
-files/unidadesconservacao/*.shp
-files/unidadesconservacao/*.csv
-files/unidadesconservacao/*.json
+files/unidades_conservacao/tmp
+files/unidades_conservacao/*.dbf
+files/unidades_conservacao/*.shp
+files/unidades_conservacao/*.csv
+files/unidades_conservacao/*.json
 
 #data
 sysbkp/data
