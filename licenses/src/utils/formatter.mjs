@@ -52,7 +52,35 @@ const clipName = (str, size) => {
    return str.substring(0, str.length - size).trim() + "...";   
 }
 
-const addInternationalization = (items, attrs) => {
+const getThousandsMark = (item) => {
+   if(!item)
+      return item;
+
+   const str = item.toString().split('.')[0];
+   const decimals = item.toString().split('.')[1]
+
+   if(str.length <= 3)
+      return decimals ? [str, decimals].join(',') : str;
+
+   const newStr = str
+      .split('')
+      .reverse()
+      .reduce((prev, crr, index) => 
+         prev.concat(
+            (index + 1) % 3 === 0 
+               ? [crr, '.'] 
+               : crr
+         ), [])
+      .reverse()
+      .join('')
+      .toString();
+
+   let fullStr = decimals ? [newStr, decimals].join(',') : newStr;
+
+   return fullStr[0] === '.' ? fullStr.substr(1, fullStr.length) : fullStr;
+}
+
+const addInternationalization = (item, attrs) => {
    const dictionary = {
       fase: {
          "concessao_de_lavra": "Mining Concession",
@@ -93,44 +121,43 @@ const addInternationalization = (items, attrs) => {
    }
 
    const removeWords = ["minério de"];
+   
+   const properties = item.properties;
 
-   return items.map(item => {
-      const properties = item.properties;
+   const translatedProperties = attrs.reduce((prev, crrAttr) => {         
+      const dictionaryKey = Object.keys(crrAttr)[0];
+      
+      /** attr: { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} } */
+      const mapper = crrAttr[dictionaryKey];
+      
+      if(dictionaryKey === "uc"){
+         const itemValue = slugify(getAbrev(properties[mapper.crr], true), { replacement: '_', lower: true });
+         const translated = dictionary[dictionaryKey][itemValue];
 
-      const translatedProperties = attrs.reduce((prev, crrAttr) => {         
-         const dictionaryKey = Object.keys(crrAttr)[0];
-         
-         /** attr: { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} } */
-         const mapper = crrAttr[dictionaryKey];
-         
-         if(dictionaryKey === "uc"){
-            const itemValue = slugify(getAbrev(properties[mapper.crr], true), { replacement: '_', lower: true });
-            const translated = dictionary[dictionaryKey][itemValue];
+         return Object.assign(prev, {
+            [mapper.new]: `${translated} of ${getAbrev(properties[mapper.crr])}`
+         });
+      }
+      else {
+         const value = removeWords.reduce((prev, crr) => prev.toLowerCase().replace(crr, '').trim(), properties[mapper.crr]);
+         const itemValue = slugify(value, { replacement: '_', lower: true });
+         const translated = dictionary[dictionaryKey][itemValue];
 
-            return Object.assign(prev, {
-               [mapper.new]: `${translated} of ${getAbrev(properties[mapper.crr])}`
-            });
-         }
-         else {
-            const value = removeWords.reduce((prev, crr) => prev.replace(crr, '').trim(), properties[mapper.crr]);
-            const itemValue = slugify(value, { replacement: '_', lower: true });
-            const translated = dictionary[dictionaryKey][itemValue];
-
-            return Object.assign(prev, {
-               [mapper.new]: translated
-            });
-         }
-      }, {});
-
-      return Object.assign(item, { 
-         properties: Object.assign(properties, translatedProperties)
-      });
-   })
+         return Object.assign(prev, {
+            [mapper.new]: translated
+         });
+      }
+   }, {});
+   
+   return Object.assign(item, { 
+      properties: Object.assign(properties, translatedProperties)
+   });
 }
 
 export {
    getDateArray,
    getAbrev,
    clipName,
-   addInternationalization
+   addInternationalization,
+   getThousandsMark
 }

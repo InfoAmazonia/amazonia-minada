@@ -1,6 +1,6 @@
 import { License, Invasion, Unity } from './models.mjs';
 
-import { addInternationalization } from '../utils/formatter.mjs';
+import { addInternationalization, getThousandsMark } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
 export const getInvasions = (query = {}) => {
@@ -33,11 +33,20 @@ export const getInvasions = (query = {}) => {
          geometry: "$geometry"
       }
    }])
-   .then(items => addInternationalization(items, [
-      { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} },
-      { "fase" : { crr: "FASE", new: "EN_FASE"} },
-      { "sub" : { crr: "SUBS", new: "EN_SUBS"} },
-   ]));
+   .then(items => items.map(item => {
+      const newItem = addInternationalization(item, [
+         { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} },
+         { "fase" : { crr: "FASE", new: "EN_FASE"} },
+         { "sub" : { crr: "SUBS", new: "EN_SUBS"} },
+      ]);
+
+      return Object.assign(newItem, {
+         properties: Object.assign(newItem.properties, {
+            "AREA_HA": getThousandsMark(parseFloat(newItem.properties.AREA_HA).toFixed(2)),
+            "AREA_K2": getThousandsMark(parseFloat(newItem.properties.AREA_K2).toFixed(2))
+         })
+      });
+   }));
 }
 
 export const createInvasionsByUnities = async (unities, index = 0) => {
@@ -107,7 +116,18 @@ export const getUnitiesInsideAmazon = (hasId = true) => {
             geometry: "$geometry"
          }
       }])
-      .then(unities => addInternationalization(unities, [{ "uc" : { crr: "nome", new: "en_nome"}}])) 
+      .then(unities => unities.map(item => {
+         const newItem = addInternationalization(item, [{ 
+            "uc" : { crr: "nome", new: "en_nome" }
+         }]);
+   
+         return Object.assign(newItem, {
+            properties: Object.assign(newItem.properties, {
+               "areaHa": getThousandsMark(Math.round(newItem.properties.areaHa)),
+               "areaK2": getThousandsMark(Math.round(newItem.properties.areaK2))
+            })            
+         })
+      }));
 }
 
 export const getLicensesIntersectionsByUnity = async (unity) => {

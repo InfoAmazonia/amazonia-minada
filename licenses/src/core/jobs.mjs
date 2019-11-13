@@ -6,7 +6,7 @@ import { importLicenses, importInvasions } from './controllers.mjs';
 import { updateTweetStatus } from './services.mjs';
 
 import { tweetMedia, tweetStatus } from '../utils/twitter.mjs';
-import { getDateArray, clipName } from '../utils/formatter.mjs';
+import { getDateArray, clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { cronTab } from '../utils/handler.mjs';
 
 import linksUCs from '../links_ucs.json';
@@ -42,13 +42,14 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
          const { AREA_K2, FASE, SUBS, UC_NOME, NOME } = invasion.properties;
          const slug = slugify(UC_NOME, { replacement: '_', lower: true });
          const link = linksUCs[slug];
-         
+         const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+
          let requirerName = NOME;
-         let status = `⚠ Nova licença de ${parseFloat(AREA_K2).toFixed(2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+         let status = `⚠ Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
 
          if(status.length >= 280){
             requirerName = clipName(requirerName, status.length - 280);
-            status = `⚠ Nova licença de ${parseFloat(AREA_K2).toFixed(2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
+            status = `⚠ Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
          }
          
          const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
@@ -76,13 +77,14 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
          const { AREA_K2, EN_FASE, EN_SUBS, UC_NOME, EN_UC_NOME, NOME } = invasion.properties;
          const slug = slugify(UC_NOME, { replacement: '_', lower: true });
          const link = linksUCs[slug];
-         
+         const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+
          let requirerName = NOME;
-         let status = `⚠ New record of ${EN_FASE} for ${EN_SUBS} with ${parseFloat(AREA_K2).toFixed(2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName}. #MinedAmazon ${link}`;
+         let status = `⚠ New record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName}. #MinedAmazon ${link}`;
          
          if(status.length >= 280){
             requirerName = clipName(requirerName, status.length - 280);
-            status = `⚠ New record of ${EN_FASE} for ${EN_SUBS} with ${parseFloat(AREA_K2).toFixed(2)} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName} #MinedAmazon ${link}`;            
+            status = `⚠ New record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName} #MinedAmazon ${link}`;            
          }
          
          const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
@@ -112,7 +114,8 @@ export const scheduleTweetTotalYearInvasions = () => {
    /** At 09:00 on Wednesday. */
    cronTab("0 9 * * 3", async () => {      
       const currentYear = new Date().getFullYear();
-      const total = await Invasion.count({'properties.ANO': currentYear});      
+      const total = await Invasion.count({'properties.ANO': currentYear});   
+      
       const tweet = { 
          media: `${process.cwd()}/images/geral.jpeg`, 
          status: `⚠ MINÉRIO ILEGAL: Em ${currentYear} a @ANM recebeu ${total} registros de mineração dentro das 41 UCs de proteção integral da Amazônia. A lei federal 9.985/00 (SNUC) proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/2BQvYs1`
@@ -143,7 +146,7 @@ export const scheduleTweetTotalAreaInvasions = () => {
       
       const tweet = { 
          media: `${process.cwd()}/images/geral.jpeg`, 
-         status: `⚠ MINÉRIO ILEGAL: As áreas dos registros de mineração dentro de UCs de proteção integral da Amazônia somam ${Math.round(invasions[0].k2)} km², o equivalente a ${Math.round(invasions[0].campos)} campos de futebol. #AmazoniaMinada https://bit.ly/2BQvYs1`
+         status: `⚠ MINÉRIO ILEGAL: As áreas dos registros de mineração dentro de UCs de proteção integral da Amazônia somam ${getThousandsMark(Math.round(invasions[0].k2))} km², o equivalente a ${getThousandsMark(Math.round(invasions[0].campos))} campos de futebol. #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
          
       tweetMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
