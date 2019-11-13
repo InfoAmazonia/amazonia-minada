@@ -17,17 +17,17 @@ export const getInvasions = (query = {}) => {
             "ANO" : "$properties.ANO",
             "AREA_HA" : "$properties.AREA_HA",
             "AREA_K2" : { $multiply: [ "$properties.AREA_HA", 0.01 ] },
-            "FASE" : { $toUpper: "$properties.FASE" },
-            "ULT_EVENTO" : { $toUpper: "$properties.ULT_EVENTO" },
-            "NOME" : { $toUpper: "$properties.NOME" },
-            "SUBS" : { $toUpper: "$properties.SUBS" },
-            "USO" : { $toUpper: "$properties.USO" },
-            "UF" : { $toUpper: "$properties.UF" },
+            "FASE" : "$properties.FASE",
+            "ULT_EVENTO" : "$properties.ULT_EVENTO",
+            "NOME" : "$properties.NOME",
+            "SUBS" : "$properties.SUBS",
+            "USO" : "$properties.USO",
+            "UF" : "$properties.UF",
             "UC_COD" : "$properties.UC_COD",
-            "UC_NOME" : { $toUpper: "$properties.UC_NOME" },
-            "UC_NOMEABREV" : { $toUpper: "$properties.UC_NOMEABREV" },
-            "UC_SIGLA" : { $toUpper: "$properties.UC_SIGLA" },
-            "UC_BIOMA" : { $toUpper: "$properties.UC_BIOMA" },
+            "UC_NOME" : "$properties.UC_NOME",
+            "UC_NOMEABREV" : "$properties.UC_NOMEABREV",
+            "UC_SIGLA" : "$properties.UC_SIGLA",
+            "UC_BIOMA" : "$properties.UC_BIOMA",
             "ANO_ATUAL" : { $year: new Date() }
          },
          geometry: "$geometry"
@@ -61,12 +61,10 @@ export const createInvasionsByUnities = async (unities, index = 0) => {
 }
 
 export const updateTweetStatus = query => {
-   return Invasion.update(query, {
+   return Invasion.updateMany(query, {
       $set: {
          tweeted: true
       }
-   },{ 
-      multi: true 
    })
 }
 
@@ -87,24 +85,24 @@ export const getUnitiesInsideAmazon = (hasId = true) => {
             type: "Feature",
             properties: {
                "codigoCnuc": "$properties.codigoCnuc",
-               "nome": { $toUpper: "$properties.nome" },
+               "nome": "$properties.nome",
                "geometriaA": "$properties.geometriaA",
                "anoCriacao": "$properties.anoCriacao",
-               "sigla": { $toUpper: "$properties.sigla" },
+               "sigla": "$properties.sigla",
                "areaHa": "$properties.areaHa",
                "areaK2" : { $multiply: [ "$properties.areaHa", 0.01 ] },
                "perimetroM": "$properties.perimetroM",
-               "atoLegal": { $toUpper: "$properties.atoLegal" },
-               "administra": { $toUpper: "$properties.administra" },
-               "SiglaGrupo": { $toUpper: "$properties.SiglaGrupo" },
-               "UF": { $toUpper: "$properties.UF" },
-               "municipios": { $toUpper: "$properties.municipios" },
-               "biomaIBGE": { $toUpper: "$properties.biomaIBGE" },
-               "biomaCRL": { $toUpper: "$properties.biomaCRL" },
-               "CoordRegio": { $toUpper: "$properties.CoordRegio" },
-               "fusoAbrang": { $toUpper: "$properties.fusoAbrang" },
-               "UORG": { $toUpper: "$properties.UORG" },
-               "nomeabrev": { $toUpper: "$properties.nomeabrev" }
+               "atoLegal": "$properties.atoLegal",
+               "administra": "$properties.administra",
+               "SiglaGrupo": "$properties.SiglaGrupo",
+               "UF": "$properties.UF",
+               "municipios": "$properties.municipios",
+               "biomaIBGE": "$properties.biomaIBGE",
+               "biomaCRL": "$properties.biomaCRL",
+               "CoordRegio": "$properties.CoordRegio",
+               "fusoAbrang": "$properties.fusoAbrang",
+               "UORG": "$properties.UORG",
+               "nomeabrev": "$properties.nomeabrev"
             },
             geometry: "$geometry"
          }

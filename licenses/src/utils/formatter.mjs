@@ -108,16 +108,16 @@ const addInternationalization = (items, attrs) => {
             const translated = dictionary[dictionaryKey][itemValue];
 
             return Object.assign(prev, {
-               [mapper.new]: `${translated && translated.toUpperCase()} OF ${getAbrev(properties[mapper.crr]).toUpperCase()}`
+               [mapper.new]: `${translated} of ${getAbrev(properties[mapper.crr])}`
             });
          }
          else {
-            const value = removeWords.reduce((prev, crr) => prev.replace(crr.toUpperCase(), '').trim(), properties[mapper.crr].toUpperCase());
+            const value = removeWords.reduce((prev, crr) => prev.replace(crr, '').trim(), properties[mapper.crr]);
             const itemValue = slugify(value, { replacement: '_', lower: true });
             const translated = dictionary[dictionaryKey][itemValue];
 
             return Object.assign(prev, {
-               [mapper.new]: translated && translated.toUpperCase()
+               [mapper.new]: translated
             });
          }
       }, {});
