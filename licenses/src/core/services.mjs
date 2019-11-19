@@ -8,7 +8,7 @@ export const getInvasions = (query = {}) => {
       $match: query
    }, {
       $project: {
-         _id: 0,
+         _id: query && (query.tweeted || query.tweeted === false) ? 1 : 0,
          type: "Feature",
          properties: {
             "PROCESSO" : "$properties.PROCESSO",
