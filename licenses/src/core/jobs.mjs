@@ -9,7 +9,8 @@ import { tweetMedia, tweetStatus } from '../utils/twitter.mjs';
 import { getDateArray, clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { cronTab } from '../utils/handler.mjs';
 
-import linksUCs from '../links_ucs.json';
+import linksUCsPT from '../links-ucs-pt.json';
+import linksUCsEN from '../links-ucs-en.json';
 
 export const scheduleUpdateInvasions = (cb) => {
    /** scheduled to work at 01:00 am - everyday */
@@ -41,7 +42,7 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
       cronTab(dateAndTime, async () => {
          const { AREA_K2, FASE, SUBS, UC_NOME, NOME } = invasion.properties;
          const slug = slugify(UC_NOME, { replacement: '_', lower: true });
-         const link = linksUCs[slug];
+         const link = linksUCsPT[slug];
          const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
 
          let requirerName = NOME;
@@ -52,7 +53,7 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
             status = `⚠ ALERTA: Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
          }
          
-         const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
+         const tweet = { media: `${process.cwd()}/images/${slug}.jpg`, status: status };
          
          tweetMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       });
@@ -76,7 +77,7 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
       cronTab(dateAndTime, async () => {
          const { AREA_K2, EN_FASE, EN_SUBS, UC_NOME, EN_UC_NOME, NOME } = invasion.properties;
          const slug = slugify(UC_NOME, { replacement: '_', lower: true });
-         const link = linksUCs[slug];
+         const link = linksUCsEN[slug];
          const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
 
          let requirerName = NOME;
@@ -87,7 +88,7 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             status = `⚠ WARNING: New record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected on @ANM system within the PA ${EN_UC_NOME} of the Amazon. Request made by ${requirerName} #MinedAmazon ${link}`;            
          }
          
-         const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
+         const tweet = { media: `${process.cwd()}/images/${slug}.jpg`, status: status };
          
          tweetMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
 
@@ -102,7 +103,7 @@ export const scheduleTweetTotalInvasions = () => {
    cronTab("0 9 * * 1", async () => {
       const total = await Invasion.count();
       const tweet = { 
-         media: `${process.cwd()}/images/geral.jpeg`, 
+         media: `${process.cwd()}/images/_geral_05.jpg`, 
          status: `⚠ MINÉRIO ILEGAL: Há ${total} registros de licenças de mineração dentro das 41 UCs de proteção integral da Amazônia tramitando na @ANM. A lei federal 9.985/00 (SNUC) proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
          
@@ -117,7 +118,7 @@ export const scheduleTweetTotalYearInvasions = () => {
       const total = await Invasion.count({'properties.ANO': currentYear});   
       
       const tweet = { 
-         media: `${process.cwd()}/images/geral.jpeg`, 
+         media: `${process.cwd()}/images/_geral_05.jpg`, 
          status: `⚠ MINÉRIO ILEGAL: Em ${currentYear} a @ANM recebeu ${total} registros de mineração dentro das 41 UCs de proteção integral da Amazônia. A lei federal 9.985/00 (SNUC) proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
          
@@ -145,7 +146,7 @@ export const scheduleTweetTotalAreaInvasions = () => {
       }]);
       
       const tweet = { 
-         media: `${process.cwd()}/images/geral.jpeg`, 
+         media: `${process.cwd()}/images/_geral_05.jpg`, 
          status: `⚠ MINÉRIO ILEGAL: As áreas dos registros de mineração dentro de UCs de proteção integral da Amazônia somam ${getThousandsMark(Math.round(invasions[0].k2))} km², o equivalente a ${getThousandsMark(Math.round(invasions[0].campos))} campos de futebol. #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
          
@@ -157,7 +158,7 @@ export const scheduleTweetAvgInvasions = () => {
    /** At 12:00 on Sunday. */
    cronTab("0 12 * * 0", async () => {
       const tweet = { 
-         media: `${process.cwd()}/images/geral.jpeg`, 
+         media: `${process.cwd()}/images/_geral_05.jpg`, 
          status: `⚠ MINÉRIO ILEGAL: A lei do SNUC (n° 9.985/2000) proíbe atividades mineradoras em unidades de proteção integral. Mesmo assim, a @ANM registra em média 40 procedimentos por ano apenas em UCs da Amazônia. Acompanhe o #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
          
@@ -175,7 +176,7 @@ export const scheduleTweetWarnEngInvasions = () => {
       ]);
 
       const tweet = { 
-         media: `${process.cwd()}/images/geral.jpeg`, 
+         media: `${process.cwd()}/images/_geral_05.jpg`, 
          status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${total[0]} applications of mining licenses within integral protected areas of the Amazon. ${total[1]} records are from ${currentYear}. A federal law prohibits mining activity in these areas. #MinedAmazon https://bit.ly/2BQvYs1`
       };
          
