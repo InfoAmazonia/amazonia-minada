@@ -29,7 +29,7 @@ It's possible to *(re)*generate files without having to process everything. Once
 ```
 MIT License
 
-Copyright (c) 2017 Rodrigo Brabo
+Copyright (c) 2020 InfoAmazonia
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files 
