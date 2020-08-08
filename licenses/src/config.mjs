@@ -1,5 +1,5 @@
 export const database = {
-   uri: `mongodb://database/icfj`,
+   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@database/icfj?authSource=admin&ssl=false`,
    options: {
       useNewUrlParser: true,
       useUnifiedTopology: true

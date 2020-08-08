@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.10.5
 
 LABEL "com.icfj.licenses"="ICFJ" \
       maintainer="Rodrigo Brabo <brabo.rodrigo@gmail.com>" \
