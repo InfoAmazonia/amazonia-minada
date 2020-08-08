@@ -32,7 +32,7 @@ mongoose.connect(database.uri, database.options)
                status = `⚠ ALERTA! Nova licença de ${Math.round(AREA_K2)} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;               
             }            
 
-            const tweet = { media: `${process.cwd()}/images/${slug}.png`, status: status };
+            const tweet = { media: `${process.cwd()}/images/${slug}.jpg`, status: status };
             
             tweetMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
          });
