@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-import { Invasion } from './models.mjs';
-import { importLicenses, importInvasions } from './controllers.mjs';
+import { Invasion, Unity } from './models.mjs';
+import { importUnities, importLicenses, importInvasions } from './controllers.mjs';
 import { updateTweetStatus } from './services.mjs';
 
 import { tweetMedia, tweetStatus } from '../utils/twitter.mjs';
@@ -15,6 +15,12 @@ import linksUCsEN from '../links-ucs-en.json';
 export const scheduleUpdateInvasions = (cb) => {
    /** scheduled to work at 01:00 am - everyday */
    cronTab('30 0 * * *', async () => {
+      /** check if there is any unity in database, if not import them */
+      const hasUnities = await Unity.count() > 0;
+      if (!hasUnities) {
+         await importUnities();
+      }
+
       /** get licenses from ANM and inserts into database */
       await importLicenses();
 
