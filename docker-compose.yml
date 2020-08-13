@@ -1,4 +1,4 @@
-version: '3.8'
+version: '2'
 
 services:
   licenses:
@@ -23,6 +23,8 @@ services:
     depends_on:
       - database
     restart: always
+    env_file:
+      - .env
     environment:
       MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
@@ -39,6 +41,8 @@ services:
     ports:
       - 27017:27017
     restart: always
+    env_file:
+      - .env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
