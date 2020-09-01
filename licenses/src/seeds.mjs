@@ -2,8 +2,9 @@ import mongoose from 'mongoose';
 
 import { database } from './config.mjs';
 
-import { importLicenses, importInvasions, importUnities } from './core/controllers.mjs';
+import { importLicenses, importInvasions, importUnities, importReserves } from './core/controllers.mjs';
 import { updateTweetStatus } from './core/services.mjs';
+import { importReserveInvasions } from './core/controllers.mjs';
 
 process.env.TZ = 'America/Sao_Paulo';
 
@@ -13,10 +14,19 @@ mongoose.connect(database.uri, database.options)
 
       try {
          /** get unities from ICMBio and inserts into database */
-         await importUnities();            
+         await importUnities();
+
+         /** get reserves from FUNAI and inserts into database */
+         await importReserves();
 
          /** get licenses from ANM and inserts into database */
          await importLicenses();
+
+         /** get every license inside indiginous reserve */
+         const reserveInvasions = await importReserveInvasions();
+         
+         /** prevent tweeting all invasions found by once on application bootstrap. */
+         await updateTweetStatus({ _id: { $in: reserveInvasions.map(invasion => invasion._id) }});
 
          /** get every license inside protected unity */
          const invasions = await importInvasions();

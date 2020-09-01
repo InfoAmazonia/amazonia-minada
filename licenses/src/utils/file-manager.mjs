@@ -114,7 +114,7 @@ const writeCSV = (data, identity, properties = []) => {
          const line = properties.map(prop => {
             const item = d.properties[prop];
             
-            return item.toString().indexOf(',') > -1 ? `"${item}"` : item;
+            return !item ? '' : item.toString().indexOf(',') > -1 ? `"${item}"` : item;
          }).join(',');
 
          wstream.write(`${line}\n`);

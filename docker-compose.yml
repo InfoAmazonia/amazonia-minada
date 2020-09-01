@@ -17,6 +17,7 @@ services:
       - ./files/licencas:/srv/licenses/files/licencas
       - ./files/invasoes:/srv/licenses/files/invasoes
       - ./files/unidades_conservacao:/srv/licenses/files/unidades_conservacao
+      - ./files/reservas_indigenas:/srv/licenses/files/reservas_indigenas
       - /srv/licenses/node_modules
     links:
       - database

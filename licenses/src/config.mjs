@@ -1,5 +1,5 @@
 export const database = {
-   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@database/icfj?authSource=admin&ssl=false`,
+   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS}/icfj?authSource=admin&ssl=false`,
    options: {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -62,6 +62,61 @@ export const unity = {
       'CoordRegio',
       'fusoAbrang',
       'UORG'
+   ]
+}
+
+export const reserve = {
+   id: 'reservas_indigenas',
+   uri: 'http://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Funai:ti_sirgas&CQL_FILTER=dominio_uniao=%27t%27&outputFormat=SHAPE-ZIP',
+   zipfile: 'ti_sirgas.zip',
+   output: `./files/reservas_indigenas`,
+   unziped_folder: ``,
+   shapefile: `ti_sirgasPolygon.shp`,
+   dbf: `ti_sirgasPolygon.dbf`,
+   encoding: 'latin1',
+   properties: [
+      'gid',
+      'terrai_cod',
+      'terrai_nom',
+      'etnia_nome',
+      'municipio_',
+      'uf_sigla',
+      'superficie',
+      'fase_ti',
+      'modalidade',
+      'reestudo_t',
+      'cr',
+      'faixa_fron',
+      'undadm_cod',
+      'undadm_nom',
+      'undadm_sig',
+      'dominio_un'
+   ]
+}
+
+export const reserve_invasion = {
+   id: 'invasoes_reservas',
+   properties: [
+      'PROCESSO',
+      'ID',
+      'NUMERO',
+      'ANO',
+      'AREA_HA',
+      'AREA_K2',
+      'FASE',
+      'ULT_EVENTO',
+      'NOME',
+      'SUBS',
+      'USO',
+      'UF',
+      'TI_NOME',
+      'TI_ETNIA',
+      'TI_MUNICIPIO',
+      'TI_UF',
+      'TI_SUPERFICIE',
+      'TI_FASE',
+      'TI_MODALIDADE',
+      'ANO_ATUAL'
    ]
 }
 

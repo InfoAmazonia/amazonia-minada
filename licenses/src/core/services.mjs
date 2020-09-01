@@ -1,7 +1,9 @@
-import { License, Invasion, Unity } from './models.mjs';
+import { License, Invasion, Unity, Reserve, ReserveInvasion } from './models.mjs';
 
 import { addInternationalization, getThousandsMark } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
+
+// UNITIES
 
 export const getInvasions = (query = {}) => {
    return Invasion.aggregate([{
@@ -183,4 +185,180 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
             }
          }
       ])
+}
+
+// RESERVES
+
+export const getReservesInsideAmazon = (hasId = true) => {
+   return Reserve
+      .aggregate([
+      // TODO: definir como separar bioma amazônico pelas características de Reserves
+      // {
+      //    $match: {
+      //       'properties.sigla': { 
+      //          $in: ['REBIO', 'ESEC', 'PARNA']
+      //       },
+      //       'properties.biomaIBGE': { 
+      //          $eq: 'AMAZÔNIA'
+      //       }
+      //    }
+      // }, 
+      {
+         $project: {
+            _id: hasId ? "$_id" : 0,
+            type: "Feature",
+            properties: {
+               // "areaK2" : { $multiply: [ "$properties.areaHa", 0.01 ] },
+
+               "gid": "$properties.gid",
+               "terrai_cod": "$properties.terrai_cod",
+               "terrai_nom": "$properties.terrai_nom",
+               "etnia_nome": "$properties.etnia_nome",
+               "municipio_": "$properties.municipio_",
+               "uf_sigla": "$properties.uf_sigla",
+               "superficie": "$properties.superficie",
+               "fase_ti": "$properties.fase_ti",
+               "modalidade": "$properties.modalidade",
+               "reestudo_t": "$properties.reestudo_t",
+               "cr": "$properties.cr",
+               "faixa_fron": "$properties.faixa_fron",
+               "undadm_cod": "$properties.undadm_cod",
+               "undadm_nom": "$properties.undadm_nom",
+               "undadm_sig": "$properties.undadm_sig",
+               "dominio_un": "$properties.dominio_un"
+            },
+            geometry: "$geometry"
+         }
+      }])
+      .then(reserves => reserves.map(item => {
+         // const newItem = addInternationalization(item, [{ 
+         //    "uc" : { crr: "terrai_cod", new: "en_terrai_cod" }
+         // }]);
+         const newItem = item;
+   
+         return Object.assign(newItem, {
+            properties: Object.assign(newItem.properties, {
+               "superficie": getThousandsMark(Math.round(newItem.properties.superficie)),
+               // "areaK2": getThousandsMark(Math.round(newItem.properties.areaK2))
+            })            
+         })
+      }));
+}
+
+export const createInvasionsByReserves = async (reserves, index = 0) => {
+   return getLicensesIntersectionsByReserve(reserves[index])
+      .then(invasions => ReserveInvasion.create(invasions))
+      .then(() => {
+         if((index + 1) < reserves.length)
+            return createInvasionsByReserves(reserves, ++index);
+         return;
+      })
+      .then(() => Promise.all([
+         getReserveInvasions(), // all
+         getReserveInvasions({ tweeted: false })  // only not tweetted
+      ]))
+      .then(invasions => Object.assign({}, { all: invasions[0], new: invasions[1]}))
+      .catch(ex => {
+         ifMayNotIgnore(ex).throw();
+         
+         return createInvasionsByReserves(reserves, ++index)
+      });
+}
+
+export const getLicensesIntersectionsByReserve = async (reserve) => {
+   const existingReserveInvasions = await ReserveInvasion.find({});
+
+   return License
+      .aggregate([
+         {
+            $match: {
+               'properties.ID': {
+                  $nin: existingReserveInvasions.map(i => i.properties.ID)
+               },
+               'properties.ULT_EVENTO': {
+                  $not: /indeferimento.*/gi
+               },
+               geometry: { 
+                  $geoIntersects: { 
+                     $geometry: reserve.geometry
+                  }
+               }
+            }
+         },            
+         {
+            $project: {
+               _id: "$_id",
+               type: "Feature",
+               properties: {
+                  "PROCESSO" : "$properties.PROCESSO",
+                  "ID" : "$properties.ID",
+                  "NUMERO" : "$properties.NUMERO",
+                  "ANO" : "$properties.ANO",
+                  "AREA_HA" : "$properties.AREA_HA",
+                  "FASE" : "$properties.FASE",
+                  "ULT_EVENTO" : "$properties.ULT_EVENTO",
+                  "NOME" : "$properties.NOME",
+                  "SUBS" : "$properties.SUBS",
+                  "USO" : "$properties.USO",
+                  "UF" : "$properties.UF",
+                  "TI_NOME": reserve.properties.terrai_nom,
+                  "TI_ETNIA": reserve.properties.etnia_nome,
+                  "TI_MUNICIPIO": reserve.properties.municipio_,
+                  "TI_UF": reserve.properties.uf_sigla,
+                  "TI_SUPERFICIE": reserve.properties.superficie,
+                  "TI_FASE": reserve.properties.fase_ti,
+                  "TI_MODALIDADE": reserve.properties.modalidade
+               },
+               geometry: "$geometry"
+            }
+         }
+      ])
+}
+
+export const getReserveInvasions = (query = {}) => {
+   return ReserveInvasion.aggregate([{
+      $match: query
+   }, {
+      $project: {
+         _id: query && (query.tweeted || query.tweeted === false) ? 1 : 0,
+         type: "Feature",
+         properties: {
+            "PROCESSO" : "$properties.PROCESSO",
+            "ID" : "$properties.ID",
+            "NUMERO" : "$properties.NUMERO",
+            "ANO" : "$properties.ANO",
+            "AREA_HA" : "$properties.AREA_HA",
+            "AREA_K2" : { $multiply: [ "$properties.AREA_HA", 0.01 ] },
+            "FASE" : "$properties.FASE",
+            "ULT_EVENTO" : "$properties.ULT_EVENTO",
+            "NOME" : "$properties.NOME",
+            "SUBS" : "$properties.SUBS",
+            "USO" : "$properties.USO",
+            "UF" : "$properties.UF",
+            "TI_NOME" : "$properties.TI_NOME",
+            "TI_ETNIA" : "$properties.TI_ETNIA",
+            "TI_MUNICIPIO" : "$properties.TI_MUNICIPIO",
+            "TI_UF" : "$properties.TI_UF",
+            "TI_SUPERFICIE" : "$properties.TI_SUPERFICIE",
+            "TI_FASE" : "$properties.TI_FASE",
+            "TI_MODALIDADE" : "$properties.TI_MODALIDADE",
+            "ANO_ATUAL" : { $year: new Date() }
+         },
+         geometry: "$geometry"
+      }
+   }])
+   .then(items => items.map(item => {
+      const newItem = addInternationalization(item, [
+         // { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} },
+         { "fase" : { crr: "FASE", new: "EN_FASE"} },
+         { "sub" : { crr: "SUBS", new: "EN_SUBS"} },
+      ]);
+
+      return Object.assign(newItem, {
+         properties: Object.assign(newItem.properties, {
+            "AREA_HA": getThousandsMark(parseFloat(newItem.properties.AREA_HA).toFixed(2)),
+            "AREA_K2": getThousandsMark(parseFloat(newItem.properties.AREA_K2).toFixed(2))
+         })
+      });
+   }));
 }

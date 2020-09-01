@@ -1,4 +1,4 @@
-import { license, unity } from '../config.mjs';
+import { license, unity, reserve, reserve_invasion } from '../config.mjs';
 
 import { 
    read, 
@@ -14,8 +14,13 @@ import {
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
-import { License, Unity } from './models.mjs';
-import { createInvasionsByUnities, getUnitiesInsideAmazon } from './services.mjs';
+import { License, Unity, Reserve } from './models.mjs';
+import { 
+   createInvasionsByUnities,
+   getUnitiesInsideAmazon,
+   getReservesInsideAmazon,
+   createInvasionsByReserves
+} from './services.mjs';
 
 export const importLicenses = async () => {
    console.log(`\nStarting to import licenses at ${new Date()}`);
@@ -105,6 +110,71 @@ export const importInvasions = async () => {
 
       /** file for those who wants to analyse data into a sheet */
       await writeCSV(invasions.all, license.id, license.properties);
+
+      return invasions.new;
+   }
+   catch(ex) {
+      console.log(ex);
+   }
+}
+
+export const importReserves = async () => {
+   console.log(`\nStarting to import reserves at ${new Date()}`);   
+
+   const session = await Reserve.startSession();
+
+   session.startTransaction();
+
+   return Reserve.deleteMany({})
+      .then(() => removeTmp(reserve.output))   
+      .then(() => makeTmp(reserve.output))
+      .then(() => download(reserve.uri, reserve.output, reserve.zipfile))
+      .then(() => unzip(reserve.output, reserve.zipfile))
+      .then(() => cpFiles(reserve))
+      .then(() => removeTmp(reserve.output))
+      .then(() => read(
+         reserve.output, 
+         reserve.shapefile, 
+         reserve.encoding,
+            value => {              
+               return Reserve.create(value)
+                  .catch(ex => ifMayNotIgnore(ex).throw())
+            }
+      ))
+      .then(() => session.commitTransaction())
+      .then(() => session.endSession())
+      .then(() => console.log(`Finish importing reserves at ${new Date()}`))
+      .then(() => getReservesInsideAmazon(false))
+      .then(async (reserves) => {
+         /** geo file handle by carto */
+         await writeGeoJson(reserves, reserve.id);
+
+         /** file for those who wants to analyse data into a sheet */
+         await writeCSV(reserves, reserve.id, reserve.properties);
+      })
+      .catch(async ex => {
+         console.log(ex)
+         await session.abortTransaction();
+         session.endSession();         
+      })
+}
+
+export const importReserveInvasions = async () => {
+   console.log(`\nStarting to import reserve invasions at ${new Date()}`);  
+
+   try {
+      const reserves = await getReservesInsideAmazon();
+      const invasions = await createInvasionsByReserves(reserves);
+         
+      console.log(`Finish importing reserve invasions at ${new Date()}`);
+
+      // TODO: passar arquivos de licenses/invasoes_reservas para files/invacoes_reservas
+      // TODO: verificar dados faltantes do csv
+      /** geo file handle by carto */
+      await writeGeoJson(invasions.all, reserve_invasion.id);
+
+      /** file for those who wants to analyse data into a sheet */
+      await writeCSV(invasions.all, reserve_invasion.id, reserve_invasion.properties);
 
       return invasions.new;
    }
