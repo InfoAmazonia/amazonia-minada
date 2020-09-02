@@ -9,6 +9,11 @@ files/unidades_conservacao/*.dbf
 files/unidades_conservacao/*.shp
 files/unidades_conservacao/*.csv
 files/unidades_conservacao/*.json
+files/reservas_indigenas/tmp
+files/reservas_indigenas/*.dbf
+files/reservas_indigenas/*.shp
+files/reservas_indigenas/*.csv
+files/reservas_indigenas/*.json
 
 #data
 sysbkp/data

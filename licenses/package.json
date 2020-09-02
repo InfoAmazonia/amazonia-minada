@@ -6,6 +6,7 @@
   "author": "brab0",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.11.0",
     "cron": "^1.7.2",
     "extract-zip": "^1.6.7",
     "mongoose": "^5.6.7",
@@ -16,6 +17,7 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
+    "@types/mapbox__mapbox-sdk": "^0.6.2",
     "nodemon": "^1.18.4"
   },
   "scripts": {
@@ -29,6 +31,6 @@
     "ignore": [
       "files/*"
     ],
-    "delay": "2500"
+    "delay": "5000"
   }
 }

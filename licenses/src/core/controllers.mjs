@@ -11,6 +11,8 @@ import {
    writeCSV 
 } from '../utils/file-manager.mjs';
 
+import { sendDataToMapbox } from '../utils/api-manager.mjs';
+
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
@@ -83,6 +85,9 @@ export const importUnities = async () => {
 
          /** file for those who wants to analyse data into a sheet */
          await writeCSV(unities, unity.id, unity.properties);
+
+         /** send data to mapbox API */
+         await sendDataToMapbox(unities, unity.id);
       })
       .catch(async ex => {
          console.log(ex)
@@ -105,6 +110,9 @@ export const importInvasions = async () => {
 
       /** file for those who wants to analyse data into a sheet */
       await writeCSV(invasions.all, license.id, license.properties);
+
+      /** send data to mapbox API */
+      await sendDataToMapbox(invasions.all, license.id);
 
       return invasions.new;
    }
