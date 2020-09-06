@@ -11,13 +11,13 @@ import {
    writeCSV 
 } from '../utils/file-manager.mjs';
 
-import { sendDataToMapbox } from '../utils/api-manager.mjs';
 
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
 import { License, Unity } from './models.mjs';
 import { createInvasionsByUnities, getUnitiesInsideAmazon } from './services.mjs';
+import { uploadDataToMapbox } from './mapbox-service.mjs';
 
 export const importLicenses = async () => {
    console.log(`\nStarting to import licenses at ${new Date()}`);
@@ -87,7 +87,7 @@ export const importUnities = async () => {
          await writeCSV(unities, unity.id, unity.properties);
 
          /** send data to mapbox API */
-         await sendDataToMapbox(unities, unity.id);
+         await uploadDataToMapbox(unities, unity.id);
       })
       .catch(async ex => {
          console.log(ex)
@@ -112,7 +112,7 @@ export const importInvasions = async () => {
       await writeCSV(invasions.all, license.id, license.properties);
 
       /** send data to mapbox API */
-      await sendDataToMapbox(invasions.all, license.id);
+      await uploadDataToMapbox(invasions.all, license.id);
 
       return invasions.new;
    }
