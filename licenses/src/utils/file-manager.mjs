@@ -131,6 +131,29 @@ const writeCSV = (data, identity, properties = []) => {
    });
 }
 
+
+const writeLineDelimitedJson = (data, identity) => {
+   console.log(`\nStarting to write ${identity} line delimited json file at ${new Date()}`);
+
+   return new Promise((resolve, reject) => {
+       const jsonPath = path.resolve(process.cwd(), `files/${identity}/${identity}_ld.json`);
+       const geoJson = data.map((elem, index) => JSON.stringify(
+           {
+               geometry: elem.geometry,
+               id: index,
+               properties: elem.properties,
+               type: elem.type
+           }
+       )).join('\n');
+       fs.writeFile(jsonPath, geoJson, err => {
+           if (err) reject(err);
+
+           console.log(`Finish writing ${identity} line delimited json file at ${new Date()}`);
+           resolve(jsonPath);
+       });
+   });
+}
+
 export {
    removeTmp,
    cpFiles,
@@ -139,5 +162,6 @@ export {
    unzip,
    read,
    writeCSV,
-   writeGeoJson
+   writeGeoJson,
+   writeLineDelimitedJson
  }

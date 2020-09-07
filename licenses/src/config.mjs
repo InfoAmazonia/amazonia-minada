@@ -1,5 +1,5 @@
 export const database = {
-   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS}/icfj?authSource=admin&ssl=false`,
+   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${!process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS}/icfj?authSource=admin&ssl=false`,
    options: {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -125,4 +125,36 @@ export const twitter = {
    consumer_secret: process.env.CONSUMER_SECRET,
    access_token_key: process.env.ACCESS_TOKEN_KEY,
    access_token_secret: process.env.ACCESS_TOKEN_SECRET
+}
+
+export const mapbox = {
+   username: 'infoamazonia',
+   access_token: process.env.MAPBOX_ACCESS_TOKEN,
+   baseUri: 'https://api.mapbox.com/tilesets/v1/',
+
+   recipe: function(identity) {
+      return {
+         'recipe': {
+            'version': 1,
+            'layers': {
+               'layer1': {
+                  'source': `mapbox://tileset-source/${this.username}/${identity}`,
+                  'minzoom': 3,
+                  'maxzoom': 16
+               }
+            }
+         },
+         'name': identity,
+      }
+   },
+
+   upload_source_uri: function (identity) {
+      return `${this.baseUri}sources/${this.username}/${identity}?access_token=${this.access_token}`;
+   },
+   tileset_uri: function(identity) {
+      return `${this.baseUri}${this.username}.${identity}?access_token=${this.access_token}`;
+   },
+   publish_tileset_uri: function (identity) {
+      return `${this.baseUri}${this.username}.${identity}/publish?access_token=${this.access_token}`;
+   }
 }

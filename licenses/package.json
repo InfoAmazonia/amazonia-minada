@@ -16,6 +16,7 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
+    "@types/mapbox__mapbox-sdk": "^0.6.2",
     "nodemon": "^1.18.4"
   },
   "scripts": {
@@ -29,6 +30,6 @@
     "ignore": [
       "files/*"
     ],
-    "delay": "2500"
+    "delay": "5000"
   }
 }
