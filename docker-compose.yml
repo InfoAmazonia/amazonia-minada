@@ -15,9 +15,10 @@ services:
     volumes:
       - ./licenses:/srv/licenses
       - ./files/licencas:/srv/licenses/files/licencas
-      - ./files/invasoes:/srv/licenses/files/invasoes
+      - ./files/requerimentos:/srv/licenses/files/requerimentos
       - ./files/unidades_conservacao:/srv/licenses/files/unidades_conservacao
-      - ./files/reservas_indigenas:/srv/licenses/files/reservas_indigenas
+      - ./files/terras_indigenas:/srv/licenses/files/terras_indigenas
+      - ./files/requerimentos_ti:/srv/licenses/files/requerimentos_ti
       - /srv/licenses/node_modules
     links:
       - database

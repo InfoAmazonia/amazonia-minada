@@ -8,7 +8,7 @@ export const database = {
 }
 
 export const license = {
-   id: 'invasoes',
+   id: 'requerimentos',
    uri: 'http://sigmine.dnpm.gov.br/sirgas2000/Brasil.zip',
    zipfile: 'Brasil.zip',
    output: `./files/licencas`,
@@ -66,14 +66,14 @@ export const unity = {
 }
 
 export const reserve = {
-   id: 'reservas_indigenas',
-   uri: 'http://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Funai:ti_sirgas&CQL_FILTER=dominio_uniao=%27t%27&outputFormat=SHAPE-ZIP',
-   zipfile: 'ti_sirgas.zip',
-   output: `./files/reservas_indigenas`,
+   id: 'terras_indigenas',
+   uri: 'http://terrabrasilis.dpi.inpe.br/download/dataset/legal-amz-aux/vector/indigeneous_area_legal_amazon.zip',
+   zipfile: 'indigeneous_area_legal_amazon.zip',
+   output: `./files/terras_indigenas`,
    unziped_folder: ``,
-   shapefile: `ti_sirgasPolygon.shp`,
-   dbf: `ti_sirgasPolygon.dbf`,
-   encoding: 'latin1',
+   shapefile: `indigeneous_area_legal_amazon.shp`,
+   dbf: `indigeneous_area_legal_amazon.dbf`,
+   encoding: 'utf8',
    properties: [
       'gid',
       'terrai_cod',
@@ -95,7 +95,7 @@ export const reserve = {
 }
 
 export const reserve_invasion = {
-   id: 'invasoes_reservas',
+   id: 'requerimentos_ti',
    properties: [
       'PROCESSO',
       'ID',

@@ -192,24 +192,11 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
 export const getReservesInsideAmazon = (hasId = true) => {
    return Reserve
       .aggregate([
-      // TODO: definir como separar bioma amazônico pelas características de Reserves
-      // {
-      //    $match: {
-      //       'properties.sigla': { 
-      //          $in: ['REBIO', 'ESEC', 'PARNA']
-      //       },
-      //       'properties.biomaIBGE': { 
-      //          $eq: 'AMAZÔNIA'
-      //       }
-      //    }
-      // }, 
       {
          $project: {
             _id: hasId ? "$_id" : 0,
             type: "Feature",
             properties: {
-               // "areaK2" : { $multiply: [ "$properties.areaHa", 0.01 ] },
-
                "gid": "$properties.gid",
                "terrai_cod": "$properties.terrai_cod",
                "terrai_nom": "$properties.terrai_nom",
@@ -217,6 +204,7 @@ export const getReservesInsideAmazon = (hasId = true) => {
                "municipio_": "$properties.municipio_",
                "uf_sigla": "$properties.uf_sigla",
                "superficie": "$properties.superficie",
+               "superficieK2" : { $multiply: [ "$properties.superficie", 0.01 ] },
                "fase_ti": "$properties.fase_ti",
                "modalidade": "$properties.modalidade",
                "reestudo_t": "$properties.reestudo_t",
@@ -231,15 +219,10 @@ export const getReservesInsideAmazon = (hasId = true) => {
          }
       }])
       .then(reserves => reserves.map(item => {
-         // const newItem = addInternationalization(item, [{ 
-         //    "uc" : { crr: "terrai_cod", new: "en_terrai_cod" }
-         // }]);
-         const newItem = item;
-   
-         return Object.assign(newItem, {
-            properties: Object.assign(newItem.properties, {
-               "superficie": getThousandsMark(Math.round(newItem.properties.superficie)),
-               // "areaK2": getThousandsMark(Math.round(newItem.properties.areaK2))
+         return Object.assign(item, {
+            properties: Object.assign(item.properties, {
+               "superficie": getThousandsMark(Math.round(item.properties.superficie)),
+               "superficieK2": getThousandsMark(Math.round(item.properties.areaK2))
             })            
          })
       }));
@@ -276,7 +259,7 @@ export const getLicensesIntersectionsByReserve = async (reserve) => {
                   $nin: existingReserveInvasions.map(i => i.properties.ID)
                },
                'properties.ULT_EVENTO': {
-                  $not: /indeferimento.*/gi
+                  $not: /.*indef.*/gi
                },
                geometry: { 
                   $geoIntersects: { 
@@ -305,14 +288,15 @@ export const getLicensesIntersectionsByReserve = async (reserve) => {
                   "TI_ETNIA": reserve.properties.etnia_nome,
                   "TI_MUNICIPIO": reserve.properties.municipio_,
                   "TI_UF": reserve.properties.uf_sigla,
-                  "TI_SUPERFICIE": reserve.properties.superficie,
+                  // TODO: passar para number sem querar o filtro do mongo com 0
+                  "TI_SUPERFICIE": { $literal: reserve.properties.superficie },
                   "TI_FASE": reserve.properties.fase_ti,
                   "TI_MODALIDADE": reserve.properties.modalidade
                },
                geometry: "$geometry"
             }
          }
-      ])
+      ]);
 }
 
 export const getReserveInvasions = (query = {}) => {
@@ -349,7 +333,6 @@ export const getReserveInvasions = (query = {}) => {
    }])
    .then(items => items.map(item => {
       const newItem = addInternationalization(item, [
-         // { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} },
          { "fase" : { crr: "FASE", new: "EN_FASE"} },
          { "sub" : { crr: "SUBS", new: "EN_SUBS"} },
       ]);
@@ -361,4 +344,13 @@ export const getReserveInvasions = (query = {}) => {
          })
       });
    }));
+   
+}
+
+export const updateReserveInvasionTweetStatus = query => {
+   return ReserveInvasion.updateMany(query, {
+      $set: {
+         tweeted: true
+      }
+   })
 }

@@ -1,7 +1,7 @@
 import { license, unity, reserve, reserve_invasion } from '../config.mjs';
 
 import { 
-   read, 
+   read,
    download, 
    unzip, 
    cpFiles, 
@@ -159,6 +159,9 @@ export const importReserves = async () => {
 
          /** file for those who wants to analyse data into a sheet */
          await writeCSV(reserves, reserve.id, reserve.properties);
+         
+         /** send data to mapbox API */
+         await uploadDataToMapbox(reserves, reserve.id);
       })
       .catch(async ex => {
          console.log(ex)
@@ -176,13 +179,14 @@ export const importReserveInvasions = async () => {
          
       console.log(`Finish importing reserve invasions at ${new Date()}`);
 
-      // TODO: passar arquivos de licenses/invasoes_reservas para files/invacoes_reservas
-      // TODO: verificar dados faltantes do csv
       /** geo file handle by carto */
       await writeGeoJson(invasions.all, reserve_invasion.id);
 
       /** file for those who wants to analyse data into a sheet */
       await writeCSV(invasions.all, reserve_invasion.id, reserve_invasion.properties);
+
+      /** send data to mapbox API */
+      await uploadDataToMapbox(invasions.all, reserve_invasion.id);
 
       return invasions.new;
    }
