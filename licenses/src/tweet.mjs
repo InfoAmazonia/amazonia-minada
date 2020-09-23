@@ -26,11 +26,11 @@ mongoose.connect(database.uri, database.options)
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
 
             let requirerName = NOME;
-            let status = `⚠ ALERTA! Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            let status = `⚠ ALERTA! Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
 
             if (status.length > 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `⚠ ALERTA! Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da @ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
+               status = `⚠ ALERTA! Nova licença de ${areaK2} km² de ${FASE} para ${SUBS} detectada no sistema da ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName} #AmazoniaMinada ${link}`;
             }
 
             const tweet = { media: `${process.cwd()}/images/${slug}.jpg`, status: status };
