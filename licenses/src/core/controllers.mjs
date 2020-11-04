@@ -2,7 +2,8 @@ import { license, unity, reserve, reserve_invasion } from '../config.mjs';
 
 import { 
    read,
-   download, 
+   download,
+   loadLocal,
    unzip, 
    cpFiles, 
    removeTmp, 
@@ -66,7 +67,7 @@ export const importUnities = async () => {
    return Unity.deleteMany({})
       .then(() => removeTmp(unity.output))   
       .then(() => makeTmp(unity.output))
-      .then(() => download(unity.uri, unity.output, unity.zipfile))
+      .then(() => loadLocal(unity.uri, unity.output, unity.zipfile))
       .then(() => unzip(unity.output, unity.zipfile))
       .then(() => cpFiles(unity))
       .then(() => removeTmp(unity.output))
