@@ -37,12 +37,12 @@ export const license = {
 
 export const unity = {
    id: 'unidades_conservacao',
-   uri: 'http://www.icmbio.gov.br/portal/images/stories/servicos/geoprocessamento/DCOL/dados_vetoriais/UC_fed_julho_2019.zip',
-   zipfile: 'UC_fed_julho_2019.zip',
+   uri: 'files_source/UCs_AmzLegal.zip',
+   zipfile: 'UCs_AmzLegal.zip',
    output: `./files/unidades_conservacao`,
-   unziped_folder: `UC_fed_julho_2019`,
-   shapefile: `UC_fed_julho_2019.shp`,
-   dbf: `UC_fed_julho_2019.dbf`,
+   unziped_folder: `UCs_AmzLegal`,
+   shapefile: `UC_fed_julho_2019_AmzLegal.shp`,
+   dbf: `UC_fed_julho_2019_AmzLegal.dbf`,
    encoding: 'utf8',
    properties: [
       'codigoCnuc',
@@ -137,7 +137,7 @@ export const mapbox = {
          'recipe': {
             'version': 1,
             'layers': {
-               'layer1': {
+               [identity]: {
                   'source': `mapbox://tileset-source/${this.username}/${identity}`,
                   'minzoom': 3,
                   'maxzoom': 16

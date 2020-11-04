@@ -142,16 +142,6 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
                'properties.ID': {
                   $nin: existingInvasions.map(i => i.properties.ID)
                },
-               'properties.ULT_EVENTO': {
-                  $not: /indeferimento.*/gi
-               },
-               $or: [{
-                  'properties.FASE': 'CONCESSÃO DE LAVRA'
-               }, {
-                  'properties.ANO': {
-                     $gte: unity.properties.anoCriacao
-                  }
-               }],
                geometry: { 
                   $geoIntersects: { 
                      $geometry: unity.geometry

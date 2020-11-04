@@ -44,6 +44,21 @@ const download = (uri, output, name) => {
    })   
 }
 
+const loadLocal = (localPath, output, name) => {
+   console.log('Preparing files(1/2) - Loading local files.');
+
+   return new Promise((resolve, reject) => {
+      const readStream = fs.createReadStream(localPath);
+      const writeStream = fs.createWriteStream(path.resolve(`${output}/tmp/${name}`));
+
+      readStream.pipe(writeStream);
+      writeStream.on('close', err => {
+         if (err) reject(err);
+         resolve();
+      });
+   });
+}
+
 const unzip = (pathfile, zipfile) => {
    console.log('Preparing files(2/2) - Unzipping files.');
 
@@ -159,6 +174,7 @@ export {
    cpFiles,
    makeTmp,
    download,
+   loadLocal,
    unzip,
    read,
    writeCSV,
