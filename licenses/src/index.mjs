@@ -3,33 +3,32 @@ import mongoose from 'mongoose';
 import { database } from './config.mjs';
 
 import { 
-    scheduleUpdateInvasions, 
+    scheduleUpdateInvasions,
     scheduleTweetNewInvasionsPT,
     scheduleTweetNewInvasionsEN,
     scheduleTweetTotalInvasions,
     scheduleTweetTotalYearInvasions,
-    scheduleTweetTotalAreaInvasions,
-    scheduleTweetAvgInvasions,
-    scheduleTweetWarnEngInvasions
+    scheduleUpdateReserveInvasions
 } from './core/jobs.mjs';
 
 process.env.TZ = 'America/Sao_Paulo';
 
-import { getInvasions } from './core/services.mjs';
-
 mongoose.connect(database.uri, database.options)
    .then(async () => {
       console.log('ICFJ application running...');
-      // const invasions = await getInvasions({ tweeted: false });
+      // UNITIES
       scheduleUpdateInvasions(invasions => {
          scheduleTweetNewInvasionsPT(invasions);
          scheduleTweetNewInvasionsEN(invasions);
       });
       scheduleTweetTotalInvasions();
       scheduleTweetTotalYearInvasions();
-      scheduleTweetTotalAreaInvasions();
-      scheduleTweetAvgInvasions();
-      scheduleTweetWarnEngInvasions();
+      // RESERVES
+      scheduleUpdateReserveInvasions(reserveInvasions => {
+         // TODO: adicionar jobs para tuitar
+         // TODO: descobrir como fazer com links (links-ucs-{}.json) e com imagens (../images/*.jpg)
+         // TODO: verificar alerta de segurança
+      });
    })
    .catch(ex => {
       throw ex

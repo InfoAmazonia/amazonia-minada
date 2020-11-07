@@ -1,0 +1,1362 @@
+[
+    {
+        "name": "Abecásia",
+        "area": 8432,
+        "nameEN": "Abkhazia"
+    },
+    {
+        "name": "Açores",
+        "area": 2333,
+        "nameEN": "Azores"
+    },
+    {
+        "name": "Acrotiri e Deceleia",
+        "area": 254,
+        "nameEN": "Acrotiri and Deceleia"
+    },
+    {
+        "name": "Afeganistão",
+        "area": 652090,
+        "nameEN": "Afghanistan"
+    },
+    {
+        "name": "África do Sul",
+        "area": 1221037,
+        "nameEN": "South Africa"
+    },
+    {
+        "name": "Albânia",
+        "area": 28748,
+        "nameEN": "Albania"
+    },
+    {
+        "name": "Alemanha",
+        "area": 356733,
+        "nameEN": "Germany"
+    },
+    {
+        "name": "Andorra",
+        "area": 453,
+        "nameEN": "Andorra"
+    },
+    {
+        "name": "Angola",
+        "area": 1246700,
+        "nameEN": "Angola"
+    },
+    {
+        "name": "Anguila",
+        "area": 102,
+        "nameEN": "Anguilla"
+    },
+    {
+        "name": "Antártida",
+        "area": 14000000,
+        "nameEN": "Antarctica"
+    },
+    {
+        "name": "Antígua e Barbuda",
+        "area": 440,
+        "nameEN": "Antigua and Barbuda"
+    },
+    {
+        "name": "Arábia Saudita",
+        "area": 2149690,
+        "nameEN": "Saudi Arabia"
+    },
+    {
+        "name": "Argélia",
+        "area": 2381741,
+        "nameEN": "Algeria"
+    },
+    {
+        "name": "Argentina",
+        "area": 2780400,
+        "nameEN": "Argentina"
+    },
+    {
+        "name": "Armênia",
+        "area": 29800,
+        "nameEN": "Armenia"
+    },
+    {
+        "name": "Aruba",
+        "area": 180,
+        "nameEN": "Aruba"
+    },
+    {
+        "name": "Austrália",
+        "area": 7692024,
+        "nameEN": "Australia"
+    },
+    {
+        "name": "Áustria",
+        "area": 83853,
+        "nameEN": "Austria"
+    },
+    {
+        "name": "Azerbaijão",
+        "area": 86600,
+        "nameEN": "Azerbaijan"
+    },
+    {
+        "name": "Bahamas",
+        "area": 13878,
+        "nameEN": "Bahamas"
+    },
+    {
+        "name": "Bangladesh",
+        "area": 143998,
+        "nameEN": "Bangladesh"
+    },
+    {
+        "name": "Barbados",
+        "area": 430,
+        "nameEN": "Barbados"
+    },
+    {
+        "name": "Barém",
+        "area": 678,
+        "nameEN": "Bahrain"
+    },
+    {
+        "name": "Bélgica",
+        "area": 30519,
+        "nameEN": "Belgium"
+    },
+    {
+        "name": "Belize",
+        "area": 22965,
+        "nameEN": "Belize"
+    },
+    {
+        "name": "Benim",
+        "area": 112622,
+        "nameEN": "Benin"
+    },
+    {
+        "name": "Bermudas",
+        "area": 53,
+        "nameEN": "Bermuda"
+    },
+    {
+        "name": "Bielorrússia",
+        "area": 207600,
+        "nameEN": "Belarus"
+    },
+    {
+        "name": "Bolívia",
+        "area": 1098581,
+        "nameEN": "Bolivia"
+    },
+    {
+        "name": "Bonaire",
+        "area": 294,
+        "nameEN": "Bonaire"
+    },
+    {
+        "name": "Bósnia e Herzegovina",
+        "area": 51129,
+        "nameEN": "Bosnia and Herzegovina"
+    },
+    {
+        "name": "Botsuana",
+        "area": 581730,
+        "nameEN": "Botswana"
+    },
+    {
+        "name": "Brasil",
+        "area": 8515767,
+        "nameEN": "Brazil"
+    },
+    {
+        "name": "Brunei",
+        "area": 5765,
+        "nameEN": "Brunei"
+    },
+    {
+        "name": "Bulgária",
+        "area": 110912,
+        "nameEN": "Bulgaria"
+    },
+    {
+        "name": "Burquina Faso",
+        "area": 274200,
+        "nameEN": "Burkina Faso"
+    },
+    {
+        "name": "Burundi",
+        "area": 27834,
+        "nameEN": "Burundi"
+    },
+    {
+        "name": "Butão",
+        "area": 47000,
+        "nameEN": "Bhutan"
+    },
+    {
+        "name": "Cabo Verde",
+        "area": 4033,
+        "nameEN": "Cape Verde"
+    },
+    {
+        "name": "Camarões",
+        "area": 475442,
+        "nameEN": "Cameroon"
+    },
+    {
+        "name": "Camboja",
+        "area": 181035,
+        "nameEN": "Cambodia"
+    },
+    {
+        "name": "Canadá",
+        "area": 9984670,
+        "nameEN": "Canada"
+    },
+    {
+        "name": "Canárias",
+        "area": 7447,
+        "nameEN": "Canary Islands"
+    },
+    {
+        "name": "Catar",
+        "area": 11000,
+        "nameEN": "Qatar"
+    },
+    {
+        "name": "Cazaquistão",
+        "area": 2724900,
+        "nameEN": "Kazakhstan"
+    },
+    {
+        "name": "Chade",
+        "area": 1284000,
+        "nameEN": "Chad"
+    },
+    {
+        "name": "Chile",
+        "area": 756945,
+        "nameEN": "Chile"
+    },
+    {
+        "name": "China",
+        "area": 9596961,
+        "nameEN": "China"
+    },
+    {
+        "name": "Chipre",
+        "area": 9251,
+        "nameEN": "Cyprus"
+    },
+    {
+        "name": "Chipre do Norte",
+        "area": 3355,
+        "nameEN": "North Cyprus"
+    },
+    {
+        "name": "Colômbia",
+        "area": 1138914,
+        "nameEN": "Colombia"
+    },
+    {
+        "name": "Comores",
+        "area": 2235,
+        "nameEN": "Comoros"
+    },
+    {
+        "name": "Coreia do Norte",
+        "area": 120538,
+        "nameEN": "North Korea"
+    },
+    {
+        "name": "Coreia do Sul",
+        "area": 99016,
+        "nameEN": "South Korea"
+    },
+    {
+        "name": "Costa do Marfim",
+        "area": 322463,
+        "nameEN": "Ivory Coast"
+    },
+    {
+        "name": "Costa Rica",
+        "area": 51100,
+        "nameEN": "Costa Rica"
+    },
+    {
+        "name": "Croácia",
+        "area": 56538,
+        "nameEN": "Croatia"
+    },
+    {
+        "name": "Cuba",
+        "area": 110861,
+        "nameEN": "Cuba"
+    },
+    {
+        "name": "Curaçao",
+        "area": 444,
+        "nameEN": "Curaçao"
+    },
+    {
+        "name": "Dinamarca",
+        "area": 43077,
+        "nameEN": "Denmark"
+    },
+    {
+        "name": "Djibuti",
+        "area": 23200,
+        "nameEN": "Djibouti"
+    },
+    {
+        "name": "Domínica",
+        "area": 751,
+        "nameEN": "Dominica"
+    },
+    {
+        "name": "Egito",
+        "area": 1001049,
+        "nameEN": "Egypt"
+    },
+    {
+        "name": "El Salvador",
+        "area": 21041,
+        "nameEN": "El Salvador"
+    },
+    {
+        "name": "Emirados Árabes Unidos",
+        "area": 83600,
+        "nameEN": "United Arab Emirates"
+    },
+    {
+        "name": "Equador",
+        "area": 283561,
+        "nameEN": "Ecuador"
+    },
+    {
+        "name": "Eritreia",
+        "area": 117600,
+        "nameEN": "Eritrea"
+    },
+    {
+        "name": "Escócia",
+        "area": 78772,
+        "nameEN": "Scotland"
+    },
+    {
+        "name": "Eslováquia",
+        "area": 49035,
+        "nameEN": "Slovakia"
+    },
+    {
+        "name": "Eslovênia",
+        "area": 20251,
+        "nameEN": "Slovenia"
+    },
+    {
+        "name": "Espanha",
+        "area": 504782,
+        "nameEN": "Spain"
+    },
+    {
+        "name": "Estados Unidos",
+        "area": 9371174,
+        "nameEN": "United States"
+    },
+    {
+        "name": "Estônia",
+        "area": 45100,
+        "nameEN": "Estonia"
+    },
+    {
+        "name": "Etiópia",
+        "area": 1104300,
+        "nameEN": "Ethiopia"
+    },
+    {
+        "name": "Faroé",
+        "area": 1399,
+        "nameEN": "Faroe Islands"
+    },
+    {
+        "name": "Fiji",
+        "area": 18274,
+        "nameEN": "Fiji"
+    },
+    {
+        "name": "Filipinas",
+        "area": 300000,
+        "nameEN": "Philippines"
+    },
+    {
+        "name": "Finlândia",
+        "area": 338145,
+        "nameEN": "Finland"
+    },
+    {
+        "name": "França",
+        "area": 551500,
+        "nameEN": "France"
+    },
+    {
+        "name": "Gabão",
+        "area": 267667,
+        "nameEN": "Gabon"
+    },
+    {
+        "name": "Gâmbia",
+        "area": 11295,
+        "nameEN": "Gambia"
+    },
+    {
+        "name": "Gana",
+        "area": 238533,
+        "nameEN": "Ghana"
+    },
+    {
+        "name": "Geórgia",
+        "area": 69700,
+        "nameEN": "Georgia"
+    },
+    {
+        "name": "Geórgia do Sul e Sandwich do Sul",
+        "area": 4092,
+        "nameEN": "South Georgia and the South Sandwich Islands"
+    },
+    {
+        "name": "Gibraltar",
+        "area": 6.5,
+        "nameEN": "Gibraltar"
+    },
+    {
+        "name": "Granada",
+        "area": 344,
+        "nameEN": "Granada"
+    },
+    {
+        "name": "Grécia",
+        "area": 131990,
+        "nameEN": "Greece"
+    },
+    {
+        "name": "Groenlândia",
+        "area": 2166086,
+        "nameEN": "Greenland"
+    },
+    {
+        "name": "Guadalupe",
+        "area": 1628,
+        "nameEN": "Guadeloupe"
+    },
+    {
+        "name": "Guam",
+        "area": 549,
+        "nameEN": "Guam"
+    },
+    {
+        "name": "Guatemala",
+        "area": 108889,
+        "nameEN": "Guatemala"
+    },
+    {
+        "name": "Guernsey",
+        "area": 78,
+        "nameEN": "Guernsey"
+    },
+    {
+        "name": "Guiana",
+        "area": 214969,
+        "nameEN": "Guyana"
+    },
+    {
+        "name": "Guiana Francesa",
+        "area": 90000,
+        "nameEN": "French Guiana"
+    },
+    {
+        "name": "Guiné",
+        "area": 245857,
+        "nameEN": "Guinea"
+    },
+    {
+        "name": "Guiné Bissau",
+        "area": 36125,
+        "nameEN": "Guinea Bissau"
+    },
+    {
+        "name": "Guiné Equatorial",
+        "area": 28051,
+        "nameEN": "Equatorial Guinea"
+    },
+    {
+        "name": "Haiti",
+        "area": 27750,
+        "nameEN": "Haiti"
+    },
+    {
+        "name": "Honduras",
+        "area": 112088,
+        "nameEN": "Honduras"
+    },
+    {
+        "name": "Hong Kong",
+        "area": 1099,
+        "nameEN": "Hong Kong"
+    },
+    {
+        "name": "Hungria",
+        "area": 93032,
+        "nameEN": "Hungary"
+    },
+    {
+        "name": "Iêmen",
+        "area": 527968,
+        "nameEN": "Yemen"
+    },
+    {
+        "name": "Ilha Bouvet",
+        "area": 49,
+        "nameEN": "Bouvet Island"
+    },
+    {
+        "name": "Ilha da Madeira",
+        "area": 801,
+        "nameEN": "Madeira Island"
+    },
+    {
+        "name": "Ilha de Clipperton",
+        "area": 7,
+        "nameEN": "Clipperton Island"
+    },
+    {
+        "name": "Ilha de Man",
+        "area": 572,
+        "nameEN": "Isle of Man"
+    },
+    {
+        "name": "Ilha de Navassa",
+        "area": 5,
+        "nameEN": "Island de Navassa"
+    },
+    {
+        "name": "Ilha do Natal",
+        "area": 135,
+        "nameEN": "Christmas Island"
+    },
+    {
+        "name": "Ilha Jan Mayen",
+        "area": 373,
+        "nameEN": "Jan Mayen Island"
+    },
+    {
+        "name": "Ilha Norfolk",
+        "area": 34.6,
+        "nameEN": "Norfolk Island"
+    },
+    {
+        "name": "Ilha Wake",
+        "area": 19,
+        "nameEN": "Wake Island"
+    },
+    {
+        "name": "Ilhas Ashmore e Cartier",
+        "area": 5,
+        "nameEN": "Ashmore and Cartier Islands"
+    },
+    {
+        "name": "Ilhas Caimão",
+        "area": 264,
+        "nameEN": "Cayman Islands"
+    },
+    {
+        "name": "Ilhas Cocos",
+        "area": 14,
+        "nameEN": "Cocos Islands"
+    },
+    {
+        "name": "Ilhas Cook",
+        "area": 236,
+        "nameEN": "Cook Islands"
+    },
+    {
+        "name": "Ilhas do mar de coral",
+        "area": 3,
+        "nameEN": "Islands coral sea"
+    },
+    {
+        "name": "Ilhas Falkland",
+        "area": 12173,
+        "nameEN": "Falkland Islands"
+    },
+    {
+        "name": "Ilhas Heard e McDonald",
+        "area": 412,
+        "nameEN": "Heard and McDonald Islands"
+    },
+    {
+        "name": "Ilhas Marshall",
+        "area": 181,
+        "nameEN": "Marshall Islands"
+    },
+    {
+        "name": "Ilhas Paracel",
+        "area": 7,
+        "nameEN": "Paracel Islands"
+    },
+    {
+        "name": "Ilhas Pitcairn",
+        "area": 47,
+        "nameEN": "Pitcairn Islands"
+    },
+    {
+        "name": "Ilhas Salomão",
+        "area": 28896,
+        "nameEN": "Solomon Islands"
+    },
+    {
+        "name": "Ilhas Spratly",
+        "area": 4,
+        "nameEN": "Spratly Islands"
+    },
+    {
+        "name": "Ilhas Turcas e Caicos",
+        "area": 417,
+        "nameEN": "Turks and Caicos Islands"
+    },
+    {
+        "name": "Ilhas Virgens Americanas",
+        "area": 347,
+        "nameEN": "US Virgin Islands"
+    },
+    {
+        "name": "Ilhas Virgens Britânicas",
+        "area": 151,
+        "nameEN": "British Virgin Islands"
+    },
+    {
+        "name": "Índia",
+        "area": 3287590,
+        "nameEN": "India"
+    },
+    {
+        "name": "Indonésia",
+        "area": 1904569,
+        "nameEN": "Indonesia"
+    },
+    {
+        "name": "Inglaterra",
+        "area": 130395,
+        "nameEN": "England"
+    },
+    {
+        "name": "Irã",
+        "area": 1628750,
+        "nameEN": "Iran"
+    },
+    {
+        "name": "Iraque",
+        "area": 438317,
+        "nameEN": "Iraq"
+    },
+    {
+        "name": "Irlanda",
+        "area": 70273,
+        "nameEN": "Ireland"
+    },
+    {
+        "name": "Irlanda do norte",
+        "area": 13843,
+        "nameEN": "Northern Ireland"
+    },
+    {
+        "name": "Islândia",
+        "area": 103000,
+        "nameEN": "Iceland"
+    },
+    {
+        "name": "Israel",
+        "area": 20770,
+        "nameEN": "Israel"
+    },
+    {
+        "name": "Itália",
+        "area": 301338,
+        "nameEN": "Italy"
+    },
+    {
+        "name": "Jamaica",
+        "area": 10991,
+        "nameEN": "Jamaica"
+    },
+    {
+        "name": "Japão",
+        "area": 377975,
+        "nameEN": "Japan"
+    },
+    {
+        "name": "Jersey",
+        "area": 116,
+        "nameEN": "Jersey"
+    },
+    {
+        "name": "Jordânia",
+        "area": 89342,
+        "nameEN": "Jordan"
+    },
+    {
+        "name": "Kosovo",
+        "area": 10887,
+        "nameEN": "Kosovo"
+    },
+    {
+        "name": "Kuwait",
+        "area": 17818,
+        "nameEN": "Kuwait"
+    },
+    {
+        "name": "Laos",
+        "area": 236800,
+        "nameEN": "Laos"
+    },
+    {
+        "name": "Lesoto",
+        "area": 30355,
+        "nameEN": "Lesotho"
+    },
+    {
+        "name": "Letônia",
+        "area": 64559,
+        "nameEN": "Latvia"
+    },
+    {
+        "name": "Líbano",
+        "area": 10452,
+        "nameEN": "Lebanon"
+    },
+    {
+        "name": "Libéria",
+        "area": 111369,
+        "nameEN": "Liberia"
+    },
+    {
+        "name": "Líbia",
+        "area": 1759540,
+        "nameEN": "Libya"
+    },
+    {
+        "name": "Liechtenstein",
+        "area": 160,
+        "nameEN": "Liechtenstein"
+    },
+    {
+        "name": "Lituânia",
+        "area": 65300,
+        "nameEN": "Lithuania"
+    },
+    {
+        "name": "Luxemburgo",
+        "area": 2586,
+        "nameEN": "Luxembourg"
+    },
+    {
+        "name": "Macau",
+        "area": 28.6,
+        "nameEN": "Macau"
+    },
+    {
+        "name": "Macedônia do Norte",
+        "area": 25713,
+        "nameEN": "North Macedonia"
+    },
+    {
+        "name": "Madagascar",
+        "area": 587041,
+        "nameEN": "Madagascar"
+    },
+    {
+        "name": "Malásia",
+        "area": 330803,
+        "nameEN": "Malaysia"
+    },
+    {
+        "name": "Malawi",
+        "area": 118484,
+        "nameEN": "Malawi"
+    },
+    {
+        "name": "Maldivas",
+        "area": 298,
+        "nameEN": "Maldives"
+    },
+    {
+        "name": "Mali",
+        "area": 1240192,
+        "nameEN": "Mali"
+    },
+    {
+        "name": "Malta",
+        "area": 316,
+        "nameEN": "Malta"
+    },
+    {
+        "name": "Marianas do Norte",
+        "area": 464,
+        "nameEN": "Marianas of No rte"
+    },
+    {
+        "name": "Marrocos",
+        "area": 446550,
+        "nameEN": "Morocco"
+    },
+    {
+        "name": "Martinica",
+        "area": 1102,
+        "nameEN": "Martinique"
+    },
+    {
+        "name": "Maurício",
+        "area": 2040,
+        "nameEN": "Mauritius"
+    },
+    {
+        "name": "Mauritânia",
+        "area": 1025520,
+        "nameEN": "Mauritania"
+    },
+    {
+        "name": "Mayotte",
+        "area": 374,
+        "nameEN": "Mayotte"
+    },
+    {
+        "name": "México",
+        "area": 1964375,
+        "nameEN": "Mexico"
+    },
+    {
+        "name": "Micronésia",
+        "area": 702,
+        "nameEN": "Micronesia"
+    },
+    {
+        "name": "Moçambique",
+        "area": 801590,
+        "nameEN": "Mozambique"
+    },
+    {
+        "name": "Moldávia",
+        "area": 33851,
+        "nameEN": "Moldova"
+    },
+    {
+        "name": "Mônaco",
+        "area": 2,
+        "nameEN": "Monaco"
+    },
+    {
+        "name": "Mongólia",
+        "area": 1564116,
+        "nameEN": "Mongolia"
+    },
+    {
+        "name": "Monserrate",
+        "area": 102,
+        "nameEN": "Monserrate"
+    },
+    {
+        "name": "Montenegro",
+        "area": 13812,
+        "nameEN": "Montenegro"
+    },
+    {
+        "name": "Myanmar",
+        "area": 676578,
+        "nameEN": "Myanmar"
+    },
+    {
+        "name": "Nagorno-Karabakh",
+        "area": 11458,
+        "nameEN": "Nagorno-Karabakh"
+    },
+    {
+        "name": "Namíbia",
+        "area": 824116,
+        "nameEN": "Namibia"
+    },
+    {
+        "name": "Nauru",
+        "area": 21,
+        "nameEN": "Nauru"
+    },
+    {
+        "name": "Nepal",
+        "area": 147181,
+        "nameEN": "Nepal"
+    },
+    {
+        "name": "Nicarágua",
+        "area": 131812,
+        "nameEN": "Nicaragua"
+    },
+    {
+        "name": "Níger",
+        "area": 1267000,
+        "nameEN": "Niger"
+    },
+    {
+        "name": "Nigéria",
+        "area": 923768,
+        "nameEN": "Nigeria"
+    },
+    {
+        "name": "Niue",
+        "area": 260,
+        "nameEN": "Niue"
+    },
+    {
+        "name": "Noruega",
+        "area": 385155,
+        "nameEN": "Norway"
+    },
+    {
+        "name": "Nova Caledônia",
+        "area": 18575,
+        "nameEN": "New Caledonia"
+    },
+    {
+        "name": "Nova Zelândia",
+        "area": 270534,
+        "nameEN": "New Zealand"
+    },
+    {
+        "name": "Omã",
+        "area": 309500,
+        "nameEN": "Oman"
+    },
+    {
+        "name": "Ossétia do Sul",
+        "area": 3900,
+        "nameEN": "South Ossetia"
+    },
+    {
+        "name": "País de Gales",
+        "area": 20779,
+        "nameEN": "Wales"
+    },
+    {
+        "name": "Países Baixos",
+        "area": 41528,
+        "nameEN": "Netherlands"
+    },
+    {
+        "name": "Palau",
+        "area": 459,
+        "nameEN": "Palau"
+    },
+    {
+        "name": "Palestina",
+        "area": 6020,
+        "nameEN": "Palestine"
+    },
+    {
+        "name": "Panamá",
+        "area": 75517,
+        "nameEN": "Panama"
+    },
+    {
+        "name": "Papua-Nova Guiné",
+        "area": 462840,
+        "nameEN": "Papua New Guinea"
+    },
+    {
+        "name": "Paquistão",
+        "area": 880254,
+        "nameEN": "Pakistan"
+    },
+    {
+        "name": "Paraguai",
+        "area": 406752,
+        "nameEN": "Paraguay"
+    },
+    {
+        "name": "Peru",
+        "area": 1285216,
+        "nameEN": "Peru"
+    },
+    {
+        "name": "Polinésia Francesa",
+        "area": 4000,
+        "nameEN": "French Polynesia"
+    },
+    {
+        "name": "Polônia",
+        "area": 312685,
+        "nameEN": "Poland"
+    },
+    {
+        "name": "Porto Rico",
+        "area": 8875,
+        "nameEN": "Puerto Rico"
+    },
+    {
+        "name": "Portugal",
+        "area": 92152,
+        "nameEN": "Portugal"
+    },
+    {
+        "name": "Quênia",
+        "area": 580367,
+        "nameEN": "Kenya"
+    },
+    {
+        "name": "Quirguizistão",
+        "area": 199951,
+        "nameEN": "Kyrgyzstan"
+    },
+    {
+        "name": "Quiribati",
+        "area": 726,
+        "nameEN": "Kiribati"
+    },
+    {
+        "name": "Reino Unido",
+        "area": 242514,
+        "nameEN": "United Kingdom"
+    },
+    {
+        "name": "República Centro-Africana",
+        "area": 622984,
+        "nameEN": "Central African Republic"
+    },
+    {
+        "name": "República Democrática do Congo",
+        "area": 2344858,
+        "nameEN": "Democratic Republic of Congo"
+    },
+    {
+        "name": "República do Congo",
+        "area": 342000,
+        "nameEN": "Republic of Congo"
+    },
+    {
+        "name": "República Dominicana",
+        "area": 48734,
+        "nameEN": "Dominican Republic"
+    },
+    {
+        "name": "República Tcheca",
+        "area": 78867,
+        "nameEN": "Czech Republic"
+    },
+    {
+        "name": "Reunião",
+        "area": 2510,
+        "nameEN": "Reunion"
+    },
+    {
+        "name": "Romênia",
+        "area": 238391,
+        "nameEN": "Romania"
+    },
+    {
+        "name": "Ruanda",
+        "area": 26338,
+        "nameEN": "Rwanda"
+    },
+    {
+        "name": "Rússia",
+        "area": 17098246,
+        "nameEN": "Russia"
+    },
+    {
+        "name": "Saara Ocidental",
+        "area": 266000,
+        "nameEN": "Western Sahara"
+    },
+    {
+        "name": "Saba",
+        "area": 13,
+        "nameEN": "Saba"
+    },
+    {
+        "name": "Samoa",
+        "area": 2831,
+        "nameEN": "Samoa"
+    },
+    {
+        "name": "Samoa Americana",
+        "area": 199,
+        "nameEN": "American Samoa"
+    },
+    {
+        "name": "San Marino",
+        "area": 61,
+        "nameEN": "San Marino"
+    },
+    {
+        "name": "Santa Helena",
+        "area": 410,
+        "nameEN": "Saint Helena"
+    },
+    {
+        "name": "Santa Lúcia",
+        "area": 539,
+        "nameEN": "Saint Lucia"
+    },
+    {
+        "name": "Santo Eustáquio",
+        "area": 21,
+        "nameEN": "Saint Eustatius"
+    },
+    {
+        "name": "São Bartolomeu",
+        "area": 21,
+        "nameEN": "Saint Barthélemy"
+    },
+    {
+        "name": "São Cristóvão e Neves",
+        "area": 261,
+        "nameEN": "Saint Kitts and Nevis"
+    },
+    {
+        "name": "São Martinho francesa",
+        "area": 34,
+        "nameEN": "French Saint Martin"
+    },
+    {
+        "name": "São Martinho holandesa",
+        "area": 53,
+        "nameEN": "Dutch Saint Martin"
+    },
+    {
+        "name": "São Pedro e Miquelon",
+        "area": 242,
+        "nameEN": "Saint Pierre and Miquelon"
+    },
+    {
+        "name": "São Tomé e Príncipe",
+        "area": 1001,
+        "nameEN": "São Tomé and Príncipe"
+    },
+    {
+        "name": "São Vicente e Granadinas",
+        "area": 388,
+        "nameEN": "Saint Vincent and the Grenadines"
+    },
+    {
+        "name": "Seicheles",
+        "area": 455,
+        "nameEN": "Seychelles"
+    },
+    {
+        "name": "Senegal",
+        "area": 196722,
+        "nameEN": "Senegal"
+    },
+    {
+        "name": "Serra Leoa",
+        "area": 71740,
+        "nameEN": "Sierra Leone"
+    },
+    {
+        "name": "Sérvia",
+        "area": 88361,
+        "nameEN": "S Serbia"
+    },
+    {
+        "name": "Singapura",
+        "area": 618,
+        "nameEN": "Singapore"
+    },
+    {
+        "name": "Síria",
+        "area": 185180,
+        "nameEN": "Syria"
+    },
+    {
+        "name": "Somália",
+        "area": 637657,
+        "nameEN": "Somalia"
+    },
+    {
+        "name": "Somalilândia",
+        "area": 137600,
+        "nameEN": "Somaliland"
+    },
+    {
+        "name": "Sri Lanka",
+        "area": 65610,
+        "nameEN": "Sri Lanka"
+    },
+    {
+        "name": "Suazilândia",
+        "area": 17364,
+        "nameEN": "Swaziland"
+    },
+    {
+        "name": "Sudão",
+        "area": 1886068,
+        "nameEN": "Sudan"
+    },
+    {
+        "name": "Sudão do Sul",
+        "area": 644329,
+        "nameEN": "South Sudan"
+    },
+    {
+        "name": "Suécia",
+        "area": 450295,
+        "nameEN": "Sweden"
+    },
+    {
+        "name": "Suíça",
+        "area": 41285,
+        "nameEN": "Switzerland"
+    },
+    {
+        "name": "Suriname",
+        "area": 163820,
+        "nameEN": "Suriname"
+    },
+    {
+        "name": "Tailândia",
+        "area": 513120,
+        "nameEN": "Thailand"
+    },
+    {
+        "name": "Taiwan",
+        "area": 36179,
+        "nameEN": "Taiwan"
+    },
+    {
+        "name": "Tajiquistão",
+        "area": 143100,
+        "nameEN": "Tajikistan"
+    },
+    {
+        "name": "Tanzânia",
+        "area": 945087,
+        "nameEN": "Tanzania"
+    },
+    {
+        "name": "Território Britânico do Oceano Índico",
+        "area": 60,
+        "nameEN": "British Indian Ocean Territory"
+    },
+    {
+        "name": "Territórios Austrais Franceses",
+        "area": 439,
+        "nameEN": "French Southern Territories"
+    },
+    {
+        "name": "Timor Leste",
+        "area": 14874,
+        "nameEN": "East Timor"
+    },
+    {
+        "name": "Togo",
+        "area": 56785,
+        "nameEN": "Togo"
+    },
+    {
+        "name": "Tokelau",
+        "area": 12,
+        "nameEN": "Tokelau"
+    },
+    {
+        "name": "Tonga",
+        "area": 747,
+        "nameEN": "Tonga"
+    },
+    {
+        "name": "Transnístria",
+        "area": 4163,
+        "nameEN": "Transnistria"
+    },
+    {
+        "name": "Trindade e Tobago",
+        "area": 5130,
+        "nameEN": "Trinidad and Tobago"
+    },
+    {
+        "name": "Tunísia",
+        "area": 163610,
+        "nameEN": "Tunisia"
+    },
+    {
+        "name": "Turquemenistão",
+        "area": 488100,
+        "nameEN": "Turkmenistan"
+    },
+    {
+        "name": "Turquia",
+        "area": 783562,
+        "nameEN": "Turkey"
+    },
+    {
+        "name": "Tuvalu",
+        "area": 26,
+        "nameEN": "Tuvalu"
+    },
+    {
+        "name": "Ucrânia",
+        "area": 576604,
+        "nameEN": "Ukraine"
+    },
+    {
+        "name": "Uganda",
+        "area": 241038,
+        "nameEN": "Uganda"
+    },
+    {
+        "name": "Uruguai",
+        "area": 176215,
+        "nameEN": "Uruguay"
+    },
+    {
+        "name": "Uzbequistão",
+        "area": 447400,
+        "nameEN": "Uzbekistan"
+    },
+    {
+        "name": "Vanuatu",
+        "area": 12189,
+        "nameEN": "Vanuatu"
+    },
+    {
+        "name": "Vaticano",
+        "area": 0.4,
+        "nameEN": "Vatican"
+    },
+    {
+        "name": "Venezuela",
+        "area": 912050,
+        "nameEN": "Venezuela"
+    },
+    {
+        "name": "Vietnã",
+        "area": 331212,
+        "nameEN": "Vietnam"
+    },
+    {
+        "name": "Wallis e Futuna",
+        "area": 274,
+        "nameEN": "Wallis and Futuna"
+    },
+    {
+        "name": "Zâmbia",
+        "area": 752612,
+        "nameEN": "Zambia"
+    },
+    {
+        "name": "Zanzibar",
+        "area": 2461,
+        "nameEN": "Zanzibar"
+    },
+    {
+        "name": "Zimbabué",
+        "area": 390757,
+        "nameEN": "Zimbabwe"
+    }
+]

@@ -58,7 +58,7 @@ jspm_packages
 .node_repl_history
 
 # env file
-.env
+*.env*
 
 # editor config files
 .vscode

@@ -26,7 +26,18 @@ const tweetMedia = (imagePath, cb) => {
    });
 }
 
+
+const tweetImageMedia = (media, cb) => {
+   twitterClient.post('media/upload', { media }, function(error, media, response) {
+      if (!error)
+         cb(media.media_id_string); 
+      else
+         throw error;
+   });
+}
+
 export {
    tweetStatus,
-   tweetMedia
+   tweetMedia,
+   tweetImageMedia
 }

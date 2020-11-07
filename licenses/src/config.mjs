@@ -130,8 +130,16 @@ export const twitter = {
 export const mapbox = {
    username: 'infoamazonia',
    access_token: process.env.MAPBOX_ACCESS_TOKEN,
-   baseUri: 'https://api.mapbox.com/tilesets/v1/',
-
+   baseUri: 'https://api.mapbox.com',
+   styleId: 'ckg7bwbne080m18mk47yivnky',
+   staticImageResolution: '800x800',
+   
+   tilesetsBaseUri: function() {
+      return `${this.baseUri}/tilesets/v1/`;
+   },
+   stylesBaseUri: function() {
+      return `${this.baseUri}/styles/v1/`;
+   },
    recipe: function(identity) {
       return {
          'recipe': {
@@ -140,7 +148,7 @@ export const mapbox = {
                [identity]: {
                   'source': `mapbox://tileset-source/${this.username}/${identity}`,
                   'minzoom': 3,
-                  'maxzoom': 16
+                  'maxzoom': 10
                }
             }
          },
@@ -148,13 +156,19 @@ export const mapbox = {
       }
    },
 
-   upload_source_uri: function (identity) {
-      return `${this.baseUri}sources/${this.username}/${identity}?access_token=${this.access_token}`;
+   upload_source_uri: function(identity) {
+      return `${this.tilesetsBaseUri()}sources/${this.username}/${identity}?access_token=${this.access_token}`;
    },
    tileset_uri: function(identity) {
-      return `${this.baseUri}${this.username}.${identity}?access_token=${this.access_token}`;
+      return `${this.tilesetsBaseUri()}${this.username}.${identity}?access_token=${this.access_token}`;
    },
-   publish_tileset_uri: function (identity) {
-      return `${this.baseUri}${this.username}.${identity}/publish?access_token=${this.access_token}`;
+   publish_tileset_uri: function(identity) {
+      return `${this.tilesetsBaseUri()}${this.username}.${identity}/publish?access_token=${this.access_token}`;
+   },
+   static_image_uri: function(overlay) {
+      return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/geojson(${overlay})/auto/${this.staticImageResolution}?access_token=${this.access_token}`;
+   },
+   geral_image_uri: function() {
+      return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/-58.8,-6.5,4.5/1000x800?access_token=${this.access_token}`;
    }
 }

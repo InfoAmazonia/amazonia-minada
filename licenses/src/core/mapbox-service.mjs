@@ -1,5 +1,6 @@
 import fs from 'fs';
 import request from 'request';
+import simplify from 'simplify-geojson';
 
 import { writeLineDelimitedJson } from '../utils/file-manager.mjs'
 import { mapbox } from '../config.mjs';
@@ -87,7 +88,53 @@ const publishTileset = (identity) => {
     });
 }
 
+const getEntityImage = (geojson, type) => {
+    const overlay = simplify(geojson, 0.05);
+    if (type === 'UC') {
+        overlay.properties = {
+            "fill":"%23195c53",
+            "stroke": "%2327867b",
+            "stroke-width": 3,
+            "fill-opacity":.5
+        };
+    } else if (type === 'TI') {
+        overlay.properties = {
+            "fill":"%23551636",
+            "stroke": "%23702341",
+            "stroke-width": 3,
+            "fill-opacity":.5
+        };
+    }
+    return new Promise((resolve, reject) => {
+        request.get({
+            url: mapbox.static_image_uri(JSON.stringify(overlay)),
+            encoding: null
+        }, (err, resp, body) => {
+            if (err ||  resp.statusCode !== 200) {
+                reject(err ? err : body);
+            }
+            resolve(body);
+        });
+    });
+}
+
+const getGeralImage = () => {
+    return new Promise((resolve, reject) => {
+        request.get({
+            url: mapbox.geral_image_uri(),
+            encoding: null
+        }, (err, resp, body) => {
+            if (err ||  resp.statusCode !== 200) {
+                reject(err ? err : body);
+            }
+            resolve(body);
+        });
+    });
+}
+
 export {
-    uploadDataToMapbox
+    uploadDataToMapbox,
+    getEntityImage,
+    getGeralImage
 }
 
