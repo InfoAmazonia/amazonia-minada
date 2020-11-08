@@ -12,7 +12,7 @@ import {
 import { updateTweetStatus } from './services.mjs';
 import { getEntityImage, getGeralImage } from './mapbox-service.mjs';
 
-import { tweetMedia, tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
+import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { getDateArray, clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { cronTab } from '../utils/handler.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
