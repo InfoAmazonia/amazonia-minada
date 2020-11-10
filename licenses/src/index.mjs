@@ -31,7 +31,6 @@ mongoose.connect(database.uri, database.options)
       scheduleUpdateReserveInvasions(reserveInvasions => {
          scheduleTweetNewReserveInvasionsPT(reserveInvasions);
          scheduleTweetNewReserveInvasionsEN(reserveInvasions);
-         // TODO: descobrir como fazer com links (links-ucs-{}.json)
       });
       scheduleTweetTotalReserveInvasions();
       // UNITIES and RESERVES

@@ -19,6 +19,8 @@ import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 
 import linksUCsPT from '../links-ucs-pt.json';
 import linksUCsEN from '../links-ucs-en.json';
+import linksTIsPT from '../links-tis-pt.json';
+import linksTIsEN from '../links-tis-en.json';
 
 // UNITIES
 
@@ -130,7 +132,7 @@ export const scheduleTweetTotalInvasions = () => {
       const total = await Invasion.count();
       const tweet = {
          media: await getGeralImage(),
-         status: `MINÉRIO ILEGAL: As 41 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/2BQvYs1`
+         status: `MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/2BQvYs1`
       };
 
       tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -155,7 +157,6 @@ export const scheduleUpdateReserveInvasions = (cb) => {
    });
 }
 
-// TODO: decidir o que será feito com os links para o CARTO
 export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
    let hour = 9;
 
@@ -173,7 +174,7 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
       cronTab(dateAndTime, async () => {
          const { AREA_K2, FASE, SUBS, TI_NOME, NOME } = reserveInvasion.properties;
          const slug = slugify(TI_NOME, { replacement: '_', lower: true });
-         const link = linksUCsPT[slug];
+         const link = linksTIsPT[slug];
          const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
 
          let requirerName = NOME;
@@ -213,7 +214,7 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
       cronTab(dateAndTime, async () => {
          const { AREA_K2, EN_FASE, EN_SUBS, TI_NOME, NOME } = reserveInvasion.properties;
          const slug = slugify(TI_NOME, { replacement: '_', lower: true });
-         const link = linksUCsEN[slug];
+         const link = linksTIsEN[slug];
          const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
 
          let requirerName = NOME;
