@@ -145,7 +145,9 @@ export const importReserves = async () => {
          reserve.output, 
          reserve.shapefile, 
          reserve.encoding,
-            value => {              
+            value => {
+               value.properties.etnia_nome =  value.properties.etnia_nome.split(',').join(', ');
+               value.properties.municipio_ =  value.properties.municipio_.split(',').join(', ');
                return Reserve.create(value)
                   .catch(ex => ifMayNotIgnore(ex).throw())
             }
