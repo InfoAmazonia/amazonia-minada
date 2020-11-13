@@ -8,7 +8,7 @@ export const database = {
 }
 
 export const license = {
-   id: 'invasoes',
+   id: 'requerimentos',
    uri: 'http://sigmine.dnpm.gov.br/sirgas2000/Brasil.zip',
    zipfile: 'Brasil.zip',
    output: `./files/licencas`,
@@ -37,12 +37,12 @@ export const license = {
 
 export const unity = {
    id: 'unidades_conservacao',
-   uri: 'http://www.icmbio.gov.br/portal/images/stories/servicos/geoprocessamento/DCOL/dados_vetoriais/UC_fed_julho_2019.zip',
-   zipfile: 'UC_fed_julho_2019.zip',
+   uri: 'files_source/UCs_AmzLegal.zip',
+   zipfile: 'UCs_AmzLegal.zip',
    output: `./files/unidades_conservacao`,
-   unziped_folder: `UC_fed_julho_2019`,
-   shapefile: `UC_fed_julho_2019.shp`,
-   dbf: `UC_fed_julho_2019.dbf`,
+   unziped_folder: `UCs_AmzLegal`,
+   shapefile: `UC_fed_julho_2019_AmzLegal.shp`,
+   dbf: `UC_fed_julho_2019_AmzLegal.dbf`,
    encoding: 'utf8',
    properties: [
       'codigoCnuc',
@@ -65,6 +65,61 @@ export const unity = {
    ]
 }
 
+export const reserve = {
+   id: 'terras_indigenas',
+   uri: 'http://terrabrasilis.dpi.inpe.br/download/dataset/legal-amz-aux/vector/indigeneous_area_legal_amazon.zip',
+   zipfile: 'indigeneous_area_legal_amazon.zip',
+   output: `./files/terras_indigenas`,
+   unziped_folder: ``,
+   shapefile: `indigeneous_area_legal_amazon.shp`,
+   dbf: `indigeneous_area_legal_amazon.dbf`,
+   encoding: 'utf8',
+   properties: [
+      'gid',
+      'terrai_cod',
+      'terrai_nom',
+      'etnia_nome',
+      'municipio_',
+      'uf_sigla',
+      'superficie',
+      'fase_ti',
+      'modalidade',
+      'reestudo_t',
+      'cr',
+      'faixa_fron',
+      'undadm_cod',
+      'undadm_nom',
+      'undadm_sig',
+      'dominio_un'
+   ]
+}
+
+export const reserve_invasion = {
+   id: 'requerimentos_ti',
+   properties: [
+      'PROCESSO',
+      'ID',
+      'NUMERO',
+      'ANO',
+      'AREA_HA',
+      'AREA_K2',
+      'FASE',
+      'ULT_EVENTO',
+      'NOME',
+      'SUBS',
+      'USO',
+      'UF',
+      'TI_NOME',
+      'TI_ETNIA',
+      'TI_MUNICIPIO',
+      'TI_UF',
+      'TI_SUPERFICIE',
+      'TI_FASE',
+      'TI_MODALIDADE',
+      'ANO_ATUAL'
+   ]
+}
+
 export const twitter = {
    consumer_key: process.env.CONSUMER_KEY,
    consumer_secret: process.env.CONSUMER_SECRET,
@@ -75,17 +130,25 @@ export const twitter = {
 export const mapbox = {
    username: 'infoamazonia',
    access_token: process.env.MAPBOX_ACCESS_TOKEN,
-   baseUri: 'https://api.mapbox.com/tilesets/v1/',
-
+   baseUri: 'https://api.mapbox.com',
+   styleId: 'ckg7bwbne080m18mk47yivnky',
+   staticImageResolution: '800x800',
+   
+   tilesetsBaseUri: function() {
+      return `${this.baseUri}/tilesets/v1/`;
+   },
+   stylesBaseUri: function() {
+      return `${this.baseUri}/styles/v1/`;
+   },
    recipe: function(identity) {
       return {
          'recipe': {
             'version': 1,
             'layers': {
-               'layer1': {
+               [identity]: {
                   'source': `mapbox://tileset-source/${this.username}/${identity}`,
                   'minzoom': 3,
-                  'maxzoom': 16
+                  'maxzoom': 10
                }
             }
          },
@@ -93,13 +156,19 @@ export const mapbox = {
       }
    },
 
-   upload_source_uri: function (identity) {
-      return `${this.baseUri}sources/${this.username}/${identity}?access_token=${this.access_token}`;
+   upload_source_uri: function(identity) {
+      return `${this.tilesetsBaseUri()}sources/${this.username}/${identity}?access_token=${this.access_token}`;
    },
    tileset_uri: function(identity) {
-      return `${this.baseUri}${this.username}.${identity}?access_token=${this.access_token}`;
+      return `${this.tilesetsBaseUri()}${this.username}.${identity}?access_token=${this.access_token}`;
    },
-   publish_tileset_uri: function (identity) {
-      return `${this.baseUri}${this.username}.${identity}/publish?access_token=${this.access_token}`;
+   publish_tileset_uri: function(identity) {
+      return `${this.tilesetsBaseUri()}${this.username}.${identity}/publish?access_token=${this.access_token}`;
+   },
+   static_image_uri: function(overlay) {
+      return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/geojson(${overlay})/auto/${this.staticImageResolution}?access_token=${this.access_token}`;
+   },
+   geral_image_uri: function() {
+      return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/-58.8,-6.5,4.5/1000x800?access_token=${this.access_token}`;
    }
 }

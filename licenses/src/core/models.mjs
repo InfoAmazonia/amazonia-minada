@@ -38,3 +38,27 @@ const LicenseSchema = new mongoose.Schema({
 // LicenseSchema.index({ geometry: "2dsphere" });
 
 export const License = mongoose.model('License', LicenseSchema);
+
+const ReserveSchema = new mongoose.Schema({
+  type: String,
+  properties: {},
+  geometry: {}
+});
+
+export const Reserve = mongoose.model('Reserve', ReserveSchema);
+
+const ReserveInvasionSchema = new mongoose.Schema({
+  type: String,
+  properties: {},
+  geometry: {},
+  tweeted: {
+    type: Boolean,
+    default: false
+  },
+  created_at: {
+    type: Date,
+    default: new Date()
+  }
+});
+
+export const ReserveInvasion = mongoose.model('ReserveInvasion', ReserveInvasionSchema);

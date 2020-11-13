@@ -1,8 +1,9 @@
-import { license, unity } from '../config.mjs';
+import { license, unity, reserve, reserve_invasion } from '../config.mjs';
 
 import { 
-   read, 
-   download, 
+   read,
+   download,
+   loadLocal,
    unzip, 
    cpFiles, 
    removeTmp, 
@@ -15,8 +16,13 @@ import {
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
-import { License, Unity } from './models.mjs';
-import { createInvasionsByUnities, getUnitiesInsideAmazon } from './services.mjs';
+import { License, Unity, Reserve } from './models.mjs';
+import { 
+   createInvasionsByUnities,
+   getUnitiesInsideAmazon,
+   getReservesInsideAmazon,
+   createInvasionsByReserves
+} from './services.mjs';
 import { uploadDataToMapbox } from './mapbox-service.mjs';
 
 export const importLicenses = async () => {
@@ -61,7 +67,7 @@ export const importUnities = async () => {
    return Unity.deleteMany({})
       .then(() => removeTmp(unity.output))   
       .then(() => makeTmp(unity.output))
-      .then(() => download(unity.uri, unity.output, unity.zipfile))
+      .then(() => loadLocal(unity.uri, unity.output, unity.zipfile))
       .then(() => unzip(unity.output, unity.zipfile))
       .then(() => cpFiles(unity))
       .then(() => removeTmp(unity.output))
@@ -113,6 +119,77 @@ export const importInvasions = async () => {
 
       /** send data to mapbox API */
       await uploadDataToMapbox(invasions.all, license.id);
+
+      return invasions.new;
+   }
+   catch(ex) {
+      console.log(ex);
+   }
+}
+
+export const importReserves = async () => {
+   console.log(`\nStarting to import reserves at ${new Date()}`);   
+
+   const session = await Reserve.startSession();
+
+   session.startTransaction();
+
+   return Reserve.deleteMany({})
+      .then(() => removeTmp(reserve.output))   
+      .then(() => makeTmp(reserve.output))
+      .then(() => download(reserve.uri, reserve.output, reserve.zipfile))
+      .then(() => unzip(reserve.output, reserve.zipfile))
+      .then(() => cpFiles(reserve))
+      .then(() => removeTmp(reserve.output))
+      .then(() => read(
+         reserve.output, 
+         reserve.shapefile, 
+         reserve.encoding,
+            value => {
+               value.properties.etnia_nome =  value.properties.etnia_nome.split(',').join(', ');
+               value.properties.municipio_ =  value.properties.municipio_.split(',').join(', ');
+               return Reserve.create(value)
+                  .catch(ex => ifMayNotIgnore(ex).throw())
+            }
+      ))
+      .then(() => session.commitTransaction())
+      .then(() => session.endSession())
+      .then(() => console.log(`Finish importing reserves at ${new Date()}`))
+      .then(() => getReservesInsideAmazon(false))
+      .then(async (reserves) => {
+         /** geo file handle by carto */
+         await writeGeoJson(reserves, reserve.id);
+
+         /** file for those who wants to analyse data into a sheet */
+         await writeCSV(reserves, reserve.id, reserve.properties);
+         
+         /** send data to mapbox API */
+         await uploadDataToMapbox(reserves, reserve.id);
+      })
+      .catch(async ex => {
+         console.log(ex)
+         await session.abortTransaction();
+         session.endSession();         
+      })
+}
+
+export const importReserveInvasions = async () => {
+   console.log(`\nStarting to import reserve invasions at ${new Date()}`);  
+
+   try {
+      const reserves = await getReservesInsideAmazon();
+      const invasions = await createInvasionsByReserves(reserves);
+         
+      console.log(`Finish importing reserve invasions at ${new Date()}`);
+
+      /** geo file handle by carto */
+      await writeGeoJson(invasions.all, reserve_invasion.id);
+
+      /** file for those who wants to analyse data into a sheet */
+      await writeCSV(invasions.all, reserve_invasion.id, reserve_invasion.properties);
+
+      /** send data to mapbox API */
+      await uploadDataToMapbox(invasions.all, reserve_invasion.id);
 
       return invasions.new;
    }

@@ -2,34 +2,41 @@ import mongoose from 'mongoose';
 
 import { database } from './config.mjs';
 
-import { 
-    scheduleUpdateInvasions, 
-    scheduleTweetNewInvasionsPT,
-    scheduleTweetNewInvasionsEN,
-    scheduleTweetTotalInvasions,
-    scheduleTweetTotalYearInvasions,
-    scheduleTweetTotalAreaInvasions,
-    scheduleTweetAvgInvasions,
-    scheduleTweetWarnEngInvasions
+import {
+   scheduleUpdateInvasions,
+   scheduleTweetNewInvasionsPT,
+   scheduleTweetNewInvasionsEN,
+   scheduleTweetTotalInvasions,
+   scheduleUpdateReserveInvasions,
+   scheduleTweetNewReserveInvasionsPT,
+   scheduleTweetNewReserveInvasionsEN,
+   scheduleTweetTotalReserveInvasions,
+   scheduleTweetTotalYearInvasions,
+   scheduleTweetTotalCountrySizeInvasionsPT,
+   scheduleTweetTotalCountrySizeInvasionsEN
 } from './core/jobs.mjs';
 
 process.env.TZ = 'America/Sao_Paulo';
 
-import { getInvasions } from './core/services.mjs';
-
 mongoose.connect(database.uri, database.options)
    .then(async () => {
       console.log('ICFJ application running...');
-      // const invasions = await getInvasions({ tweeted: false });
+      // UNITIES
       scheduleUpdateInvasions(invasions => {
          scheduleTweetNewInvasionsPT(invasions);
          scheduleTweetNewInvasionsEN(invasions);
       });
       scheduleTweetTotalInvasions();
+      // RESERVES
+      scheduleUpdateReserveInvasions(reserveInvasions => {
+         scheduleTweetNewReserveInvasionsPT(reserveInvasions);
+         scheduleTweetNewReserveInvasionsEN(reserveInvasions);
+      });
+      scheduleTweetTotalReserveInvasions();
+      // UNITIES and RESERVES
       scheduleTweetTotalYearInvasions();
-      scheduleTweetTotalAreaInvasions();
-      scheduleTweetAvgInvasions();
-      scheduleTweetWarnEngInvasions();
+      scheduleTweetTotalCountrySizeInvasionsPT();
+      scheduleTweetTotalCountrySizeInvasionsEN();
    })
    .catch(ex => {
       throw ex

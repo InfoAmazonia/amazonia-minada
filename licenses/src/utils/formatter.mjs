@@ -2,7 +2,7 @@ import slugify from 'slugify';
 
 const getDateArray = (obj) => {
    var d = new Date();
-   
+
    const arr = [
       obj.year || d.getFullYear(),
       obj.month || d.getMonth(),
@@ -24,15 +24,15 @@ const getAbrev = (nome, getPreposition = false) => {
          return nome.indexOf(str) > -1 ? str : prevPre;
       }, "");
 
-      if(found)
+      if (found)
          return found;
-      else if(nome.indexOf(tipo) > -1)
+      else if (nome.indexOf(tipo) > -1)
          return tipo;
-      else 
+      else
          return prevTipo;
    }, "");
-   
-   if(!getPreposition)
+
+   if (!getPreposition)
       return nome.replace(preposicao, '').trim();
    else {
       return preposicoes.reduce((prev, crr) => {
@@ -43,32 +43,32 @@ const getAbrev = (nome, getPreposition = false) => {
 }
 
 const clipName = (str, size) => {
-   if(size < 0)
+   if (size < 0)
       return str;
 
    /** size minus 3 dots + 1 removed from sentence + 3 treshhold = < 280 */
    size = size + 6;
-   
-   return str.substring(0, str.length - size).trim() + "...";   
+
+   return str.substring(0, str.length - size).trim() + "...";
 }
 
 const getThousandsMark = (item) => {
-   if(!item)
+   if (!item)
       return item;
 
    const str = item.toString().split('.')[0];
    const decimals = item.toString().split('.')[1]
 
-   if(str.length <= 3)
+   if (str.length <= 3)
       return decimals ? [str, decimals].join(',') : str;
 
    const newStr = str
       .split('')
       .reverse()
-      .reduce((prev, crr, index) => 
+      .reduce((prev, crr, index) =>
          prev.concat(
-            (index + 1) % 3 === 0 
-               ? [crr, '.'] 
+            (index + 1) % 3 === 0
+               ? [crr, '.']
                : crr
          ), [])
       .reverse()
@@ -121,16 +121,16 @@ const addInternationalization = (item, attrs) => {
    }
 
    const removeWords = ["minério de"];
-   
+
    const properties = item.properties;
 
-   const translatedProperties = attrs.reduce((prev, crrAttr) => {         
+   const translatedProperties = attrs.reduce((prev, crrAttr) => {
       const dictionaryKey = Object.keys(crrAttr)[0];
-      
+
       /** attr: { "uc" : { crr: "UC_NOME", new: "EN_UC_NOME"} } */
       const mapper = crrAttr[dictionaryKey];
-      
-      if(dictionaryKey === "uc"){
+
+      if (dictionaryKey === "uc") {
          const itemValue = slugify(getAbrev(properties[mapper.crr], true), { replacement: '_', lower: true });
          const translated = dictionary[dictionaryKey][itemValue];
 
@@ -148,8 +148,8 @@ const addInternationalization = (item, attrs) => {
          });
       }
    }, {});
-   
-   return Object.assign(item, { 
+
+   return Object.assign(item, {
       properties: Object.assign(properties, translatedProperties)
    });
 }
