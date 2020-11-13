@@ -131,7 +131,7 @@ export const mapbox = {
    username: 'infoamazonia',
    access_token: process.env.MAPBOX_ACCESS_TOKEN,
    baseUri: 'https://api.mapbox.com',
-   styleId: 'ckg7bwbne080m18mk47yivnky',
+   styleId: 'ckhe037kt07on1aql47yvp2rn',
    staticImageResolution: '800x800',
    
    tilesetsBaseUri: function() {
