@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-import { Invasion, Unity, Reserve } from './models.mjs';
+import { Invasion, Unity, Reserve, ReserveInvasion } from './models.mjs';
 import {
    importUnities,
    importLicenses,
