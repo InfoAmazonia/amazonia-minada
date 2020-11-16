@@ -88,23 +88,12 @@ const publishTileset = (identity) => {
     });
 }
 
-const getEntityImage = (geojson, type) => {
+const getEntityImage = (geojson) => {
     const overlay = simplify(geojson, 0.05);
-    if (type === 'UC') {
-        overlay.properties = {
-            "fill":"%23195c53",
-            "stroke": "%2327867b",
-            "stroke-width": 3,
-            "fill-opacity":.5
-        };
-    } else if (type === 'TI') {
-        overlay.properties = {
-            "fill":"%23551636",
-            "stroke": "%23702341",
-            "stroke-width": 3,
-            "fill-opacity":.5
-        };
-    }
+    overlay.properties = {
+        "stroke-width": 0,
+        "fill-opacity": 0
+    };
     return new Promise((resolve, reject) => {
         request.get({
             url: mapbox.static_image_uri(JSON.stringify(overlay)),

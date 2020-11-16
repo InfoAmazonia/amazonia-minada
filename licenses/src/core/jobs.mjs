@@ -29,7 +29,7 @@ export const scheduleUpdateInvasions = (cb) => {
    cronTab('30 0 * * *', async () => {
       try {
          /** check if there is any unity in database, if not import them */
-         const hasUnities = await Unity.count() > 0;
+         const hasUnities = await Unity.countDocuments() > 0;
          if (!hasUnities) {
             await importUnities();
          }
@@ -80,7 +80,7 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
                { "properties.nome": UC_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
-            const image = await getEntityImage(unity, 'UC');
+            const image = await getEntityImage(unity);
    
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -124,7 +124,7 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
                { "properties.nome": UC_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
-            const image = await getEntityImage(unity, 'UC');
+            const image = await getEntityImage(unity);
    
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -142,7 +142,7 @@ export const scheduleTweetTotalInvasions = () => {
 
    cronTab("0 12 * * 3", async () => {
       try {
-         const total = await Invasion.count();
+         const total = await Invasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
             status: `MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/36KTgyD`
@@ -162,7 +162,7 @@ export const scheduleUpdateReserveInvasions = (cb) => {
    cronTab('35 0 * * *', async () => {
       try {
          /** check if there is any reserve in database, if not import them */
-         const hasReserves = await Reserve.count() > 0;
+         const hasReserves = await Reserve.countDocuments() > 0;
          if (!hasReserves) {
             await importReserves();
          }
@@ -210,7 +210,7 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
                { "properties.terrai_nom": TI_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
-            const image = await getEntityImage(reserve, 'TI');
+            const image = await getEntityImage(reserve);
    
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -254,7 +254,7 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
                { "properties.terrai_nom": TI_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
-            const image = await getEntityImage(reserve, 'TI');
+            const image = await getEntityImage(reserve);
    
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -272,7 +272,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
 
    cronTab("0 12 * * 1", async () => {
       try {
-         const total = await ReserveInvasion.count();
+         const total = await ReserveInvasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
             status: `MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/36KTgyD`
@@ -293,8 +293,8 @@ export const scheduleTweetTotalYearInvasions = () => {
       try {
          const currentYear = new Date().getFullYear();
    
-         const totalInvasions = await Invasion.count({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.count({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
          const invasions = await Invasion.aggregate([
             {
                $match: {
@@ -359,8 +359,8 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    cronTab("0 12 * * 5", async () => {
       try {
          const currentYear = new Date().getFullYear();
-         const totalInvasions = await Invasion.count({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.count({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
          const invasions = await Invasion.aggregate([
             {
                $match: {
@@ -430,8 +430,8 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    cronTab("0 12 * * 6", async () => {
       try {
          const currentYear = new Date().getFullYear();
-         const totalInvasions = await Invasion.count({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.count({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
          const invasions = await Invasion.aggregate([
             {
                $match: {

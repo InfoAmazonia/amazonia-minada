@@ -39,7 +39,7 @@ mongoose.connect(database.uri, database.options)
                { "properties.nome": UC_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
-            const image = await getEntityImage(unity, 'UC');
+            const image = await getEntityImage(unity);
    
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
