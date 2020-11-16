@@ -69,11 +69,11 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
    
             let requirerName = NOME;
-            let status = `ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
    
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
    
             const unity = await Unity.findOne(
@@ -113,11 +113,11 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
    
             let requirerName = NOME;
-            let status = `WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
    
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
    
             const unity = await Unity.findOne(
@@ -145,7 +145,7 @@ export const scheduleTweetTotalInvasions = () => {
          const total = await Invasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
-            status: `MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/36KTgyD`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));  
@@ -199,11 +199,11 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
    
             let requirerName = NOME;
-            let status = `ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
    
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
    
             const reserve = await Reserve.findOne(
@@ -243,11 +243,11 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
    
             let requirerName = NOME;
-            let status = `WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
    
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
    
             const reserve = await Reserve.findOne(
@@ -275,7 +275,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
          const total = await ReserveInvasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
-            status: `MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/36KTgyD`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -344,7 +344,7 @@ export const scheduleTweetTotalYearInvasions = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/36KTgyD`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -415,7 +415,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente do do tamanho ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente do do tamanho ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -486,7 +486,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining processes is approximately the size of the ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining processes is approximately the size of the ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
