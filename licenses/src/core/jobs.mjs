@@ -145,7 +145,7 @@ export const scheduleTweetTotalInvasions = () => {
          const total = await Invasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));  
@@ -275,7 +275,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
          const total = await ReserveInvasion.countDocuments();
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -344,7 +344,7 @@ export const scheduleTweetTotalYearInvasions = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -415,7 +415,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente do do tamanho ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente do do tamanho ${countryName}. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -486,7 +486,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining processes is approximately the size of the ${countryName}. #AmazoniaMinada https://bit.ly/36KTgyD`
+            status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining processes is approximately the size of the ${countryName}. #MinedAmazon https://bit.ly/3nw3byM`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
