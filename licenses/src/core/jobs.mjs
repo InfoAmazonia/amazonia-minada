@@ -340,7 +340,7 @@ export const scheduleTweetTotalYearInvasions = () => {
             }
          ]);
    
-         const totalCampos = invasions.campos + reserveInvasions.campos;
+         const totalCampos = Math.round(invasions[0].campos + reserveInvasions[0].campos);
    
          const tweet = {
             media: await getGeralImage(),
@@ -358,17 +358,9 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    /** At 12:00 on Friday. */
    cronTab("0 12 * * 5", async () => {
       try {
-         const currentYear = new Date().getFullYear();
-         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({});
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({});
          const invasions = await Invasion.aggregate([
-            {
-               $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
-               }
-            },
             {
                $group: {
                   _id: null,
@@ -386,13 +378,6 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
-            {
-               $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
-               }
-            },
             {
                $group: {
                   _id: null,
@@ -415,7 +400,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente do do tamanho ${countryName}. #AmazoniaMinada https://bit.ly/3f7rO1F`
+            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente equivalente ao tamanho do país ${countryName}. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -429,17 +414,9 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    /** At 12:00 on Saturday. */
    cronTab("0 12 * * 6", async () => {
       try {
-         const currentYear = new Date().getFullYear();
-         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({});
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({});
          const invasions = await Invasion.aggregate([
-            {
-               $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
-               }
-            },
             {
                $group: {
                   _id: null,
@@ -457,13 +434,6 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
-            {
-               $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
-               }
-            },
             {
                $group: {
                   _id: null,
@@ -486,7 +456,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining processes is approximately the size of the ${countryName}. #MinedAmazon https://bit.ly/3nw3byM`
+            status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining requests is approximately the size of ${countryName}. #MinedAmazon https://bit.ly/3nw3byM`
          };
    
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
