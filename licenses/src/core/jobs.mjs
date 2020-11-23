@@ -9,7 +9,7 @@ import {
    importReserves,
    importReserveInvasions
 } from './controllers.mjs';
-import { updateTweetStatus } from './services.mjs';
+import { updateTweetStatus, updateReserveInvasionTweetStatus } from './services.mjs';
 import { getEntityImage, getGeralImage } from './mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
@@ -33,13 +33,13 @@ export const scheduleUpdateInvasions = (cb) => {
          if (!hasUnities) {
             await importUnities();
          }
-   
+
          /** get licenses from ANM and inserts into database */
          await importLicenses();
-   
+
          /** get every license inside protected unity */
          const invasions = await importInvasions();
-   
+
          cb(invasions);
       } catch (ex) {
          console.error(ex);
@@ -67,21 +67,21 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
             const link = linksUCsPT[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
-   
+
             let requirerName = NOME;
             let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
-   
+
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
                status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
-   
+
             const unity = await Unity.findOne(
                { "properties.nome": UC_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
             const image = await getEntityImage(unity);
-   
+
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
          } catch (ex) {
@@ -111,24 +111,24 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
             const link = linksUCsEN[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
-   
+
             let requirerName = NOME;
             let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
-   
+
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
                status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
-   
+
             const unity = await Unity.findOne(
                { "properties.nome": UC_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
             const image = await getEntityImage(unity);
-   
+
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
-   
+
             await updateTweetStatus({ _id: mongoose.Types.ObjectId(invasion._id) });
          } catch (ex) {
             console.error(ex);
@@ -147,8 +147,8 @@ export const scheduleTweetTotalInvasions = () => {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
-   
-         tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));  
+
+         tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
          console.error(ex);
       }
@@ -166,10 +166,10 @@ export const scheduleUpdateReserveInvasions = (cb) => {
          if (!hasReserves) {
             await importReserves();
          }
-   
+
          /** get every license inside protected unity */
          const reserveInvasions = await importReserveInvasions();
-   
+
          cb(reserveInvasions);
       } catch (ex) {
          console.error(ex);
@@ -197,21 +197,21 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
             const link = linksTIsPT[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
-   
+
             let requirerName = NOME;
             let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
-   
+
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
                status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
-   
+
             const reserve = await Reserve.findOne(
                { "properties.terrai_nom": TI_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
             const image = await getEntityImage(reserve);
-   
+
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
          } catch (ex) {
@@ -241,25 +241,25 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
             const link = linksTIsEN[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
-   
+
             let requirerName = NOME;
             let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
-   
+
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
                status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
-   
+
             const reserve = await Reserve.findOne(
                { "properties.terrai_nom": TI_NOME },
                { _id: 0, type: 1, properties: 1, geometry: 1 }
             );
             const image = await getEntityImage(reserve);
-   
+
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
-   
-            await updateTweetStatus({ _id: mongoose.Types.ObjectId(reserveInvasion._id) });
+
+            await updateReserveInvasionTweetStatus({ _id: mongoose.Types.ObjectId(reserveInvasion._id) });
          } catch (ex) {
             console.error(ex);
          }
@@ -277,7 +277,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
-   
+
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
          console.error(ex);
@@ -292,7 +292,7 @@ export const scheduleTweetTotalYearInvasions = () => {
    cronTab("0 12 * * 5", async () => {
       try {
          const currentYear = new Date().getFullYear();
-   
+
          const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
          const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
          const invasions = await Invasion.aggregate([
@@ -339,14 +339,14 @@ export const scheduleTweetTotalYearInvasions = () => {
                }
             }
          ]);
-   
+
          const totalCampos = Math.round(invasions[0].campos + reserveInvasions[0].campos);
-   
+
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
-   
+
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
          console.error(ex);
@@ -394,15 +394,15 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
                }
             }
          ]);
-   
+
          const totalK2 = invasions.k2 + reserveInvasions.k2;
          const countryName = getCountryWithClosestArea(totalK2);
-   
+
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente equivalente ao tamanho do país ${countryName}. #AmazoniaMinada https://bit.ly/3f7rO1F`
          };
-   
+
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
          console.error(ex);
@@ -450,15 +450,15 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
                }
             }
          ]);
-   
+
          const totalK2 = invasions.k2 + reserveInvasions.k2;
          const countryName = getCountryWithClosestArea(totalK2, 'en');
-   
+
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining requests is approximately the size of ${countryName}. #MinedAmazon https://bit.ly/3nw3byM`
          };
-   
+
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
          console.error(ex);
