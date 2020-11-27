@@ -395,7 +395,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
             }
          ]);
 
-         const totalK2 = invasions.k2 + reserveInvasions.k2;
+         const totalK2 = invasions[0].k2 + reserveInvasions[0].k2
          const countryName = getCountryWithClosestArea(totalK2);
 
          const tweet = {
@@ -451,7 +451,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             }
          ]);
 
-         const totalK2 = invasions.k2 + reserveInvasions.k2;
+         const totalK2 = invasions[0].k2 + reserveInvasions[0].k2
          const countryName = getCountryWithClosestArea(totalK2, 'en');
 
          const tweet = {
