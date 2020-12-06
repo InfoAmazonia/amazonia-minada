@@ -242,9 +242,6 @@ export const getLicensesIntersectionsByReserve = async (reserve) => {
                'properties.ID': {
                   $nin: existingReserveInvasions.map(i => i.properties.ID)
                },
-               'properties.ULT_EVENTO': {
-                  $not: /.*indef.*/gi
-               },
                geometry: {
                   $geoIntersects: {
                      $geometry: reserve.geometry

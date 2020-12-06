@@ -40,6 +40,15 @@ export const scheduleUpdateInvasions = (cb) => {
          /** get every license inside protected unity */
          const invasions = await importInvasions();
 
+         /** filter out invasions from prior years */
+         await updateTweetStatus({
+            _id: {
+               $in: invasions
+                  .filter(invasion => invasion.properties.ANO !== new Date().getFullYear())
+                  .map(invasion => mongoose.Types.ObjectId(invasion._id))
+            }
+         });
+
          cb(invasions);
       } catch (ex) {
          console.error(ex);
@@ -169,6 +178,15 @@ export const scheduleUpdateReserveInvasions = (cb) => {
 
          /** get every license inside protected unity */
          const reserveInvasions = await importReserveInvasions();
+
+         /** filter out reserve invasions from prior years */
+         await updateTweetStatus({
+            _id: {
+               $in: reserveInvasions
+                  .filter(invasion => invasion.properties.ANO !== new Date().getFullYear())
+                  .map(invasion => mongoose.Types.ObjectId(invasion._id))
+            }
+         });
 
          cb(reserveInvasions);
       } catch (ex) {
