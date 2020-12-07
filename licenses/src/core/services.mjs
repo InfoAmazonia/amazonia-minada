@@ -269,7 +269,7 @@ export const getLicensesIntersectionsByReserve = async (reserve) => {
                   "TI_ETNIA": reserve.properties.etnia_nome,
                   "TI_MUNICIPIO": reserve.properties.municipio_,
                   "TI_UF": reserve.properties.uf_sigla,
-                  "TI_SUPERFICIE": reserve.properties.superficie || 1,
+                  "TI_SUPERFICIE": { $literal: reserve.properties.superficie },
                   "TI_FASE": reserve.properties.fase_ti,
                   "TI_MODALIDADE": reserve.properties.modalidade
                },
