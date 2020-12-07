@@ -67,7 +67,7 @@ export const unity = {
 
 export const reserve = {
    id: 'terras_indigenas',
-   uri: 'http://terrabrasilis.dpi.inpe.br/download/dataset/legal-amz-aux/vector/indigeneous_area_legal_amazon.zip',
+   uri: 'files_source/indigeneous_area_legal_amazon.zip',
    zipfile: 'indigeneous_area_legal_amazon.zip',
    output: `./files/terras_indigenas`,
    unziped_folder: ``,

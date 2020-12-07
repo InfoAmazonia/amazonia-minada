@@ -137,7 +137,7 @@ export const importReserves = async () => {
    return Reserve.deleteMany({})
       .then(() => removeTmp(reserve.output))   
       .then(() => makeTmp(reserve.output))
-      .then(() => download(reserve.uri, reserve.output, reserve.zipfile))
+      .then(() => loadLocal(reserve.uri, reserve.output, reserve.zipfile))
       .then(() => unzip(reserve.output, reserve.zipfile))
       .then(() => cpFiles(reserve))
       .then(() => removeTmp(reserve.output))
