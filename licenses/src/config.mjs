@@ -9,8 +9,8 @@ export const database = {
 
 export const license = {
    id: 'requerimentos',
-   uri: 'http://sigmine.dnpm.gov.br/sirgas2000/Brasil.zip',
-   zipfile: 'Brasil.zip',
+   uri: 'https://app.anm.gov.br/dadosabertos/SIGMINE/PROCESSOS_MINERARIOS/BRASIL.zip',
+   zipfile: 'BRASIL.zip',
    output: `./files/licencas`,
    unziped_folder: '',
    shapefile: `BRASIL.shp`,
