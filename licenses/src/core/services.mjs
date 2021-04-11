@@ -53,7 +53,7 @@ export const getInvasions = (query = {}) => {
 
 export const createInvasionsByUnities = async (unities, index = 0) => {
    return getLicensesIntersectionsByUnity(unities[index])
-      .then(invasions => Invasion.create(invasions))
+      .then(invasions => upsertInvasions(invasions, Invasion))
       .then(() => {
          if ((index + 1) < unities.length)
             return createInvasionsByUnities(unities, ++index);
@@ -126,15 +126,10 @@ export const getUnitiesInsideAmazon = (hasId = true) => {
 }
 
 export const getLicensesIntersectionsByUnity = async (unity) => {
-   const existingInvasions = await Invasion.find({});
-
    return License
       .aggregate([
          {
             $match: {
-               'properties.ID': {
-                  $nin: existingInvasions.map(i => i.properties.ID)
-               },
                geometry: {
                   $geoIntersects: {
                      $geometry: unity.geometry
@@ -167,7 +162,7 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
                geometry: "$geometry"
             }
          }
-      ])
+      ]);
 }
 
 // RESERVES
@@ -214,7 +209,7 @@ export const getReservesInsideAmazon = (hasId = true) => {
 
 export const createInvasionsByReserves = async (reserves, index = 0) => {
    return getLicensesIntersectionsByReserve(reserves[index])
-      .then(invasions => ReserveInvasion.create(invasions))
+      .then(invasions => upsertInvasions(invasions, ReserveInvasion))
       .then(() => {
          if ((index + 1) < reserves.length)
             return createInvasionsByReserves(reserves, ++index);
@@ -233,15 +228,10 @@ export const createInvasionsByReserves = async (reserves, index = 0) => {
 }
 
 export const getLicensesIntersectionsByReserve = async (reserve) => {
-   const existingReserveInvasions = await ReserveInvasion.find({});
-
    return License
       .aggregate([
          {
             $match: {
-               'properties.ID': {
-                  $nin: existingReserveInvasions.map(i => i.properties.ID)
-               },
                geometry: {
                   $geoIntersects: {
                      $geometry: reserve.geometry
@@ -335,3 +325,31 @@ export const updateReserveInvasionTweetStatus = query => {
       }
    })
 }
+
+// BOTH
+
+const upsertInvasions = async (invasions, schema) => {
+   for (const invasion of invasions) {
+      const invasionInDb = await schema.findOne({ "properties.ID": invasion.properties.ID });
+      if (invasionInDb) {
+         let changes = '';
+         for (const property in invasion.properties) {
+            if (invasion.properties[property] !== invasionInDb.properties[property]) {
+               changes += `${property}: ${invasionInDb.properties[property]} -> ${invasion.properties[property]} | `;
+            }
+         }
+         if (changes) {
+            changes = changes.slice(0, -3);
+            const timestamp = new Date();
+            invasion.last_update_at = timestamp;
+            invasion.last_action = 'update';
+            invasion.changes = [...invasionInDb.changes, { timestamp, changes }];
+            delete invasion._id;
+            await schema.findOneAndUpdate({ "properties.ID": invasion.properties.ID }, { $set: invasion }).exec();
+         }
+      } else {
+         invasion.last_action = 'create';
+         await schema.create(invasion).exec();
+      }
+   }
+};
