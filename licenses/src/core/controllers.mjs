@@ -16,12 +16,15 @@ import {
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
 
-import { License, Unity, Reserve } from './models.mjs';
+import { License, Unity, Reserve, Invasion, ReserveInvasion } from './models.mjs';
 import { 
    createInvasionsByUnities,
    getUnitiesInsideAmazon,
+   getNewAndAllInvasions,
    getReservesInsideAmazon,
-   createInvasionsByReserves
+   createInvasionsByReserves,
+   getNewAndAllReserveInvasions,
+   flagRemovedInvasions
 } from './services.mjs';
 import { uploadDataToMapbox } from './mapbox-service.mjs';
 
@@ -107,8 +110,10 @@ export const importInvasions = async () => {
 
    try {
       const unities = await getUnitiesInsideAmazon();
-      const invasions = await createInvasionsByUnities(unities);
-         
+      const generatedInvasions = await createInvasionsByUnities(unities);
+      await flagRemovedInvasions(generatedInvasions, Invasion, 'UC_NOME');
+      const invasions = await getNewAndAllInvasions();
+
       console.log(`Finish importing invasions at ${new Date()}`);
 
       /** geo file handle by carto */
@@ -178,8 +183,10 @@ export const importReserveInvasions = async () => {
 
    try {
       const reserves = await getReservesInsideAmazon();
-      const invasions = await createInvasionsByReserves(reserves);
-         
+      const generatedInvasions = await createInvasionsByReserves(reserves);
+      await flagRemovedInvasions(generatedInvasions, ReserveInvasion, 'TI_NOME');
+      const invasions = await getNewAndAllReserveInvasions();
+
       console.log(`Finish importing reserve invasions at ${new Date()}`);
 
       /** geo file handle by carto */

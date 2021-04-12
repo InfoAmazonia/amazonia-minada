@@ -51,24 +51,20 @@ export const getInvasions = (query = {}) => {
       }));
 }
 
-export const createInvasionsByUnities = async (unities, index = 0) => {
-   return getLicensesIntersectionsByUnity(unities[index])
-      .then(invasions => upsertInvasions(invasions, Invasion))
-      .then(() => {
-         if ((index + 1) < unities.length)
-            return createInvasionsByUnities(unities, ++index);
-         return;
-      })
-      .then(() => Promise.all([
-         getInvasions(), // all
-         getInvasions({ tweeted: false })  // only not tweetted
-      ]))
-      .then(invasions => Object.assign({}, { all: invasions[0], new: invasions[1] }))
-      .catch(ex => {
-         ifMayNotIgnore(ex).throw();
+export const createInvasionsByUnities = async unities => {
+   const generatedInvasions = [];
 
-         return createInvasionsByUnities(unities, ++index)
-      });
+   for (const unity of unities) {
+      try {
+         const invasions = await getLicensesIntersectionsByUnity(unity);
+         await upsertInvasions(invasions, Invasion, 'UC_NOME');
+         generatedInvasions.push(...invasions);
+      } catch (ex) {
+         ifMayNotIgnore(ex).throw();
+      }
+   }
+
+   return generatedInvasions;
 }
 
 export const updateTweetStatus = query => {
@@ -165,6 +161,13 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
       ]);
 }
 
+export const getNewAndAllInvasions = async () => {
+   return {
+      all: await getInvasions({ last_action: { $ne: 'delete' } }),
+      new: await getInvasions({ tweeted: false, last_action: { $ne: 'delete' } })
+   };
+}
+
 // RESERVES
 
 export const getReservesInsideAmazon = (hasId = true) => {
@@ -207,24 +210,20 @@ export const getReservesInsideAmazon = (hasId = true) => {
       }));
 }
 
-export const createInvasionsByReserves = async (reserves, index = 0) => {
-   return getLicensesIntersectionsByReserve(reserves[index])
-      .then(invasions => upsertInvasions(invasions, ReserveInvasion))
-      .then(() => {
-         if ((index + 1) < reserves.length)
-            return createInvasionsByReserves(reserves, ++index);
-         return;
-      })
-      .then(() => Promise.all([
-         getReserveInvasions(), // all
-         getReserveInvasions({ tweeted: false })  // only not tweetted
-      ]))
-      .then(invasions => Object.assign({}, { all: invasions[0], new: invasions[1] }))
-      .catch(ex => {
-         ifMayNotIgnore(ex).throw();
+export const createInvasionsByReserves = async reserves => {
+   const generatedInvasions = [];
 
-         return createInvasionsByReserves(reserves, ++index)
-      });
+   for (const reserve of reserves) {
+      try {
+         const invasions = await getLicensesIntersectionsByReserve(reserve);
+         await upsertInvasions(invasions, ReserveInvasion, 'TI_NOME');
+         generatedInvasions.push(...invasions);
+      } catch (ex) {
+         ifMayNotIgnore(ex).throw();
+      }
+   }
+
+   return generatedInvasions;
 }
 
 export const getLicensesIntersectionsByReserve = async (reserve) => {
@@ -326,11 +325,22 @@ export const updateReserveInvasionTweetStatus = query => {
    })
 }
 
+export const getNewAndAllReserveInvasions = async () => {
+   return {
+      all: await getReserveInvasions({ last_action: { $ne: 'delete' } }),
+      new: await getReserveInvasions({ tweeted: false, last_action: { $ne: 'delete' } })
+   };
+}
+
 // BOTH
 
-const upsertInvasions = async (invasions, schema) => {
+const upsertInvasions = async (invasions, schema, identifier) => {
    for (const invasion of invasions) {
-      const invasionInDb = await schema.findOne({ "properties.ID": invasion.properties.ID });
+      const query = {
+         "properties.ID": invasion.properties.ID,
+         [`properties.${identifier}`]: invasion.properties[identifier]
+      };
+      const invasionInDb = await schema.findOne(query);
       if (invasionInDb) {
          let changes = '';
          for (const property in invasion.properties) {
@@ -345,11 +355,31 @@ const upsertInvasions = async (invasions, schema) => {
             invasion.last_action = 'update';
             invasion.changes = [...invasionInDb.changes, { timestamp, changes }];
             delete invasion._id;
-            await schema.findOneAndUpdate({ "properties.ID": invasion.properties.ID }, { $set: invasion }).exec();
+            await schema.findOneAndUpdate(query, { $set: invasion }).exec();
          }
       } else {
          invasion.last_action = 'create';
-         await schema.create(invasion).exec();
+         delete invasion._id;
+         await schema.create(invasion);
+      }
+   }
+};
+
+export const flagRemovedInvasions = async (generatedInvasions, schema, identifier) => {
+   const existingInvasions = await schema.find({});
+   const invasionsIDs = generatedInvasions.map(invasion => invasion.properties.ID);
+   const timestamp = new Date();
+
+   for (const existingInvasion of existingInvasions) {
+      if (!invasionsIDs.includes(existingInvasion.properties.ID)) {
+         existingInvasion.last_action = 'delete';
+         existingInvasion.last_update_at = timestamp;
+         existingInvasion.changes = [...existingInvasion.changes, { timestamp, changes: 'deleted' }];
+         delete existingInvasion._id;
+         await schema.findOneAndUpdate({
+            "properties.ID": existingInvasion.properties.ID,
+            [`properties.${identifier}`]: existingInvasion.properties[identifier]
+         }, { $set: existingInvasion }).exec();
       }
    }
 };

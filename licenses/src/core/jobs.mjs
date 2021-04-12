@@ -151,7 +151,7 @@ export const scheduleTweetTotalInvasions = () => {
 
    cronTab("0 12 * * 3", async () => {
       try {
-         const total = await Invasion.countDocuments();
+         const total = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/3f7rO1F`
@@ -290,7 +290,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
 
    cronTab("0 12 * * 1", async () => {
       try {
-         const total = await ReserveInvasion.countDocuments();
+         const total = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/3f7rO1F`
@@ -311,50 +311,40 @@ export const scheduleTweetTotalYearInvasions = () => {
       try {
          const currentYear = new Date().getFullYear();
 
-         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear });
+         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear, last_action: { $ne: 'delete' } });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear, last_action: { $ne: 'delete' } });
          const invasions = await Invasion.aggregate([
             {
                $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
+                  'properties.ANO': { $eq: currentYear },
+                  last_action: { $ne: 'delete' }
                }
             },
             {
                $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$properties.AREA_HA' }
                }
             },
             {
-               $project: {
-                  campos: "$total"
-               }
+               $project: { campos: "$total" }
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
             {
                $match: {
-                  'properties.ANO': {
-                     $eq: currentYear
-                  }
+                  'properties.ANO': { $eq: currentYear },
+                  last_action: { $ne: 'delete' }
                }
             },
             {
                $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$properties.AREA_HA' }
                }
             },
             {
-               $project: {
-                  campos: "$total"
-               }
+               $project: { campos: "$total" }
             }
          ]);
 
@@ -376,26 +366,32 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    /** At 12:00 on Friday. */
    cronTab("0 12 * * 5", async () => {
       try {
-         const totalInvasions = await Invasion.countDocuments({});
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({});
+         const totalInvasions = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
          const invasions = await Invasion.aggregate([
+            {
+               $match: {
+                  last_action: { $ne: 'delete' }
+               }
+            },
             {
                $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$properties.AREA_HA' }
                }
             },
             {
                $project: {
-                  k2: {
-                     $multiply: ["$total", 0.01]
-                  }
+                  k2: { $multiply: ["$total", 0.01] }
                }
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
+            {
+               $match: {
+                  last_action: { $ne: 'delete' }
+               }
+            },
             {
                $group: {
                   _id: null,
@@ -432,9 +428,14 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    /** At 12:00 on Saturday. */
    cronTab("0 12 * * 6", async () => {
       try {
-         const totalInvasions = await Invasion.countDocuments({});
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({});
+         const totalInvasions = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const totalReserveInvasions = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
          const invasions = await Invasion.aggregate([
+            {
+               $match: {
+                  last_action: { $ne: 'delete' }
+               }
+            },
             {
                $group: {
                   _id: null,
@@ -452,6 +453,11 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
+            {
+               $match: {
+                  last_action: { $ne: 'delete' }
+               }
+            },
             {
                $group: {
                   _id: null,
