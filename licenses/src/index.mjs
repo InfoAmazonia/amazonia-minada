@@ -26,17 +26,17 @@ mongoose.connect(database.uri, database.options)
          scheduleTweetNewInvasionsPT(invasions);
          scheduleTweetNewInvasionsEN(invasions);
       });
-      scheduleTweetTotalInvasions();
+      // scheduleTweetTotalInvasions();
       // RESERVES
       scheduleUpdateReserveInvasions(reserveInvasions => {
          scheduleTweetNewReserveInvasionsPT(reserveInvasions);
          scheduleTweetNewReserveInvasionsEN(reserveInvasions);
       });
-      scheduleTweetTotalReserveInvasions();
+      // scheduleTweetTotalReserveInvasions();
       // UNITIES and RESERVES
-      scheduleTweetTotalYearInvasions();
-      scheduleTweetTotalCountrySizeInvasionsPT();
-      scheduleTweetTotalCountrySizeInvasionsEN();
+      // scheduleTweetTotalYearInvasions();
+      // scheduleTweetTotalCountrySizeInvasionsPT();
+      // scheduleTweetTotalCountrySizeInvasionsEN();
    })
    .catch(ex => {
       throw ex
