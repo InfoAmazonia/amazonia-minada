@@ -2,7 +2,7 @@ import child_process from 'child_process';
 import request from 'request';
 import fs from 'fs';
 import path from 'path';
-import extract from 'extract-zip';
+import AdmZip from 'adm-zip';
 import shapefile from 'shapefile';
 
 const removeTmp = output => {
@@ -31,7 +31,7 @@ const makeTmp = (output) => {
 }
 
 const download = (uri, output, name) => {
-   console.log('Preparing files(1/2) - Downloading files.')
+   console.log('Preparing files(1/2) - Downloading files.');
 
    return new Promise((resolve, reject) => {
       request(uri)
@@ -63,13 +63,12 @@ const unzip = (pathfile, zipfile) => {
    console.log('Preparing files(2/2) - Unzipping files.');
 
    return new Promise((resolve, reject) => {
-      extract(path.resolve(process.cwd(), pathfile, 'tmp', zipfile), {
-         dir: path.resolve(process.cwd(), pathfile, 'tmp')
-      }, (err) => {
-         if (err) reject(err)
+      const zip = new AdmZip(path.resolve(process.cwd(), pathfile, 'tmp', zipfile));
+      zip.extractAllToAsync(path.resolve(process.cwd(), pathfile, 'tmp'), false, err => {
+         if (err) reject(err);
 
-         resolve()
-      })
+         resolve();
+      });
    });
 }
 

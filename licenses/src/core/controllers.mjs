@@ -111,6 +111,12 @@ export const importInvasions = async () => {
    try {
       const unities = await getUnitiesInsideAmazon();
       const generatedInvasions = await createInvasionsByUnities(unities);
+
+      if (!generatedInvasions || !generatedInvasions.length) {
+         console.log(`No invasions generated at ${new Date()} (probably licenses or unities were not imported correctly).`);
+         return [];
+      }
+
       await flagRemovedInvasions(generatedInvasions, Invasion, 'UC_NOME');
       const invasions = await getNewAndAllInvasions();
 
@@ -184,6 +190,12 @@ export const importReserveInvasions = async () => {
    try {
       const reserves = await getReservesInsideAmazon();
       const generatedInvasions = await createInvasionsByReserves(reserves);
+
+      if (!generatedInvasions || !generatedInvasions.length) {
+         console.log(`No reserve invasions generated at ${new Date()} (probably licenses or reserves were not imported correctly).`);
+         return [];
+      }
+
       await flagRemovedInvasions(generatedInvasions, ReserveInvasion, 'TI_NOME');
       const invasions = await getNewAndAllReserveInvasions();
 

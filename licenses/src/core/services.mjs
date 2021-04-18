@@ -54,7 +54,7 @@ export const getInvasions = (query = {}) => {
 export const createInvasionsByUnities = async unities => {
    const generatedInvasions = [];
 
-   for (const unity of unities) {
+   for await (const unity of unities) {
       try {
          const invasions = await getLicensesIntersectionsByUnity(unity);
          await upsertInvasions(invasions, Invasion, 'UC_NOME');
@@ -213,7 +213,7 @@ export const getReservesInsideAmazon = (hasId = true) => {
 export const createInvasionsByReserves = async reserves => {
    const generatedInvasions = [];
 
-   for (const reserve of reserves) {
+   for await (const reserve of reserves) {
       try {
          const invasions = await getLicensesIntersectionsByReserve(reserve);
          await upsertInvasions(invasions, ReserveInvasion, 'TI_NOME');
@@ -335,7 +335,7 @@ export const getNewAndAllReserveInvasions = async () => {
 // BOTH
 
 const upsertInvasions = async (invasions, schema, identifier) => {
-   for (const invasion of invasions) {
+   for await (const invasion of invasions) {
       const query = {
          "properties.ID": invasion.properties.ID,
          [`properties.${identifier}`]: invasion.properties[identifier]
@@ -367,11 +367,14 @@ const upsertInvasions = async (invasions, schema, identifier) => {
 
 export const flagRemovedInvasions = async (generatedInvasions, schema, identifier) => {
    const existingInvasions = await schema.find({});
-   const invasionsIDs = generatedInvasions.map(invasion => invasion.properties.ID);
    const timestamp = new Date();
 
-   for (const existingInvasion of existingInvasions) {
-      if (!invasionsIDs.includes(existingInvasion.properties.ID)) {
+   for await (const existingInvasion of existingInvasions) {
+      const foundGeneratedInvasion = generatedInvasions.find(
+         invasion => invasion.properties.ID === existingInvasion.properties.ID
+         && invasion.properties[identifier] === existingInvasion.properties[identifier]
+      )
+      if (!foundGeneratedInvasion) {
          existingInvasion.last_action = 'delete';
          existingInvasion.last_update_at = timestamp;
          existingInvasion.changes = [...existingInvasion.changes, { timestamp, changes: 'deleted' }];
