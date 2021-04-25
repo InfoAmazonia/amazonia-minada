@@ -167,8 +167,8 @@ export const scheduleTweetTotalInvasions = () => {
 // RESERVES
 
 export const scheduleUpdateReserveInvasions = (cb) => {
-   /** scheduled to work at 00:35 am - everyday */
-   cronTab('35 0 * * *', async () => {
+   /** scheduled to work at 01:30 am - everyday */
+   cronTab('30 1 * * *', async () => {
       try {
          /** check if there is any reserve in database, if not import them */
          const hasReserves = await Reserve.countDocuments() > 0;
