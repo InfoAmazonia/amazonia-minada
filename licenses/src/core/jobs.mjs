@@ -151,7 +151,8 @@ export const scheduleTweetTotalInvasions = () => {
 
    cronTab("0 12 * * 3", async () => {
       try {
-         const total = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const total = await getUniqueInvasionsNumber(Invasion);
+
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/3f7rO1F`
@@ -290,7 +291,8 @@ export const scheduleTweetTotalReserveInvasions = () => {
 
    cronTab("0 12 * * 1", async () => {
       try {
-         const total = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const total = await getUniqueInvasionsNumber(ReserveInvasion);
+
          const tweet = {
             media: await getGeralImage(),
             status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/3f7rO1F`
@@ -311,8 +313,9 @@ export const scheduleTweetTotalYearInvasions = () => {
       try {
          const currentYear = new Date().getFullYear();
 
-         const totalInvasions = await Invasion.countDocuments({ 'properties.ANO': currentYear, last_action: { $ne: 'delete' } });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ 'properties.ANO': currentYear, last_action: { $ne: 'delete' } });
+         const totalInvasions = await getUniqueInvasionsNumber(Invasion, { 'properties.ANO': currentYear });
+         const totalReserveInvasions = await getUniqueInvasionsNumber(ReserveInvasion, { 'properties.ANO': currentYear });
+
          const invasions = await Invasion.aggregate([
             {
                $match: {
@@ -322,12 +325,19 @@ export const scheduleTweetTotalYearInvasions = () => {
             },
             {
                $group: {
-                  _id: null,
-                  total: { $sum: '$properties.AREA_HA' }
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
                }
             },
             {
-               $project: { campos: "$total" }
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
+                  _id: null,
+                  total: { $sum: '$invasionArea' }
+               }
             }
          ]);
          const reserveInvasions = await ReserveInvasion.aggregate([
@@ -339,16 +349,23 @@ export const scheduleTweetTotalYearInvasions = () => {
             },
             {
                $group: {
-                  _id: null,
-                  total: { $sum: '$properties.AREA_HA' }
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
                }
             },
             {
-               $project: { campos: "$total" }
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
+                  _id: null,
+                  total: { $sum: '$invasionArea' }
+               }
             }
          ]);
 
-         const totalCampos = Math.round(invasions[0].campos + reserveInvasions[0].campos);
+         const totalCampos = Math.round(invasions[0].total + reserveInvasions[0].total);
 
          const tweet = {
             media: await getGeralImage(),
@@ -366,8 +383,9 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
    /** At 12:00 on Friday. */
    cronTab("0 12 * * 5", async () => {
       try {
-         const totalInvasions = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const totalInvasions = await getUniqueInvasionsNumber(Invasion);
+         const totalReserveInvasions = await getUniqueInvasionsNumber(ReserveInvasion);
+         
          const invasions = await Invasion.aggregate([
             {
                $match: {
@@ -376,8 +394,18 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
             },
             {
                $group: {
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
+               }
+            },
+            {
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
                   _id: null,
-                  total: { $sum: '$properties.AREA_HA' }
+                  total: { $sum: '$invasionArea' }
                }
             },
             {
@@ -394,10 +422,18 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
             },
             {
                $group: {
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
+               }
+            },
+            {
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$invasionArea' }
                }
             },
             {
@@ -428,8 +464,9 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    /** At 12:00 on Saturday. */
    cronTab("0 12 * * 6", async () => {
       try {
-         const totalInvasions = await Invasion.countDocuments({ last_action: { $ne: 'delete' } });
-         const totalReserveInvasions = await ReserveInvasion.countDocuments({ last_action: { $ne: 'delete' } });
+         const totalInvasions = await getUniqueInvasionsNumber(Invasion);
+         const totalReserveInvasions = await getUniqueInvasionsNumber(ReserveInvasion);
+
          const invasions = await Invasion.aggregate([
             {
                $match: {
@@ -438,10 +475,18 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             },
             {
                $group: {
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
+               }
+            },
+            {
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$invasionArea' }
                }
             },
             {
@@ -460,10 +505,18 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             },
             {
                $group: {
+                  _id: "$properties.ID",
+                  invasionAreaSum: { $sum: '$properties.AREA_HA' },
+                  count: { $sum: 1 }
+               }
+            },
+            {
+               $project: { invasionArea: { $divide: ["$invasionAreaSum", "$count"] } }
+            },
+            {
+               $group: {
                   _id: null,
-                  total: {
-                     $sum: '$properties.AREA_HA'
-                  }
+                  total: { $sum: '$invasionArea' }
                }
             },
             {
@@ -475,7 +528,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
             }
          ]);
 
-         const totalK2 = invasions[0].k2 + reserveInvasions[0].k2
+         const totalK2 = invasions[0].k2 + reserveInvasions[0].k2;
          const countryName = getCountryWithClosestArea(totalK2, 'en');
 
          const tweet = {
@@ -489,3 +542,11 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
       }
    });
 }
+
+const getUniqueInvasionsNumber = async (schema, match = {}) => {
+   return (await schema.aggregate([
+      { $match: { last_action: { $ne: 'delete' }, ...match } },
+      { $group: { _id: "$properties.ID" } },
+      { $group: { _id: null, total: { $sum: 1 } } }
+   ]))[0].total;
+};
