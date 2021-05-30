@@ -154,10 +154,26 @@ const addInternationalization = (item, attrs) => {
    });
 }
 
+const getAreaNames = (invasions, areaPropertyName) => {
+   let areaNames = '';
+
+   for (let i = 0; i < invasions.length; i++) {
+      areaNames += invasions[i].properties[areaPropertyName];
+      if (i === invasions.length - 2) {
+         areaNames += ' e ';
+      } else if (i !== invasions.length - 1) {
+         areaNames += ', ';
+      }
+   }
+
+   return areaNames;
+};
+
 export {
    getDateArray,
    getAbrev,
    clipName,
    addInternationalization,
-   getThousandsMark
+   getThousandsMark,
+   getAreaNames
 }

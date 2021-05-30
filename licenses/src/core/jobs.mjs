@@ -13,7 +13,7 @@ import { updateTweetStatus, updateReserveInvasionTweetStatus } from './services.
 import { getEntityImage, getGeralImage } from './mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
-import { getDateArray, clipName, getThousandsMark } from '../utils/formatter.mjs';
+import { getDateArray, clipName, getThousandsMark, getAreaNames, addInternationalization } from '../utils/formatter.mjs';
 import { cronTab } from '../utils/handler.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 
@@ -60,6 +60,13 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
    let hour = 10;
 
    invasions.forEach(invasion => {
+      const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
+
+      const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
+      if (wasSomeInvasionTweeted) {
+         return;
+      }
+
       /**
       * suposelly we'll never have more than 10 tweets by day.
       * So, it's not really necessary to increment days
@@ -76,13 +83,14 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
             const link = linksUCsPT[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+            const areaNamesText = getInvasionAreaNamesText(relatedInvasions, 'pt');
 
             let requirerName = NOME;
-            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro ${areaNamesText} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
 
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da UC ${UC_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro ${areaNamesText} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
 
             const unity = await Unity.findOne(
@@ -104,6 +112,14 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
    let hour = 10;
 
    invasions.forEach(invasion => {
+      const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
+
+      const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
+      if (wasSomeInvasionTweeted) {
+         await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
+         return;
+      }
+
       /**
       * suposelly we'll never have more than 10 tweets by day.
       * So, it's not really necessary to increment days
@@ -120,13 +136,14 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
             const link = linksUCsEN[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+            const areaNamesText = getInvasionAreaNamesText(relatedInvasions, 'en');
 
             let requirerName = NOME;
-            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the ${areaNamesText} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
 
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the PA ${EN_UC_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within the ${areaNamesText} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
 
             const unity = await Unity.findOne(
@@ -138,7 +155,7 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
 
-            await updateTweetStatus({ _id: mongoose.Types.ObjectId(invasion._id) });
+            await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
          } catch (ex) {
             console.error(ex);
          }
@@ -163,6 +180,32 @@ export const scheduleTweetTotalInvasions = () => {
          console.error(ex);
       }
    });
+}
+
+const getInvasionAreaNamesText = (relatedInvasions, language = 'pt') => {
+   const isPlural = relatedInvasions.length > 1;
+
+   switch (language) {
+      case 'en':
+         const translatedInvasions = relatedInvasions.map(
+            relatedInvasion => addInternationalization(
+               relatedInvasion,
+               [{ "uc": { crr: "UC_NOME", new: "EN_UC_NOME" } }]
+            )
+         );
+         if (isPlural) {
+            return `PAs ${getAreaNames(translatedInvasions, 'EN_UC_NOME')}`;
+         } else {
+            return `PA ${translatedInvasions[0].properties.EN_UC_NOME}`;
+         }
+   
+      default:
+         if (isPlural) {
+            return `das UCs ${getAreaNames(relatedInvasions, 'UC_NOME')}`;
+         } else {
+            return `da UC ${relatedInvasions[0].properties.UC_NOME}`;
+         }
+   }
 }
 
 // RESERVES
@@ -200,6 +243,13 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
    let hour = 9;
 
    reserveInvasions.forEach(reserveInvasion => {
+      const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
+
+      const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
+      if (wasSomeReserveInvasionTweeted) {
+         return;
+      }
+
       /**
       * suposelly we'll never have more than 10 tweets by day.
       * So, it's not really necessary to increment days
@@ -216,13 +266,14 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
             const link = linksTIsPT[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+            const areaNamesText = getReserveInvasionAreaNamesText(relatedReserveInvasions, 'pt');
 
             let requirerName = NOME;
-            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+            let status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro ${areaNamesText} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
 
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro da TI ${TI_NOME} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
+               status = `⚠ ALERTA! Novo requerimento minerário de ${FASE} para ${SUBS} de ${areaK2} km² detectado na ANM dentro ${areaNamesText} da Amazônia. Pedido feito por ${requirerName}. #AmazoniaMinada ${link}`;
             }
 
             const reserve = await Reserve.findOne(
@@ -244,6 +295,14 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
    let hour = 9;
 
    reserveInvasions.forEach(reserveInvasion => {
+      const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
+
+      const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
+      if (wasSomeReserveInvasionTweeted) {
+         await updateTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
+         return;
+      }
+
       /**
       * suposelly we'll never have more than 10 tweets by day.
       * So, it's not really necessary to increment days
@@ -260,13 +319,14 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
             const link = linksTIsEN[slug];
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
+            const areaNamesText = getReserveInvasionAreaNamesText(relatedReserveInvasions, 'en');
 
             let requirerName = NOME;
-            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+            let status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous ${areaNamesText} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
 
             if (status.length >= 280) {
                requirerName = clipName(requirerName, status.length - 280);
-               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous land ${TI_NOME} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
+               status = `⚠ WARNING! New mining record of ${EN_FASE} for ${EN_SUBS} with ${areaK2} km² of area detected within indigenous ${areaNamesText} of the Amazon. Request on government agency made by ${requirerName}. #MinedAmazon ${link}`;
             }
 
             const reserve = await Reserve.findOne(
@@ -278,7 +338,7 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
 
-            await updateReserveInvasionTweetStatus({ _id: mongoose.Types.ObjectId(reserveInvasion._id) });
+            await updateReserveInvasionTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
          } catch (ex) {
             console.error(ex);
          }
@@ -303,6 +363,26 @@ export const scheduleTweetTotalReserveInvasions = () => {
          console.error(ex);
       }
    });
+}
+
+const getReserveInvasionAreaNamesText = (relatedReserveInvasions, language = 'pt') => {
+   const isPlural = relatedReserveInvasions.length > 1;
+
+   switch (language) {
+      case 'en':
+         if (isPlural) {
+            return `lands ${getAreaNames(relatedReserveInvasions, 'TI_NOME')}`;
+         } else {
+            return `land ${relatedReserveInvasions[0].properties.TI_NOME}`;
+         }
+   
+      default:
+         if (isPlural) {
+            return `das TIs ${getAreaNames(relatedReserveInvasions, 'TI_NOME')}`;
+         } else {
+            return `da TI ${relatedReserveInvasions[0].properties.TI_NOME}`;
+         }
+   }
 }
 
 // UNITIES and RESERVES
