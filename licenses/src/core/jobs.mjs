@@ -56,15 +56,15 @@ export const scheduleUpdateInvasions = (cb) => {
    });
 }
 
-export const scheduleTweetNewInvasionsPT = (invasions) => {
+export const scheduleTweetNewInvasionsPT = async (invasions) => {
    let hour = 10;
 
-   invasions.forEach(invasion => {
+   for await (const invasion of invasions) {
       const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
 
       const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
       if (wasSomeInvasionTweeted) {
-         return;
+         continue;
       }
 
       /**
@@ -105,19 +105,19 @@ export const scheduleTweetNewInvasionsPT = (invasions) => {
             console.error(ex);
          }
       });
-   });
+   }
 }
 
-export const scheduleTweetNewInvasionsEN = (invasions) => {
+export const scheduleTweetNewInvasionsEN = async (invasions) => {
    let hour = 10;
 
-   invasions.forEach(invasion => {
+   for await (const invasion of invasions) {
       const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
 
       const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
       if (wasSomeInvasionTweeted) {
          await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
-         return;
+         continue;
       }
 
       /**
@@ -160,7 +160,7 @@ export const scheduleTweetNewInvasionsEN = (invasions) => {
             console.error(ex);
          }
       });
-   });
+   };
 }
 
 export const scheduleTweetTotalInvasions = () => {
@@ -198,7 +198,7 @@ const getInvasionAreaNamesText = (relatedInvasions, language = 'pt') => {
          } else {
             return `PA ${translatedInvasions[0].properties.EN_UC_NOME}`;
          }
-   
+
       default:
          if (isPlural) {
             return `das UCs ${getAreaNames(relatedInvasions, 'UC_NOME')}`;
@@ -239,15 +239,15 @@ export const scheduleUpdateReserveInvasions = (cb) => {
    });
 }
 
-export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
+export const scheduleTweetNewReserveInvasionsPT = async (reserveInvasions) => {
    let hour = 9;
 
-   reserveInvasions.forEach(reserveInvasion => {
+   for await (const reserveInvasion of reserveInvasions) {
       const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
 
       const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
       if (wasSomeReserveInvasionTweeted) {
-         return;
+         continue;
       }
 
       /**
@@ -288,19 +288,19 @@ export const scheduleTweetNewReserveInvasionsPT = (reserveInvasions) => {
             console.error(ex);
          }
       });
-   });
+   };
 }
 
-export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
+export const scheduleTweetNewReserveInvasionsEN = async (reserveInvasions) => {
    let hour = 9;
 
-   reserveInvasions.forEach(reserveInvasion => {
+   for await (const reserveInvasion of reserveInvasions) {
       const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
 
       const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
       if (wasSomeReserveInvasionTweeted) {
          await updateTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
-         return;
+         continue;
       }
 
       /**
@@ -343,7 +343,7 @@ export const scheduleTweetNewReserveInvasionsEN = (reserveInvasions) => {
             console.error(ex);
          }
       });
-   });
+   };
 }
 
 export const scheduleTweetTotalReserveInvasions = () => {
@@ -375,7 +375,7 @@ const getReserveInvasionAreaNamesText = (relatedReserveInvasions, language = 'pt
          } else {
             return `land ${relatedReserveInvasions[0].properties.TI_NOME}`;
          }
-   
+
       default:
          if (isPlural) {
             return `das TIs ${getAreaNames(relatedReserveInvasions, 'TI_NOME')}`;
@@ -465,7 +465,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
       try {
          const totalInvasions = await getUniqueInvasionsNumber(Invasion);
          const totalReserveInvasions = await getUniqueInvasionsNumber(ReserveInvasion);
-         
+
          const invasions = await Invasion.aggregate([
             {
                $match: {
