@@ -39,5 +39,6 @@ mongoose.connect(database.uri, database.options)
       scheduleTweetTotalCountrySizeInvasionsEN();
    })
    .catch(ex => {
+      console.trace();
       throw ex
    });

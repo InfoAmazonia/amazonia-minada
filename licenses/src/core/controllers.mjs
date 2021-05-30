@@ -24,7 +24,8 @@ import {
    getReservesInsideAmazon,
    createInvasionsByReserves,
    getNewAndAllReserveInvasions,
-   flagRemovedInvasions
+   flagRemovedInvasions,
+   filterDuplicatedInvasions
 } from './services.mjs';
 import { uploadDataToMapbox } from './mapbox-service.mjs';
 
@@ -129,7 +130,7 @@ export const importInvasions = async () => {
       await writeCSV(invasions.all, license.id, license.properties);
 
       /** send data to mapbox API */
-      await uploadDataToMapbox(invasions.all, license.id);
+      await uploadDataToMapbox(filterDuplicatedInvasions(invasions.all), license.id);
 
       return invasions.new;
    }
@@ -208,7 +209,7 @@ export const importReserveInvasions = async () => {
       await writeCSV(invasions.all, reserve_invasion.id, reserve_invasion.properties);
 
       /** send data to mapbox API */
-      await uploadDataToMapbox(invasions.all, reserve_invasion.id);
+      await uploadDataToMapbox(filterDuplicatedInvasions(invasions.all), reserve_invasion.id);
 
       return invasions.new;
    }

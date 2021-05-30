@@ -386,3 +386,19 @@ export const flagRemovedInvasions = async (generatedInvasions, schema, identifie
       }
    }
 };
+
+export const filterDuplicatedInvasions = invasions => {
+   const uniqueInvasions = [];
+   const seenInvasionIds = new Set();
+
+   for (const invasion of invasions) {
+      const invasionID = invasion.properties.ID;
+
+      if (!seenInvasionIds.has(invasionID)) {
+         uniqueInvasions.push(invasion);
+         seenInvasionIds.add(invasionID);
+      }
+   }
+
+   return uniqueInvasions;
+};
