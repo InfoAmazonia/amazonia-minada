@@ -30,7 +30,7 @@ deploy to homolog:
   stage: deploy
   image: hacklab/kubectl:latest
   script:
-    - echo ${kube_config_develop} | base64 -d > ${KUBECONFIG}
+    - echo ${kube_config} | base64 -d > ${KUBECONFIG}
     - kubectl -n amazonia-minada-site-dev --record deployment.apps/licenses set image deployment.v1.apps/licenses licenses=$HOMOLOG_IMAGE
   only:
     - /master/
@@ -57,7 +57,7 @@ deploy to production:
   image: hacklab/kubectl:latest
   script:
     - echo ${kube_config} | base64 -d > ${KUBECONFIG}
-    - kubectl -n amazonia-minada-site-dev --record deployment.apps/licenses set image deployment.apps/licenses licenses=$RELEASE_IMAGE
+    - kubectl -n amazonia-minada-site-prod --record deployment.apps/licenses set image deployment.apps/licenses licenses=$RELEASE_IMAGE
   only:
     - tags
   environment: production
