@@ -32,7 +32,7 @@ const tweetImageMedia = (media, cb) => {
       if (!error)
          cb(media.media_id_string); 
       else
-         throw error;
+         throw error.name + " -- " + error.message;
    });
 }
 
