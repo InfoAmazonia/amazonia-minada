@@ -374,7 +374,7 @@ export const flagRemovedInvasions = async (generatedInvasions, schema, identifie
          invasion => invasion.properties.ID === existingInvasion.properties.ID
          && invasion.properties[identifier] === existingInvasion.properties[identifier]
       )
-      if (!foundGeneratedInvasion) {
+      if (!foundGeneratedInvasion && existingInvasion.last_action !== 'delete') {
          existingInvasion.last_action = 'delete';
          existingInvasion.last_update_at = timestamp;
          existingInvasion.changes = [...existingInvasion.changes, { timestamp, changes: 'deleted' }];
