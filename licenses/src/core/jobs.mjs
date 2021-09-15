@@ -245,7 +245,7 @@ export const scheduleTweetNewReserveInvasionsPT = async (reserveInvasions) => {
    for await (const reserveInvasion of reserveInvasions) {
       const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
 
-      const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
+      const wasSomeReserveInvasionTweeted = relatedReserveInvasions.some(reserveInv => reserveInv.tweeted);
       if (wasSomeReserveInvasionTweeted) {
          continue;
       }
@@ -297,7 +297,7 @@ export const scheduleTweetNewReserveInvasionsEN = async (reserveInvasions) => {
    for await (const reserveInvasion of reserveInvasions) {
       const relatedReserveInvasions = await ReserveInvasion.find({ 'properties.ID': reserveInvasion.properties.ID });
 
-      const wasSomeReserveInvasionTweeted = relatedInvasions.some(reserveInv => reserveInv.tweeted);
+      const wasSomeReserveInvasionTweeted = relatedReserveInvasions.some(reserveInv => reserveInv.tweeted);
       if (wasSomeReserveInvasionTweeted) {
          await updateTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
          continue;
