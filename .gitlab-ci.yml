@@ -1,0 +1,65 @@
+---
+image: docker:18.01.0-ce-git
+services:
+- docker:18.01.0-ce-dind
+
+stages:
+- build
+- deploy
+
+variables:
+  HOMOLOG_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME-$CI_COMMIT_SHORT_SHA
+  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+  KUBECONFIG: /etc/k8s-config
+
+build to homolog:
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $HOMOLOG_IMAGE -f licenses/Dockerfile licenses/ 
+    - docker push $HOMOLOG_IMAGE
+  only:
+    - /master/
+  environment: homolog
+  tags:
+    - docker
+
+deploy to homolog:
+  stage: deploy
+  image: hacklab/kubectl:latest
+  script:
+    - echo ${kube_config} | base64 -d > ${KUBECONFIG}
+    - kubectl -n amazonia-minada-site-dev --record deployment.apps/licenses set image deployment.v1.apps/licenses licenses=$HOMOLOG_IMAGE
+  only:
+    - /master/
+  environment: homolog
+  tags:
+    - docker
+
+build to production:
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build -t $RELEASE_IMAGE -f licenses/Dockerfile licenses/ 
+    - docker tag $RELEASE_IMAGE "$CI_REGISTRY_IMAGE:latest"
+    - docker push $RELEASE_IMAGE
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+  only:
+    - tags
+  environment: production
+  tags:
+    - docker
+
+deploy to production:
+  stage: deploy
+  image: hacklab/kubectl:latest
+  script:
+    - echo ${kube_config} | base64 -d > ${KUBECONFIG}
+    - kubectl -n amazonia-minada-site-prod --record deployment.apps/licenses set image deployment.apps/licenses licenses=$RELEASE_IMAGE
+  only:
+    - tags
+  environment: production
+  tags:
+    - docker
