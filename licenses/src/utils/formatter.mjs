@@ -139,7 +139,7 @@ const addInternationalization = (item, attrs) => {
          });
       }
       else {
-         const value = removeWords.reduce((prev, crr) => prev.toLowerCase().replace(crr, '').trim(), properties[mapper.crr]);
+         const value = removeWords.reduce((prev, crr) => prev ? prev.toLowerCase().replace(crr, '').trim() : '', properties[mapper.crr]);
          const itemValue = slugify(value, { replacement: '_', lower: true });
          const translated = dictionary[dictionaryKey][itemValue];
 
