@@ -20,7 +20,7 @@ RUN apk add --update --no-cache tzdata
 RUN apk add --update npm
 RUN cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && echo America/Sao_Paulo > /etc/timezone
 RUN npm cache clean -f
-RUN npm install npm@latest -g
+RUN npm install npm@6.14.16 -g
 RUN npm install -g n 10
 RUN rm -rf /var/cache/apk/*
 
