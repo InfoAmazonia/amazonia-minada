@@ -385,6 +385,28 @@ export const flagRemovedInvasions = async (generatedInvasions, schema, identifie
          }, { $set: existingInvasion }).exec();
       }
    }
+
+   const nonDeletedExistingInvasions = existingInvasions.filter(existingInvasion => existingInvasion.last_action !== 'delete');
+   for await (const generatedInvasion of generatedInvasions) {
+      const foundExistingInvasion = nonDeletedExistingInvasions.find(
+         invasion => invasion.properties.ID === generatedInvasion.properties.ID
+         && invasion.properties[identifier] === generatedInvasion.properties[identifier]
+      )
+      if (!foundExistingInvasion) {
+         const existingInvasion = existingInvasions.find(
+             invasion => invasion.properties.ID === generatedInvasion.properties.ID
+                 && invasion.properties[identifier] === generatedInvasion.properties[identifier]
+         );
+         existingInvasion.last_action = 'update';
+         existingInvasion.last_update_at = timestamp;
+         existingInvasion.changes = [...existingInvasion.changes, { timestamp, changes: 'restored' }];
+         delete existingInvasion._id;
+         await schema.findOneAndUpdate({
+            "properties.ID": existingInvasion.properties.ID,
+            [`properties.${identifier}`]: existingInvasion.properties[identifier]
+         }, { $set: existingInvasion }).exec();
+      }
+   }
 };
 
 export const filterDuplicatedInvasions = invasions => {
