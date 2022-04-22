@@ -17,10 +17,7 @@ import { getDateArray, clipName, getThousandsMark, getAreaNames, addInternationa
 import { cronTab } from '../utils/handler.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 
-import linksUCsPT from '../links-ucs-pt.json';
-import linksUCsEN from '../links-ucs-en.json';
-import linksTIsPT from '../links-tis-pt.json';
-import linksTIsEN from '../links-tis-en.json';
+const dashboardLink = 'https://bit.ly/3CovCau';
 
 // UNITIES
 
@@ -81,7 +78,7 @@ export const scheduleTweetNewInvasionsPT = async (invasions) => {
          try {
             const { AREA_K2, FASE, SUBS, UC_NOME, NOME } = invasion.properties;
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
-            const link = linksUCsPT[slug];
+            const link = dashboardLink;
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
             const areaNamesText = getInvasionAreaNamesText(relatedInvasions, 'pt');
 
@@ -134,7 +131,7 @@ export const scheduleTweetNewInvasionsEN = async (invasions) => {
          try {
             const { AREA_K2, EN_FASE, EN_SUBS, UC_NOME, EN_UC_NOME, NOME } = invasion.properties;
             const slug = slugify(UC_NOME, { replacement: '_', lower: true });
-            const link = linksUCsEN[slug];
+            const link = dashboardLink;
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
             const areaNamesText = getInvasionAreaNamesText(relatedInvasions, 'en');
 
@@ -172,7 +169,7 @@ export const scheduleTweetTotalInvasions = () => {
 
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada https://bit.ly/3f7rO1F`
+            status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada ${dashboardLink}`
          };
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -264,7 +261,7 @@ export const scheduleTweetNewReserveInvasionsPT = async (reserveInvasions) => {
          try {
             const { AREA_K2, FASE, SUBS, TI_NOME, NOME } = reserveInvasion.properties;
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
-            const link = linksTIsPT[slug];
+            const link = dashboardLink;
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
             const areaNamesText = getReserveInvasionAreaNamesText(relatedReserveInvasions, 'pt');
 
@@ -317,7 +314,7 @@ export const scheduleTweetNewReserveInvasionsEN = async (reserveInvasions) => {
          try {
             const { AREA_K2, EN_FASE, EN_SUBS, TI_NOME, NOME } = reserveInvasion.properties;
             const slug = slugify(TI_NOME, { replacement: '_', lower: true });
-            const link = linksTIsEN[slug];
+            const link = dashboardLink;
             const areaK2 = getThousandsMark(parseFloat(AREA_K2).toFixed(2));
             const areaNamesText = getReserveInvasionAreaNamesText(relatedReserveInvasions, 'en');
 
@@ -355,7 +352,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
 
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada https://bit.ly/3f7rO1F`
+            status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada ${dashboardLink}`
          };
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -449,7 +446,7 @@ export const scheduleTweetTotalYearInvasions = () => {
 
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada https://bit.ly/3f7rO1F`
+            status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada ${dashboardLink}`
          };
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
@@ -530,7 +527,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
 
          const tweet = {
             media: await getGeralImage(),
-            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente equivalente ao tamanho do país ${countryName}. #AmazoniaMinada https://bit.ly/3f7rO1F`
+            status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente equivalente ao tamanho do país ${countryName}. #AmazoniaMinada ${dashboardLink}`
          };
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
