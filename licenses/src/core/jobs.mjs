@@ -17,8 +17,6 @@ import { getDateArray, clipName, getThousandsMark, getAreaNames, addInternationa
 import { cronTab } from '../utils/handler.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 
-const dashboardLink = 'https://bit.ly/3CovCau';
-
 // UNITIES
 
 export const scheduleUpdateInvasions = (cb) => {

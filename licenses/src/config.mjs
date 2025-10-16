@@ -191,3 +191,11 @@ export const mapbox = {
       return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/-58.8,-6.5,4.5/1000x800?access_token=${this.access_token}`;
    }
 }
+
+export const dashboardLink = 'https://bit.ly/3CovCau';
+
+export const fileManager = {
+   storagePath() {
+      return process.env.STORAGE_PATH !== undefined ? process.env.STORAGE_PATH : process.cwd();
+   }
+}
