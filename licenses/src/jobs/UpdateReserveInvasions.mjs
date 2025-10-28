@@ -6,9 +6,9 @@ import {
     importReserveInvasions
 } from './controllers.mjs';
 import { updateTweetStatus } from './services.mjs';
-import { dashboardLink } from '../config.mjs';
-import { appendInvasionsData } from '../utils/file-manager.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { getLogger } from '../utils/logging.mjs';
+
 (async () => {
     await jobEntrypoint(async () => {
         try {
@@ -30,10 +30,13 @@ import { jobEntrypoint } from '../startup.mjs';
                 }
             });
 
-            appendInvasionsData(reserveInvasions, "reserve_PT");
-            appendInvasionsData(reserveInvasions, "reserve_EN");
+            for (const invasion of reserveInvasions) {
+                const key = `reverseinvasion:${invasion._id}`;
+                await addItem('ReverseInvasionPT', key, JSON.stringify(invasion));
+                await addItem('ReverseInvasionEN', key, JSON.stringify(invasion));
+            }
         } catch (ex) {
-            console.error(ex);
+            getLogger().error(`Failed Update Reverse Invasions: ${ex} `);
         }
     });
 })();

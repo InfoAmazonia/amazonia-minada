@@ -1,12 +1,13 @@
-import { appendInvasionsData } from '../utils/file-manager.mjs';
 import {
     importUnities,
     importLicenses,
     importInvasions,
 } from './controllers.mjs';
 import { updateTweetStatus } from './services.mjs';
-import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { addItem } from '../core/queue.mjs';
+import { getLogger } from '../utils/logging.mjs';
+
 (async () => {
     await jobEntrypoint(async () => {
         try {
@@ -32,10 +33,13 @@ import { jobEntrypoint } from '../startup.mjs';
             });
 
             // Store Invasions for the Tweet New Invasions Job
-            appendInvasionsData(invasions, "PT");
-            appendInvasionsData(invasions, "EN");
+            for (const invasion of invasions) {
+                const key = `invasion:${invasion._id}`;
+                await addItem('InvasionPT', key, JSON.stringify(invasion));
+                await addItem('InvasionEN', key, JSON.stringify(invasion));
+            }            
         } catch (ex) {
-            console.error(ex);
+            getLogger().error(`Failed Update Invasions: ${ex} `);
         }
     });
 })();

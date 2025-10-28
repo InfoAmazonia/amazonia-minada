@@ -88,3 +88,23 @@ const ReserveInvasionSchema = new mongoose.Schema({
 });
 
 export const ReserveInvasion = mongoose.model('ReserveInvasion', ReserveInvasionSchema);
+
+const queueItemSchema = new mongoose.Schema({
+  key: { type: String, required: true }, // e.g. "email", "resize"
+  data: { type: mongoose.Schema.Types.Mixed, required: true },
+  status: {
+    type: String,
+    enum: ['pending', 'processing', 'done', 'failed'],
+    default: 'pending'
+  },
+  lockedAt: { type: Date, default: null },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+queueItemSchema.index({ status: 1, lockedAt: 1 });
+
+
+export  function getQueueItem(sub) {
+  return mongoose.model(`${sub}_QueueItem`, queueItemSchema);
+}

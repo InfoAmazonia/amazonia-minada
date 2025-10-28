@@ -5,6 +5,8 @@ import { getGeralImage } from './mapbox-service.mjs';
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { getLogger } from '../utils/logging.mjs';
+
 (async () => {
     await jobEntrypoint(async () => {
         try {
@@ -71,7 +73,7 @@ import { jobEntrypoint } from '../startup.mjs';
 
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
         } catch (ex) {
-            console.error(ex);
+            getLogger().error(`Failed Tweet Total Year: ${ex} `);
         }
     });
 })();

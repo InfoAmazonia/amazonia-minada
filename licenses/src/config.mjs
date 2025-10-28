@@ -199,3 +199,9 @@ export const fileManager = {
       return process.env.STORAGE_PATH !== undefined ? process.env.STORAGE_PATH : process.cwd();
    }
 }
+
+export const apiConfig = {
+   secureKey() {
+      return process.env.API_SECURE_KEY !== undefined ? process.env.API_SECURE_KEY : 'null';
+   }
+}
