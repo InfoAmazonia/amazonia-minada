@@ -1,4 +1,4 @@
-FROM alpine:3.10.5
+FROM node:24-alpine
 
 LABEL "com.icfj.licenses"="ICFJ" \
       maintainer="Rodrigo Brabo <brabo.rodrigo@gmail.com>" \
@@ -6,7 +6,6 @@ LABEL "com.icfj.licenses"="ICFJ" \
 
 WORKDIR /srv/licenses
 
-COPY package* ./
 COPY . .
 
 ENV LANG=en_US.UTF-8 \
@@ -19,12 +18,7 @@ RUN apk add --update --no-cache tzdata
 
 RUN apk add --update npm
 RUN cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && echo America/Sao_Paulo > /etc/timezone
-RUN npm cache clean -f
-RUN npm install npm@6.14.16 -g
-RUN npm install -g n 10
-RUN rm -rf /var/cache/apk/*
-
-RUN ["npm", "install"]
+RUN npm install
 
 
 CMD ["npm", "run", "production"]

@@ -8,9 +8,9 @@ services:
         - NODE_ENV=production
         - TZ=America/Sao_Paulo
     container_name: licenses
-    environment:
-      NODE_ENV: production
     working_dir: /srv/licenses
+    ports:
+      - 5100:5100
     command: npm run production
     volumes:
       - ./licenses:/srv/licenses
@@ -28,13 +28,14 @@ services:
     env_file:
       - .env
     environment:
-      MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
-      MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
+      MONGO_URI: ${MONGO_URI}
       CONSUMER_KEY: ${CONSUMER_KEY}
       CONSUMER_SECRET: ${CONSUMER_SECRET}
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
       MAPBOX_ACCESS_TOKEN: ${MAPBOX_ACCESS_TOKEN}
+      API_SECURE_KEY: ${API_SECURE_KEY}      
+      NODE_ENV: production
 
   database:
     image: mongo

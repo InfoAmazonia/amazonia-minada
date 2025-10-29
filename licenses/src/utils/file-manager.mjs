@@ -4,29 +4,30 @@ import fs from 'fs';
 import path from 'path';
 import AdmZip from 'adm-zip';
 import shapefile from 'shapefile';
+import { fileManager } from '../config.mjs';
 
 const removeTmp = output => {
    child_process.spawnSync('rm', [
       '-rf',
-      path.resolve(process.cwd(), output, 'tmp')
+      path.resolve(fileManager.storagePath(), output, 'tmp')
    ]);
 }
 
 const cpFiles = source => {
    child_process.spawnSync('cp', [
-      path.resolve(process.cwd(), source.output, 'tmp', source.unziped_folder, source.shapefile),
-      path.resolve(process.cwd(), source.output)
+      path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.shapefile),
+      path.resolve(fileManager.storagePath(), source.output)
    ]);
 
    child_process.spawnSync('cp', [
-      path.resolve(process.cwd(), source.output, 'tmp', source.unziped_folder, source.dbf),
-      path.resolve(process.cwd(), source.output)
+      path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.dbf),
+      path.resolve(fileManager.storagePath(), source.output)
    ]);
 }
 
 const makeTmp = (output) => {
    child_process.spawnSync('mkdir', [
-      path.resolve(process.cwd(), output, 'tmp')
+      path.resolve(fileManager.storagePath(), output, 'tmp')
    ]);
 }
 
@@ -63,8 +64,8 @@ const unzip = (pathfile, zipfile) => {
    console.log('Preparing files(2/2) - Unzipping files.');
 
    return new Promise((resolve, reject) => {
-      const zip = new AdmZip(path.resolve(process.cwd(), pathfile, 'tmp', zipfile));
-      zip.extractAllToAsync(path.resolve(process.cwd(), pathfile, 'tmp'), false, err => {
+      const zip = new AdmZip(path.resolve(fileManager.storagePath(), pathfile, 'tmp', zipfile));
+      zip.extractAllToAsync(path.resolve(fileManager.storagePath(), pathfile, 'tmp'), false, err => {
          if (err) reject(err);
 
          resolve();
@@ -95,8 +96,8 @@ const writeGeoJson = (data, identity) => {
    console.log(`\nStarting to write ${identity} json file at ${new Date()}`);
 
    return new Promise((resolve, reject) => {
-      const tmpPath = path.resolve(process.cwd(), `files/${identity}/${identity}_tmp.json`);
-      const defPath = path.resolve(process.cwd(), `files/${identity}/${identity}.json`);
+      const tmpPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_tmp.json`);
+      const defPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}.json`);
 
       fs.writeFile(tmpPath, `{"type":"FeatureCollection","features":${JSON.stringify(data)}}`,
          (err) => {
@@ -117,8 +118,8 @@ const writeCSV = (data, identity, properties = []) => {
    console.log(`\nStarting to write ${identity} csv file at ${new Date()}`);
 
    return new Promise((resolve, reject) => {
-      const tmpPath = path.resolve(process.cwd(), `files/${identity}/${identity}_tmp.csv`);
-      const defPath = path.resolve(process.cwd(), `files/${identity}/${identity}.csv`);
+      const tmpPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_tmp.csv`);
+      const defPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}.csv`);
 
       const wstream = fs.createWriteStream(tmpPath);
 
@@ -150,7 +151,7 @@ const writeLineDelimitedJson = (data, identity) => {
    console.log(`\nStarting to write ${identity} line delimited json file at ${new Date()}`);
 
    return new Promise((resolve, reject) => {
-      const jsonPath = path.resolve(process.cwd(), `files/${identity}/${identity}_ld.json`);
+      const jsonPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_ld.json`);
       const geoJson = data.map((elem, index) => JSON.stringify(
          {
             geometry: elem.geometry,
@@ -179,6 +180,7 @@ const getCountryWithClosestArea = (area, language) => {
    return closestCountry.name;
 }
 
+
 export {
    removeTmp,
    cpFiles,
@@ -190,5 +192,5 @@ export {
    writeCSV,
    writeGeoJson,
    writeLineDelimitedJson,
-   getCountryWithClosestArea
+   getCountryWithClosestArea,
 }

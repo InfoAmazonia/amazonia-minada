@@ -1,0 +1,46 @@
+name: Deploy to Azure Container App
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
+    conclusion: success
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Download image tag artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lastest-build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Read image tag
+        id: read_tag
+        run: |
+          IMAGE_TAG=$(cat lastest-build.txt)
+          echo "IMAGE_TAG=$IMAGE_TAG"
+          echo "image=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Login to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Container App
+        run: |
+          az containerapp update \
+            --name amazonia-minada-licenses \
+            --resource-group rg-amazonia-minada-prod-brs \
+            --image ${{ steps.read_tag.outputs.image }}

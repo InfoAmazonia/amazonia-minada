@@ -1,5 +1,23 @@
+function getDatabaseUri() {
+   var uri = '';
+
+   if (process.env.MONGO_URI == undefined) {
+      uri = `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD
+         }@${!process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS
+         }:27017/icfj?authSource=admin&&ssl=false`;
+   }
+   else {
+      uri = process.env.MONGO_URI;
+      if (uri.indexOf("ssl=false") > 0) {
+         uri.replace("ssl=false", "ssl=true");
+      }
+   }
+
+   return uri;
+}
+
 export const database = {
-   uri: `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${!process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS}/icfj?authSource=admin&ssl=false`,
+   uri: getDatabaseUri(),
    options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -134,14 +152,14 @@ export const mapbox = {
    baseUri: 'https://api.mapbox.com',
    styleId: 'ckhe037kt07on1aql47yvp2rn',
    staticImageResolution: '800x800',
-   
-   tilesetsBaseUri: function() {
+
+   tilesetsBaseUri: function () {
       return `${this.baseUri}/tilesets/v1/`;
    },
-   stylesBaseUri: function() {
+   stylesBaseUri: function () {
       return `${this.baseUri}/styles/v1/`;
    },
-   recipe: function(identity) {
+   recipe: function (identity) {
       return {
          'recipe': {
             'version': 1,
@@ -157,19 +175,33 @@ export const mapbox = {
       }
    },
 
-   upload_source_uri: function(identity) {
+   upload_source_uri: function (identity) {
       return `${this.tilesetsBaseUri()}sources/${this.username}/${identity}?access_token=${this.access_token}`;
    },
-   tileset_uri: function(identity) {
+   tileset_uri: function (identity) {
       return `${this.tilesetsBaseUri()}${this.username}.${identity}?access_token=${this.access_token}`;
    },
-   publish_tileset_uri: function(identity) {
+   publish_tileset_uri: function (identity) {
       return `${this.tilesetsBaseUri()}${this.username}.${identity}/publish?access_token=${this.access_token}`;
    },
-   static_image_uri: function(overlay) {
+   static_image_uri: function (overlay) {
       return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/geojson(${overlay})/auto/${this.staticImageResolution}?access_token=${this.access_token}`;
    },
-   geral_image_uri: function() {
+   geral_image_uri: function () {
       return `${this.stylesBaseUri()}${this.username}/${this.styleId}/static/-58.8,-6.5,4.5/1000x800?access_token=${this.access_token}`;
+   }
+}
+
+export const dashboardLink = 'https://bit.ly/3CovCau';
+
+export const fileManager = {
+   storagePath() {
+      return process.env.STORAGE_PATH !== undefined ? process.env.STORAGE_PATH : process.cwd();
+   }
+}
+
+export const apiConfig = {
+   secureKey() {
+      return process.env.API_SECURE_KEY !== undefined ? process.env.API_SECURE_KEY : 'null';
    }
 }
