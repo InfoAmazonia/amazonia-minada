@@ -34,7 +34,7 @@ const router = Router();
 
 /** Jobs Control */
 router.post("/jobs/now/:jobName", 
-    SecureKeyAuthorizationMiddleware,
+    SecureKeyAuthorizationMiddleware(),
     (req, resp) => {
     try {
         globalThis.Scheduler.run(req.params.jobName);
@@ -49,9 +49,9 @@ router.post("/jobs/now/:jobName",
 
 // - Get the List of Configured Jobs 
 router.get("/jobs/list",
-    SecureKeyAuthorizationMiddleware,
+    SecureKeyAuthorizationMiddleware(),
     (req, resp) => {
-    resp.json(jobs);
+    resp.json(jobs.map(j => j.name));
     resp.status(200);
     resp.end();
 });

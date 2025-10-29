@@ -181,28 +181,6 @@ const getCountryWithClosestArea = (area, language) => {
 }
 
 
-const storeInvasionsData = (lang, data) => {
-   const filePath = path.resolve(fileManager.storagePath(), `newinvasions_${lang}.json`);
-   fs.writeFileSync(filePath, JSON.stringify(data));
-}
-
-const appendInvasionsData = (data, lang) => {
-   const invasions = getInvasionsData(lang);
-   invasions = invasions.concat(data);
-
-   saveInvasionsData(lang, data);
-}
-
-const getInvasionsData = (lang) => {
-   const filePath = path.resolve(fileManager.storagePath(), `newinvasions_${lang}.json`);
-   if (fs.existsSync(filePath)) {
-      return JSON.parse(fs.readFileSync(filePath));
-   }
-   else {
-      return [];
-   }
-}
-
 export {
    removeTmp,
    cpFiles,
@@ -215,7 +193,4 @@ export {
    writeGeoJson,
    writeLineDelimitedJson,
    getCountryWithClosestArea,
-   storeInvasionsData,
-   getInvasionsData,
-   appendInvasionsData
 }
