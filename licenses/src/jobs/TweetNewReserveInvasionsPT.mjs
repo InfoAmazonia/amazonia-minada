@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 
-import { Reserve, ReserveInvasion } from './models.mjs';
-import { getEntityImage } from './mapbox-service.mjs';
+import { Reserve, ReserveInvasion } from '../core/models.mjs';
+import { getEntityImage } from '../core/mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';

@@ -2,8 +2,8 @@ import {
     importUnities,
     importLicenses,
     importInvasions,
-} from './controllers.mjs';
-import { updateTweetStatus } from './services.mjs';
+} from '../core/controllers.mjs';
+import { updateTweetStatus } from '../core/services.mjs';
 import { jobEntrypoint } from '../startup.mjs';
 import { addItem } from '../core/queue.mjs';
 import { getLogger } from '../utils/logging.mjs';

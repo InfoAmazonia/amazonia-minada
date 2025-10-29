@@ -1,6 +1,6 @@
 
-import { Invasion, ReserveInvasion } from './models.mjs';
-import { getGeralImage } from './mapbox-service.mjs';
+import { Invasion, ReserveInvasion } from '../core/models.mjs';
+import { getGeralImage } from '../core/mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';

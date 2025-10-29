@@ -1,6 +1,6 @@
 
-import { Invasion } from './models.mjs';
-import { getGeralImage } from './mapbox-service.mjs';
+import { Invasion } from '../core/models.mjs';
+import { getGeralImage } from '../core/mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { dashboardLink } from '../config.mjs';

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-import { Unity } from './models.mjs';
-import { getEntityImage } from './mapbox-service.mjs';
+import { Unity } from '../core/models.mjs';
+import { getEntityImage } from '../core/mapbox-service.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';
