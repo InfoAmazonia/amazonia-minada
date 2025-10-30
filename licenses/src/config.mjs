@@ -9,7 +9,6 @@ function getDatabaseUri() {
          }:27017/icfj?authSource=admin&&ssl=false`;
    }
    else {
-      getLogger().info("Using MONGO_URI from environment variable.");
       uri = process.env.MONGO_URI;
       if (uri.indexOf("ssl=false") > 0) {
          uri.replace("ssl=false", "ssl=true");
