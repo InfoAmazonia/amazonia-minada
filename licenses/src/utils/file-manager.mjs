@@ -94,6 +94,11 @@ const read = (path, file, encoding, cb) => {
 
 const writeGeoJson = (data, identity) => {
    console.log(`\nStarting to write ${identity} json file at ${new Date()}`);
+   
+   const folder = path.resolve(fileManager.storagePath(), `files/${identity}`);
+   if (!fs.existsSync(folder)){
+      fs.mkdirSync(folder, { recursive: true });
+   }
 
    return new Promise((resolve, reject) => {
       const tmpPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_tmp.json`);
@@ -116,6 +121,11 @@ const writeGeoJson = (data, identity) => {
 
 const writeCSV = (data, identity, properties = []) => {
    console.log(`\nStarting to write ${identity} csv file at ${new Date()}`);
+
+   const folder = path.resolve(fileManager.storagePath(), `files/${identity}`);
+   if (!fs.existsSync(folder)){
+      fs.mkdirSync(folder, { recursive: true });
+   }
 
    return new Promise((resolve, reject) => {
       const tmpPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_tmp.csv`);
