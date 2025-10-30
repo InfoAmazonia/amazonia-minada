@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { database } from './config.mjs';
 import { getLogger, InitLogger, InitRequestLogger } from './utils/logging.mjs';
 import express from 'express';
 import { router } from './core/controlapi.mjs';
@@ -7,6 +6,9 @@ import Bree from 'bree';
 import { jobs } from './job.config.mjs';
 import path from 'path';
 
+InitLogger();
+
+import { database } from './config.mjs';
 process.env.TZ = 'America/Sao_Paulo';
 
 // Rest Control API 
@@ -18,7 +20,6 @@ globalThis.Scheduler = new Bree({
 })
 
 async function main() {
-   InitLogger();
    getLogger().info("ICFG Init");
 
    try {
