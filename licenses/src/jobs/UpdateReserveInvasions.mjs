@@ -8,6 +8,7 @@ import {
 import { updateTweetStatus } from '../core/services.mjs';
 import { jobEntrypoint } from '../startup.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { addItem } from '../core/queue.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {
