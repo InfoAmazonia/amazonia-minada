@@ -16,8 +16,18 @@ const app = express();
 globalThis.Scheduler = new Bree({
    jobs: jobs,
    defaultExtension: 'mjs',
-   root: path.resolve('src/jobs')
+   root: path.resolve('src/jobs'),
+   logger: getLogger()
 })
+
+globalThis.Scheduler.on('worker created', (worker) => {
+   getLogger().info(`Worker created: ${worker.name} with pid ${worker.pid}`);
+});
+
+globalThis.Scheduler.on('worker deleted', (worker) => {
+   getLogger().info(`Worker deleted: ${worker.name}`);
+});
+
 
 async function main() {
    getLogger().info("ICFG Init");
@@ -34,6 +44,11 @@ async function main() {
      app.listen(5100, () => getLogger().info("ControlAPI is running!"));
 
      getLogger().info("ICFG Starting up the Scheduler...");
+
+     globalThis.Scheduler.config.jobs.forEach(job => {
+        getLogger().info(`Job scheduled: ${job.name} - Interval: ${job.interval || 'N/A'}`);
+     });
+          
      await globalThis.Scheduler.start();
    }
    catch(err) {
