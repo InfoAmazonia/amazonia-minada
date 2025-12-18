@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 import { getLogger, InitLogger, InitRequestLogger } from './utils/logging.mjs';
 import express from 'express';
-import { router } from './core/controlapi.mjs';
+import { router } fro   m './core/controlapi.mjs';
 import Bree from 'bree';
 import { jobs } from './job.config.mjs';
 import path from 'path';
+import { ScheduleData } from 'later';
 
 InitLogger();
 
@@ -45,8 +46,8 @@ async function main() {
 
      getLogger().info("ICFG Starting up the Scheduler...");
 
-     globalThis.Scheduler.config.jobs.forEach(job => {
-        getLogger().info(`Job scheduled: ${job.name} - Interval: ${job.interval || 'N/A'}`);
+     globalThis.Scheduler.config.jobs.forEach(job => {         
+        getLogger().info(`Job scheduled: ${job.name} - Interval: ${JSON.stringify(job.interval.schedules) || 'N/A'}`);
      });
           
      await globalThis.Scheduler.start();
