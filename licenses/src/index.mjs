@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { getLogger, InitLogger, InitRequestLogger } from './utils/logging.mjs';
 import express from 'express';
-import { router } fro   m './core/controlapi.mjs';
+import { router } from './core/controlapi.mjs';
 import Bree from 'bree';
 import { jobs } from './job.config.mjs';
 import path from 'path';
