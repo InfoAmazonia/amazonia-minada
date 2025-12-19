@@ -2,12 +2,15 @@ import slugify from 'slugify';
 
 import { Reserve, ReserveInvasion } from '../core/models.mjs';
 import { getEntityImage } from '../core/mapbox-service.mjs';
+import { updateReserveInvasionTweetStatus } from '../core/services.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { popItem, updateItemStatus } from '../core/queue.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {
@@ -45,6 +48,8 @@ import { getLogger } from '../utils/logging.mjs';
 
                     const tweet = { media: image, status: status };
                     tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+
+                    await updateReserveInvasionTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
                     await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'completed');
                 } catch (ex) {
                     getLogger().error(`Failed to tweet Reserve Invasion PT: ${invasionItem.key} -> \r\n ${ex} `);

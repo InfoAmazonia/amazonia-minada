@@ -7,6 +7,7 @@ import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 import { dashboardLink } from '../config.mjs';
 import { getLogger } from '../utils/logging.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {

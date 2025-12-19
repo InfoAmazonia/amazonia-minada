@@ -177,7 +177,7 @@ export const scheduleTweetTotalInvasions = () => {
    });
 }
 
-const getInvasionAreaNamesText = (relatedInvasions, language = 'pt') => {
+export const getInvasionAreaNamesText = (relatedInvasions, language = 'pt') => {
    const isPlural = relatedInvasions.length > 1;
 
    switch (language) {
@@ -360,7 +360,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
    });
 }
 
-const getReserveInvasionAreaNamesText = (relatedReserveInvasions, language = 'pt') => {
+export const getReserveInvasionAreaNamesText = (relatedReserveInvasions, language = 'pt') => {
    const isPlural = relatedReserveInvasions.length > 1;
 
    switch (language) {
@@ -618,7 +618,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
    });
 }
 
-const getUniqueInvasionsNumber = async (schema, match = {}) => {
+export const getUniqueInvasionsNumber = async (schema, match = {}) => {
    return (await schema.aggregate([
       { $match: { last_action: { $ne: 'delete' }, ...match } },
       { $group: { _id: "$properties.ID" } },

@@ -1,14 +1,17 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-import { Unity } from '../core/models.mjs';
+import { Unity, Invasion } from '../core/models.mjs';
 import { getEntityImage } from '../core/mapbox-service.mjs';
+import { updateTweetStatus } from '../core/services.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { popItem, updateItemStatus } from '../core/queue.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {
@@ -46,6 +49,8 @@ import { getLogger } from '../utils/logging.mjs';
 
                     const tweet = { media: image, status: status };
                     tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+
+                    await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
                     await updateItemStatus('InvasionPT', invasionItem._id, 'completed');
                 } catch (ex) {
                     getLogger().error(`Failed to tweet Invasion PT: ${invasionItem.key} -> \r\n ${ex} `);

@@ -5,7 +5,7 @@ import {
     importReserves,
     importReserveInvasions
 } from '../core/controllers.mjs';
-import { updateTweetStatus } from '../core/services.mjs';
+import { updateReserveInvasionTweetStatus } from '../core/services.mjs';
 import { jobEntrypoint } from '../startup.mjs';
 import { getLogger } from '../utils/logging.mjs';
 import { addItem } from '../core/queue.mjs';
@@ -23,7 +23,7 @@ import { addItem } from '../core/queue.mjs';
             const reserveInvasions = await importReserveInvasions();
 
             /** filter out reserve invasions from prior years */
-            await updateTweetStatus({
+            await updateReserveInvasionTweetStatus({
                 _id: {
                     $in: reserveInvasions
                         .filter(invasion => invasion.properties.ANO !== new Date().getFullYear())

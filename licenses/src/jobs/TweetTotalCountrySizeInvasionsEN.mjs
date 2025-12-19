@@ -6,6 +6,7 @@ import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
 import { jobEntrypoint } from '../startup.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {

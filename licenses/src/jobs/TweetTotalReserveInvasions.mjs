@@ -6,6 +6,7 @@ import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {

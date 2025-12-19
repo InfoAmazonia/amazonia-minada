@@ -8,7 +8,9 @@ import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
+import { popItem, updateItemStatus } from '../core/queue.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {

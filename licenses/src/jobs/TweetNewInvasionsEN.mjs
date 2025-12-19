@@ -1,15 +1,17 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-import { Unity } from '../core/models.mjs';
+import { Unity, Invasion } from '../core/models.mjs';
 import { getEntityImage } from '../core/mapbox-service.mjs';
+import { updateTweetStatus } from '../core/services.mjs';
 
 import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { clipName, getThousandsMark } from '../utils/formatter.mjs';
 import { dashboardLink } from '../config.mjs';
 import { jobEntrypoint } from '../startup.mjs';
-import { updateItemStatus } from '../core/queue.mjs';
+import { popItem, updateItemStatus } from '../core/queue.mjs';
 import { getLogger } from '../utils/logging.mjs';
+import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {
