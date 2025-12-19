@@ -17,7 +17,13 @@ globalThis.Scheduler = new Bree({
    jobs: jobs,
    defaultExtension: 'mjs',
    root: path.resolve('src/jobs'),
-   logger: getLogger()
+   logger: getLogger(),
+   workerMessageHandler: (name, message) => {
+      getLogger().info(`Message from worker ${name}: ${message}`);
+   },
+   errorHandler: (error, workerMetadata) => {
+      getLogger().error(`Error in worker ${workerMetadata.name}: ${error} => Stack: ${error.stack}`);
+   }
 })
 
 globalThis.Scheduler.on('worker created', (worker) => {
