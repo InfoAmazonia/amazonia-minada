@@ -29,6 +29,7 @@ import {
    filterDuplicatedInvasions
 } from './services.mjs';
 import { uploadDataToMapbox } from './mapbox-service.mjs';
+import { get } from 'request';
 
 export const importLicenses = async () => {
    getLogger().info(`\nStarting to import licenses at ${new Date()}`);
@@ -111,32 +112,41 @@ export const importInvasions = async () => {
    getLogger().info(`\nStarting to import invasions at ${new Date()}`);  
 
    try {
-      const unities = await getUnitiesInsideAmazon();
+
+      getLogger().info(`Getting unities inside amazon at ${new Date()}`);
+      const unities = await getUnitiesInsideAmazon();      
+      getLogger().info(`Finished getting unities inside amazon at ${new Date()}`);
+
+      getLogger().info(`Creating invasions by unities at ${new Date()}`);
       const generatedInvasions = await createInvasionsByUnities(unities);
+      getLogger().info(`Finished creating invasions by unities at ${new Date()}`);
 
       if (!generatedInvasions || !generatedInvasions.length) {
          getLogger().info(`No invasions generated at ${new Date()} (probably licenses or unities were not imported correctly).`);
          return [];
       }
 
+      getLogger().info(`Flagging removed invasions at ${new Date()}`);
       await flagRemovedInvasions(generatedInvasions, Invasion, 'UC_NOME');
-      const invasions = await getNewAndAllInvasions();
-
+      const invasions = await getNewAndAllInvasions();     
       getLogger().info(`Finish importing invasions at ${new Date()}`);
 
       /** geo file handle by carto */
+      getLogger().info(`Writing geojson for invasions at ${new Date()}`);
       await writeGeoJson(invasions.all, license.id);
 
       /** file for those who wants to analyse data into a sheet */
+      getLogger().info(`Writing CSV for invasions at ${new Date()}`);
       await writeCSV(invasions.all, license.id, license.properties);
 
       /** send data to mapbox API */
+      getLogger().info(`Uploading invasions to Mapbox at ${new Date()}`);
       await uploadDataToMapbox(filterDuplicatedInvasions(invasions.all), license.id);
 
       return invasions.new;
    }
    catch(ex) {
-      getLogger().error(ex);
+      getLogger().error(`Failed importing invasions: ${ex} `);
    }
 }
 
