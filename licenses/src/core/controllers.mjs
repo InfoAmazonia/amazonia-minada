@@ -29,7 +29,6 @@ import {
    filterDuplicatedInvasions
 } from './services.mjs';
 import { uploadDataToMapbox } from './mapbox-service.mjs';
-import { get } from 'request';
 
 export const importLicenses = async () => {
    getLogger().info(`\nStarting to import licenses at ${new Date()}`);
