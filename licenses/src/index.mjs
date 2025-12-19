@@ -32,26 +32,37 @@ globalThis.Scheduler.on('worker deleted', (worker) => {
 async function main() {
    getLogger().info("ICFG Init");
 
+   process.on('uncaughtException', (err) => {
+      getLogger()?.error(`Unhandled Exception: ${err}`);
+
+      process.exit(-1000);
+   });
+
+   process.on('unhandledRejection', (reason, promise) => {
+      getLogger()?.error(`Unhandled Rejection at: ${promise} reason: ${reason}`);
+      process.exit(-1001);
+   });
+
    try {
-     getLogger().info("ICFG Connection to the Database");
-     await mongoose.connect(database.uri, database.options);
-     getLogger().info("ICFG Starting up the Control API");
+      getLogger().info("ICFG Connection to the Database");
+      await mongoose.connect(database.uri, database.options);
+      getLogger().info("ICFG Starting up the Control API");
 
-     app.use(express.json());
-     app.use(InitRequestLogger());
-     app.use(router);
-     
-     app.listen(5100, () => getLogger().info("ControlAPI is running!"));
+      app.use(express.json());
+      app.use(InitRequestLogger());
+      app.use(router);
 
-     getLogger().info("ICFG Starting up the Scheduler...");
+      app.listen(5100, () => getLogger().info("ControlAPI is running!"));
 
-     globalThis.Scheduler.config.jobs.forEach(job => {         
-        getLogger().info(`Job scheduled: ${job.name} - Interval: ${JSON.stringify(job.interval.schedules) || 'N/A'}`);
-     });
-          
-     await globalThis.Scheduler.start();
+      getLogger().info("ICFG Starting up the Scheduler...");
+
+      globalThis.Scheduler.config.jobs.forEach(job => {
+         getLogger().info(`Job scheduled: ${job.name} - Interval: ${JSON.stringify(job.interval.schedules) || 'N/A'}`);
+      });
+
+      await globalThis.Scheduler.start();
    }
-   catch(err) {
+   catch (err) {
       getLogger().error(`Error: ${err} => Stack: ${err.stack}`);
    }
 };
