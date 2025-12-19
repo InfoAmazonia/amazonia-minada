@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import slugify from 'slugify';
 
 import { database } from './config.mjs';
+import { getLogger } from './utils/logging.mjs';
 
 import { Unity } from './core/models.mjs';
 import { getInvasions } from './core/services.mjs';
@@ -16,7 +17,7 @@ process.env.TZ = 'America/Sao_Paulo';
 
 mongoose.connect(database.uri, database.options)
    .then(async () => {
-      console.log('ICFJ tweet invasions running...');
+      getLogger().info('ICFJ tweet invasions running...');
 
       try {
          const invasions = await getInvasions({ tweeted: false });

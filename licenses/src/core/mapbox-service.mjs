@@ -4,13 +4,14 @@ import simplify from 'simplify-geojson';
 
 import { writeLineDelimitedJson } from '../utils/file-manager.mjs'
 import { mapbox } from '../config.mjs';
+import { getLogger } from '../utils/logging.mjs';
 
 
 const uploadDataToMapbox = async (data, identity) => {
     const jsonPath = await writeLineDelimitedJson(data, identity);
 
     try {
-        console.log(`\nStarting to send ${identity} data to Mapbox API at ${new Date()}`);
+        getLogger().info(`\nStarting to send ${identity} data to Mapbox API at ${new Date()}`);
 
         const am_identity = `am_minada_${identity}`;
 
@@ -20,7 +21,7 @@ const uploadDataToMapbox = async (data, identity) => {
         }
         await publishTileset(am_identity);
 
-        console.log(`\nFinish sending ${identity} data to Mapbox API at ${new Date()}`);
+        getLogger().info(`\nFinish sending ${identity} data to Mapbox API at ${new Date()}`);
     } catch (err) {
         throw err;
     }

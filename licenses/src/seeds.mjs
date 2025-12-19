@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import { database } from './config.mjs';
+import { getLogger } from './utils/logging.mjs';
 
 import { importLicenses, importInvasions, importUnities, importReserves } from './core/controllers.mjs';
 import { updateTweetStatus, updateReserveInvasionTweetStatus } from './core/services.mjs';
@@ -10,7 +11,7 @@ process.env.TZ = 'America/Sao_Paulo';
 
 mongoose.connect(database.uri, database.options)
    .then(async () => {
-      console.log('ICFJ seeds running...');
+      getLogger().info('ICFJ seeds running...');
 
       try {
          /** get unities from ICMBio and inserts into database */

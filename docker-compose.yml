@@ -13,13 +13,12 @@ services:
       - 5100:5100
     command: npm run production
     volumes:
-      - ./licenses:/srv/licenses
-      - ./files/licencas:/srv/licenses/files/licencas
-      - ./files/requerimentos:/srv/licenses/files/requerimentos
-      - ./files/unidades_conservacao:/srv/licenses/files/unidades_conservacao
-      - ./files/terras_indigenas:/srv/licenses/files/terras_indigenas
-      - ./files/requerimentos_ti:/srv/licenses/files/requerimentos_ti
-      - /srv/licenses/node_modules
+      - ./licenses:/srv/data/licenses
+      - ./files/licencas:/srv/data/licenses/files/licencas
+      - ./files/requerimentos:/srv/data/licenses/files/requerimentos
+      - ./files/unidades_conservacao:/srv/data/licenses/files/unidades_conservacao
+      - ./files/terras_indigenas:/srv/data/licenses/files/terras_indigenas
+      - ./files/requerimentos_ti:/srv/data/licenses/files/requerimentos_ti
     links:
       - database
     depends_on:

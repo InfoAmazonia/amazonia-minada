@@ -5,6 +5,7 @@ import path from 'path';
 import AdmZip from 'adm-zip';
 import shapefile from 'shapefile';
 import { fileManager } from '../config.mjs';
+import { getLogger } from './logging.mjs';
 
 const removeTmp = output => {
    child_process.spawnSync('rm', [
@@ -14,29 +15,46 @@ const removeTmp = output => {
 }
 
 const cpFiles = source => {
+
+   const cp1_path = path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.shapefile);
+
    child_process.spawnSync('cp', [
-      path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.shapefile),
+      cp1_path,
       path.resolve(fileManager.storagePath(), source.output)
    ]);
 
+   const dbf_path = path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.dbf);
+
    child_process.spawnSync('cp', [
-      path.resolve(fileManager.storagePath(), source.output, 'tmp', source.unziped_folder, source.dbf),
+      dbf_path,
       path.resolve(fileManager.storagePath(), source.output)
    ]);
+
+   getLogger().info(`Copied files from ${cp1_path} and ${dbf_path} to ${path.resolve(fileManager.storagePath(), source.output)}`);
 }
 
 const makeTmp = (output) => {
-   child_process.spawnSync('mkdir', [
-      path.resolve(fileManager.storagePath(), output, 'tmp')
-   ]);
+   const _tmpPath = path.resolve(fileManager.storagePath(), output, 'tmp');
+   if (!fs.existsSync(_tmpPath)){
+      fs.mkdirSync(_tmpPath, { recursive: true });
+   }
+
+   return _tmpPath;
 }
 
 const download = (uri, output, name) => {
-   console.log('Preparing files(1/2) - Downloading files.');
+   getLogger().info('Preparing files(1/2) - Downloading files.');
+
+   const destination = path.resolve(fileManager.storagePath(),`${output}/tmp/${name}`);
+   getLogger().info(`Making tmp folder at output: ${output} -> ${destination}`);
+
+   makeTmp(output);
+
+   getLogger().info(`Downloading from ${uri} to ${destination}`);
 
    return new Promise((resolve, reject) => {
-      request(uri)
-         .pipe(fs.createWriteStream(path.resolve(`${output}/tmp/${name}`)))
+      request({ uri, rejectUnauthorized: false })
+         .pipe(fs.createWriteStream(destination))
          .on('close', (err) => {
             if (err) reject(err)
 
@@ -46,11 +64,11 @@ const download = (uri, output, name) => {
 }
 
 const loadLocal = (localPath, output, name) => {
-   console.log('Preparing files(1/2) - Loading local files.');
+   getLogger().info('Preparing files(1/2) - Loading local files.');
 
    return new Promise((resolve, reject) => {
       const readStream = fs.createReadStream(localPath);
-      const writeStream = fs.createWriteStream(path.resolve(`${output}/tmp/${name}`));
+      const writeStream = fs.createWriteStream(path.resolve(fileManager.storagePath(), `${output}/tmp/${name}`));
 
       readStream.pipe(writeStream);
       writeStream.on('close', err => {
@@ -61,11 +79,15 @@ const loadLocal = (localPath, output, name) => {
 }
 
 const unzip = (pathfile, zipfile) => {
-   console.log('Preparing files(2/2) - Unzipping files.');
+   getLogger().info('Preparing files(2/2) - Unzipping files.');
 
    return new Promise((resolve, reject) => {
       const zip = new AdmZip(path.resolve(fileManager.storagePath(), pathfile, 'tmp', zipfile));
-      zip.extractAllToAsync(path.resolve(fileManager.storagePath(), pathfile, 'tmp'), false, err => {
+
+      const destination = path.resolve(fileManager.storagePath(), pathfile, 'tmp');
+      getLogger().info(`Unzipping ${zipfile} to ${destination}`);
+
+      zip.extractAllToAsync(destination, false, err => {
          if (err) reject(err);
 
          resolve();
@@ -73,11 +95,16 @@ const unzip = (pathfile, zipfile) => {
    });
 }
 
-const read = (path, file, encoding, cb) => {
-   console.log(`\nStarting to read file at ${new Date()}`);
+const read = (_path, file, encoding, cb) => {
+   getLogger().info(`\nStarting to read file at ${new Date()}`);
+
+   const pathfile = path.resolve(fileManager.storagePath(), `${_path}/${file}`);
+
+   getLogger().info(`Reading shapefile at ${pathfile} with encoding ${encoding}`);
+
    return shapefile.open(
-      `${path}/${file}`,
-      (`${path}/${file}`).replace('shp', 'dbf'),
+      `${pathfile}`,
+      (`${pathfile}`).replace('shp', 'dbf'),
       { encoding }
    )
       .then(source => source.read()
@@ -88,12 +115,12 @@ const read = (path, file, encoding, cb) => {
                .then(() => source.read())
                .then(log)
          }))
-      .then(() => console.log(`\nFinished reading at ${new Date()}`))
-      .catch(error => console.error(error.stack));
+      .then(() => getLogger().info(`\nFinished reading at ${new Date()}`))
+      .catch(error => getLogger().error(error.stack));
 }
 
 const writeGeoJson = (data, identity) => {
-   console.log(`\nStarting to write ${identity} json file at ${new Date()}`);
+   getLogger().info(`\nStarting to write ${identity} json file at ${new Date()}`);
    
    const folder = path.resolve(fileManager.storagePath(), `files/${identity}`);
    if (!fs.existsSync(folder)){
@@ -111,7 +138,7 @@ const writeGeoJson = (data, identity) => {
                child_process.spawnSync('cp', [tmpPath, defPath]);
                child_process.spawnSync('rm', ['-f', tmpPath]);
 
-               console.log(`Finish writing ${identity} json file at ${new Date()}`);
+               getLogger().info(`Finish writing ${identity} json file at ${new Date()}`);
 
                resolve();
             }
@@ -120,7 +147,7 @@ const writeGeoJson = (data, identity) => {
 }
 
 const writeCSV = (data, identity, properties = []) => {
-   console.log(`\nStarting to write ${identity} csv file at ${new Date()}`);
+   getLogger().info(`\nStarting to write ${identity} csv file at ${new Date()}`);
 
    const folder = path.resolve(fileManager.storagePath(), `files/${identity}`);
    if (!fs.existsSync(folder)){
@@ -149,7 +176,7 @@ const writeCSV = (data, identity, properties = []) => {
          child_process.spawnSync('cp', [tmpPath, defPath]);
          child_process.spawnSync('rm', ['-f', tmpPath]);
 
-         console.log(`Finish writing ${identity} csv file at ${new Date()}`);
+         getLogger().info(`Finish writing ${identity} csv file at ${new Date()}`);
 
          resolve();
       });
@@ -158,7 +185,7 @@ const writeCSV = (data, identity, properties = []) => {
 
 
 const writeLineDelimitedJson = (data, identity) => {
-   console.log(`\nStarting to write ${identity} line delimited json file at ${new Date()}`);
+   getLogger().info(`\nStarting to write ${identity} line delimited json file at ${new Date()}`);
 
    return new Promise((resolve, reject) => {
       const jsonPath = path.resolve(fileManager.storagePath(), `files/${identity}/${identity}_ld.json`);
@@ -173,7 +200,7 @@ const writeLineDelimitedJson = (data, identity) => {
       fs.writeFile(jsonPath, geoJson, err => {
          if (err) reject(err);
 
-         console.log(`Finish writing ${identity} line delimited json file at ${new Date()}`);
+         getLogger().info(`Finish writing ${identity} line delimited json file at ${new Date()}`);
          resolve(jsonPath);
       });
    });

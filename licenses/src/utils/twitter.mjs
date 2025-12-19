@@ -2,6 +2,7 @@ import fs from 'fs'
 import Twitter from 'twitter';
 
 import { twitter } from '../config.mjs';
+import { getLogger } from './logging.mjs';
 
 const twitterClient = new Twitter(twitter);
 
@@ -10,7 +11,7 @@ const tweetStatus = (status, media = null) => {
 
    twitterClient.post('statuses/update', data, function(error, tweets, response) {
       if (error) {
-         console.log(error);
+         getLogger().error(error);
       }
    });
 }
