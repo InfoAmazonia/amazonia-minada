@@ -15,6 +15,7 @@ import {
 
 import { getAbrev } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
+import { getLogger } from '../utils/logging.mjs';
 
 import { License, Unity, Reserve, Invasion, ReserveInvasion } from './models.mjs';
 import { 
@@ -30,7 +31,7 @@ import {
 import { uploadDataToMapbox } from './mapbox-service.mjs';
 
 export const importLicenses = async () => {
-   console.log(`\nStarting to import licenses at ${new Date()}`);
+   getLogger().info(`\nStarting to import licenses at ${new Date()}`);
          
    const session = await License.startSession();
    
@@ -52,17 +53,17 @@ export const importLicenses = async () => {
       ))
       .then(() => session.commitTransaction())
       .then(() => session.endSession())
-      .then(() => console.log(`Finish importing licenses at ${new Date()}`))
+      .then(() => getLogger().info(`Finish importing licenses at ${new Date()}`))
       .catch(async ex => {
          await session.abortTransaction();
          session.endSession();
    
-         console.log(ex)
+         getLogger().error(ex)
       })
 }
 
 export const importUnities = async () => {
-   console.log(`\nStarting to import unities at ${new Date()}`);   
+   getLogger().info(`\nStarting to import unities at ${new Date()}`);   
 
    const session = await Unity.startSession();
 
@@ -87,7 +88,7 @@ export const importUnities = async () => {
       ))
       .then(() => session.commitTransaction())
       .then(() => session.endSession())
-      .then(() => console.log(`Finish importing unities at ${new Date()}`))
+      .then(() => getLogger().info(`Finish importing unities at ${new Date()}`))
       .then(() => getUnitiesInsideAmazon(false))
       .then(async (unities) => {
          /** geo file handle by carto */
@@ -100,28 +101,28 @@ export const importUnities = async () => {
          await uploadDataToMapbox(unities, unity.id);
       })
       .catch(async ex => {
-         console.log(ex)
+         getLogger().error(ex)
          await session.abortTransaction();
          session.endSession();         
       })
 }
 
 export const importInvasions = async () => {
-   console.log(`\nStarting to import invasions at ${new Date()}`);  
+   getLogger().info(`\nStarting to import invasions at ${new Date()}`);  
 
    try {
       const unities = await getUnitiesInsideAmazon();
       const generatedInvasions = await createInvasionsByUnities(unities);
 
       if (!generatedInvasions || !generatedInvasions.length) {
-         console.log(`No invasions generated at ${new Date()} (probably licenses or unities were not imported correctly).`);
+         getLogger().info(`No invasions generated at ${new Date()} (probably licenses or unities were not imported correctly).`);
          return [];
       }
 
       await flagRemovedInvasions(generatedInvasions, Invasion, 'UC_NOME');
       const invasions = await getNewAndAllInvasions();
 
-      console.log(`Finish importing invasions at ${new Date()}`);
+      getLogger().info(`Finish importing invasions at ${new Date()}`);
 
       /** geo file handle by carto */
       await writeGeoJson(invasions.all, license.id);
@@ -135,12 +136,12 @@ export const importInvasions = async () => {
       return invasions.new;
    }
    catch(ex) {
-      console.log(ex);
+      getLogger().error(ex);
    }
 }
 
 export const importReserves = async () => {
-   console.log(`\nStarting to import reserves at ${new Date()}`);   
+   getLogger().info(`\nStarting to import reserves at ${new Date()}`);   
 
    const session = await Reserve.startSession();
 
@@ -166,7 +167,7 @@ export const importReserves = async () => {
       ))
       .then(() => session.commitTransaction())
       .then(() => session.endSession())
-      .then(() => console.log(`Finish importing reserves at ${new Date()}`))
+      .then(() => getLogger().info(`Finish importing reserves at ${new Date()}`))
       .then(() => getReservesInsideAmazon(false))
       .then(async (reserves) => {
          /** geo file handle by carto */
@@ -179,28 +180,28 @@ export const importReserves = async () => {
          await uploadDataToMapbox(reserves, reserve.id);
       })
       .catch(async ex => {
-         console.log(ex)
+         getLogger().error(ex)
          await session.abortTransaction();
          session.endSession();         
       })
 }
 
 export const importReserveInvasions = async () => {
-   console.log(`\nStarting to import reserve invasions at ${new Date()}`);  
+   getLogger().info(`\nStarting to import reserve invasions at ${new Date()}`);  
 
    try {
       const reserves = await getReservesInsideAmazon();
       const generatedInvasions = await createInvasionsByReserves(reserves);
 
       if (!generatedInvasions || !generatedInvasions.length) {
-         console.log(`No reserve invasions generated at ${new Date()} (probably licenses or reserves were not imported correctly).`);
+         getLogger().info(`No reserve invasions generated at ${new Date()} (probably licenses or reserves were not imported correctly).`);
          return [];
       }
 
       await flagRemovedInvasions(generatedInvasions, ReserveInvasion, 'TI_NOME');
       const invasions = await getNewAndAllReserveInvasions();
 
-      console.log(`Finish importing reserve invasions at ${new Date()}`);
+      getLogger().info(`Finish importing reserve invasions at ${new Date()}`);
 
       /** geo file handle by carto */
       await writeGeoJson(invasions.all, reserve_invasion.id);
@@ -214,6 +215,6 @@ export const importReserveInvasions = async () => {
       return invasions.new;
    }
    catch(ex) {
-      console.log(ex);
+      getLogger().error(ex);
    }
 }

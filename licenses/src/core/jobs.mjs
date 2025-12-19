@@ -16,6 +16,7 @@ import { tweetStatus, tweetImageMedia } from '../utils/twitter.mjs';
 import { getDateArray, clipName, getThousandsMark, getAreaNames, addInternationalization } from '../utils/formatter.mjs';
 import { cronTab } from '../utils/handler.mjs';
 import { getCountryWithClosestArea } from '../utils/file-manager.mjs';
+import { getLogger } from '../utils/logging.mjs';
 
 // UNITIES
 
@@ -46,7 +47,7 @@ export const scheduleUpdateInvasions = (cb) => {
 
          cb(invasions);
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -97,7 +98,7 @@ export const scheduleTweetNewInvasionsPT = async (invasions) => {
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
          } catch (ex) {
-            console.error(ex);
+            getLogger().error(ex);
          }
       });
    }
@@ -152,10 +153,10 @@ export const scheduleTweetNewInvasionsEN = async (invasions) => {
 
             await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
          } catch (ex) {
-            console.error(ex);
+            getLogger().error(ex);
          }
       });
-   };
+   }
 }
 
 export const scheduleTweetTotalInvasions = () => {
@@ -172,7 +173,7 @@ export const scheduleTweetTotalInvasions = () => {
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -229,7 +230,7 @@ export const scheduleUpdateReserveInvasions = (cb) => {
 
          cb(reserveInvasions);
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -280,7 +281,7 @@ export const scheduleTweetNewReserveInvasionsPT = async (reserveInvasions) => {
             const tweet = { media: image, status: status };
             tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
          } catch (ex) {
-            console.error(ex);
+            getLogger().error(ex);
          }
       });
    };
@@ -335,10 +336,10 @@ export const scheduleTweetNewReserveInvasionsEN = async (reserveInvasions) => {
 
             await updateReserveInvasionTweetStatus({ 'properties.ID': reserveInvasion.properties.ID });
          } catch (ex) {
-            console.error(ex);
+            getLogger().error(ex);
          }
       });
-   };
+   }
 }
 
 export const scheduleTweetTotalReserveInvasions = () => {
@@ -355,7 +356,7 @@ export const scheduleTweetTotalReserveInvasions = () => {
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -449,7 +450,7 @@ export const scheduleTweetTotalYearInvasions = () => {
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -530,7 +531,7 @@ export const scheduleTweetTotalCountrySizeInvasionsPT = () => {
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
@@ -613,7 +614,7 @@ export const scheduleTweetTotalCountrySizeInvasionsEN = () => {
 
          tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
       } catch (ex) {
-         console.error(ex);
+         getLogger().error(ex);
       }
    });
 }
