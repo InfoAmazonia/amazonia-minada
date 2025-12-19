@@ -1,3 +1,7 @@
+import { getLogger, InitLogger } from './utils/logging.mjs';
+import mongoose from 'mongoose';
+import { database } from './config.mjs';
+
 export async function jobEntrypoint(cb) {
     try {
         InitLogger();
