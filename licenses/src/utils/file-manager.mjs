@@ -88,6 +88,7 @@ const unzip = (pathfile, zipfile) => {
       getLogger().info(`Unzipping ${zipfile} to ${destination}`);
 
       zip.extractAllToAsync(destination, false, err => {
+         getLogger().info(`Finished unzipping ${zipfile} to ${destination}`);
          if (err) reject(err);
 
          resolve();
