@@ -2,6 +2,7 @@ import { License, Invasion, Unity, Reserve, ReserveInvasion } from './models.mjs
 
 import { addInternationalization, getThousandsMark } from '../utils/formatter.mjs';
 import { ifMayNotIgnore } from '../utils/handler.mjs';
+import { getLogger } from '../utils/logging.mjs';
 
 // UNITIES
 
@@ -56,8 +57,14 @@ export const createInvasionsByUnities = async unities => {
 
    for await (const unity of unities) {
       try {
+         getLogger().info(`Processing unity: ${unity.properties.nome}`);
          const invasions = await getLicensesIntersectionsByUnity(unity);
+
+         getLogger().info(`Found ${invasions.length} invasions in unity: ${unity.properties.nome}`);         
+         
          await upsertInvasions(invasions, Invasion, 'UC_NOME');
+         getLogger().info(`Upserted invasions for unity: ${unity.properties.nome}`);
+
          generatedInvasions.push(...invasions);
       } catch (ex) {
          ifMayNotIgnore(ex).throw();
