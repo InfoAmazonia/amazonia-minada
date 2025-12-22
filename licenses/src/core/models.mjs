@@ -27,7 +27,7 @@ const InvasionSchema = new mongoose.Schema({
   }]
 });
 
-// InvasionSchema.index({ geometry: "2dsphere" });
+InvasionSchema.index({ geometry: "2dsphere" });
 
 export const Invasion = mongoose.model('Invasion', InvasionSchema);
 
@@ -37,7 +37,7 @@ const UnitySchema = new mongoose.Schema({
   geometry: {}
 });
 
-// UnitySchema.index({ geometry: "2dsphere" });
+UnitySchema.index({ geometry: "2dsphere" });
 
 export const Unity = mongoose.model('Unity', UnitySchema);
 
@@ -47,8 +47,8 @@ const LicenseSchema = new mongoose.Schema({
   geometry: {}
 });
 
-// LicenseSchema.index({ "properties.ULT_EVENTO": "text" });
-// LicenseSchema.index({ geometry: "2dsphere" });
+LicenseSchema.index({ "properties.ULT_EVENTO": "text" });
+LicenseSchema.index({ geometry: "2dsphere" });
 
 export const License = mongoose.model('License', LicenseSchema);
 
