@@ -142,27 +142,29 @@ export const getLicensesIntersectionsByUnity = async (unity) => {
          },
          {
             $project: {
-               _id: "$_id",
-               type: "Feature",
-               properties: {
-                  "PROCESSO": "$properties.PROCESSO",
-                  "ID": "$properties.ID",
-                  "NUMERO": "$properties.NUMERO",
-                  "ANO": "$properties.ANO",
-                  "AREA_HA": "$properties.AREA_HA",
-                  "FASE": "$properties.FASE",
-                  "ULT_EVENTO": "$properties.ULT_EVENTO",
-                  "NOME": "$properties.NOME",
-                  "SUBS": "$properties.SUBS",
-                  "USO": "$properties.USO",
-                  "UF": "$properties.UF",
-                  "UC_COD": unity.properties.codigoCnuc,
-                  "UC_NOME": unity.properties.nome,
-                  "UC_NOMEABREV": unity.properties.nomeabrev,
-                  "UC_SIGLA": unity.properties.sigla,
-                  "UC_BIOMA": unity.properties.biomaIBGE
-               },
-               geometry: "$geometry"
+               _id: 1,
+               type: 1,
+               "properties.PROCESSO": 1,
+               "properties.ID": 1,
+               "properties.NUMERO": 1,
+               "properties.ANO": 1,
+               "properties.AREA_HA": 1,
+               "properties.FASE": 1,
+               "properties.ULT_EVENTO": 1,
+               "properties.NOME": 1,
+               "properties.SUBS": 1,
+               "properties.USO": 1,
+               "properties.UF": 1,
+               geometry: 1
+            }
+         },
+         {
+            $addFields: {
+               "properties.UC_COD": unity.properties.codigoCnuc,
+               "properties.UC_NOME": unity.properties.nome,
+               "properties.UC_NOMEABREV": unity.properties.nomeabrev,
+               "properties.UC_SIGLA": unity.properties.sigla,
+               "properties.UC_BIOMA": unity.properties.biomaIBGE
             }
          }
       ]);
