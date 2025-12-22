@@ -104,7 +104,9 @@ const queueItemSchema = new mongoose.Schema({
 
 queueItemSchema.index({ status: 1, lockedAt: 1 });
 
-
-export  function getQueueItem(sub) {
-  return mongoose.model(`${sub}_QueueItem`, queueItemSchema);
+export const QueueItem = {
+  "ReverseInvasionPT" : mongoose.model(`ReverseInvasionPT_QueueItem`, queueItemSchema),
+  "ReverseInvasionEN" : mongoose.model(`ReverseInvasionEN_QueueItem`, queueItemSchema),
+  "InvasionEN" : mongoose.model(`InvasionEN_QueueItem`, queueItemSchema),
+  "InvasionPT" : mongoose.model(`InvasionPT_QueueItem`, queueItemSchema),
 }

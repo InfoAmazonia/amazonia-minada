@@ -1,14 +1,14 @@
-import { getQueueItem } from "./models.mjs";
+import { QueueItem } from "./models.mjs";
 
 export async function addItem(sub, key, item) {
-    const queueItemModel = getQueueItem(sub);
+    const queueItemModel = QueueItem[sub];
     await queueItemModel.create({ key, data: item });
 }
 
 export async function popItem(sub, lockTimeoutMs = 60000) {
     const now = new Date();
     const lockDeadline = new Date(now.getTime() - lockTimeoutMs);
-    const queueItemModel = getQueueItem(sub);
+    const queueItemModel = QueueItem[sub];
 
     const item = await queueItemModel.findOneAndUpdate(
         {
@@ -30,7 +30,7 @@ export async function popItem(sub, lockTimeoutMs = 60000) {
 }
 
 export async function updateItemStatus(sub, itemId, status) {
-    const queueItemModel = getQueueItem(sub);
+    const queueItemModel = QueueItem[sub];
     await queueItemModel.findByIdAndUpdate(itemId, {
         $set: { status: status, updatedAt: new Date() }
     });
