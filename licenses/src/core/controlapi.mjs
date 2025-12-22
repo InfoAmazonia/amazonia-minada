@@ -57,6 +57,22 @@ router.get("/jobs/list",
 });
 
 
+router.get("/jobs/running",
+    SecureKeyAuthorizationMiddleware(),
+    (req, resp) => {
+    resp.json(globalThis.Scheduler.workers);
+    resp.status(200);
+    resp.end();
+});
+
+router.get("/health",
+    SecureKeyAuthorizationMiddleware(),
+    (req, resp) => {
+    resp.status(200);
+    resp.end();
+});
+
+
 export {
     router
 }
