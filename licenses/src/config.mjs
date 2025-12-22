@@ -23,7 +23,12 @@ export const database = {
    options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      serverSelectionTimeoutMS: 900000, // 15 minutes
+      socketTimeoutMS: 900000, // 15 minutes
+      connectTimeoutMS: 900000, // 15 minutes
+      maxIdleTimeMS: 900000 // 15 minutes
+      
    },
    debug: false
 }
