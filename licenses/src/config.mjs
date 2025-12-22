@@ -27,8 +27,8 @@ export const database = {
       serverSelectionTimeoutMS: 900000, // 15 minutes
       socketTimeoutMS: 900000, // 15 minutes
       connectTimeoutMS: 900000, // 15 minutes
-      maxIdleTimeMS: 900000 // 15 minutes
-      
+      maxIdleTimeMS: 900000, // 15 minutes
+      maxTimeMS: 900000 // 15 minutes
    },
    debug: false
 }
