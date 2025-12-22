@@ -16,8 +16,10 @@ RUN apk upgrade
 RUN apk add ca-certificates && update-ca-certificates
 RUN apk add --update --no-cache tzdata
 
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apk add --update npm
-RUN cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && echo America/Sao_Paulo > /etc/timezone
 RUN npm install
 
 
