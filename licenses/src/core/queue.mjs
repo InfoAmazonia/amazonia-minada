@@ -2,7 +2,7 @@ import { QueueItem } from "./models.mjs";
 
 export async function addItem(sub, key, item) {
     const queueItemModel = QueueItem[sub];
-    await queueItemModel.create({ key, data: item });
+    await queueItemModel.create({ key, data: item, status: 'pending', createdAt: new Date() });
 }
 
 export async function popItem(sub, lockTimeoutMs = 60000) {

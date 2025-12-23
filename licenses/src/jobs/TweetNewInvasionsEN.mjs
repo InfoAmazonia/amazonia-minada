@@ -16,8 +16,9 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 (async () => {
     await jobEntrypoint(async () => {
         while (true) {
-            const invasionItem = popItem('InvasionEN');
-            if (invasionItem !== null) {
+            const invasionItem = await popItem('InvasionEN');
+            if (invasionItem !== undefined && invasionItem !== null) {
+                getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
                 try {                                       
                     getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} `);
                     
@@ -28,7 +29,8 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 
                     const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
                     if (wasSomeInvasionTweeted) {
-                        return;
+                        getLogger().info(`Invasion EN: ${invasionItem.key} already tweeted. Skipping... `);
+                        continue;
                     }
 
                     getLogger().info(`Preparing tweet for Invasion EN: ${invasionItem.key} `);

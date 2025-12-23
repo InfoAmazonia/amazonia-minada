@@ -27,7 +27,7 @@
     "nodemon": "^1.18.4"
   },
   "scripts": {
-    "production": "node --experimental-modules ./src/index.mjs",
+    "production": "node  --no-warnings --experimental-modules ./src/index.mjs",
     "development": "nodemon --experimental-modules ./src/index.mjs",
     "seeds": "node --experimental-modules ./src/seeds.mjs",
     "tweet": "node --experimental-modules ./src/tweet.mjs",
