@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "twitter-api-v2": "^1.29.0"
+  }
+}

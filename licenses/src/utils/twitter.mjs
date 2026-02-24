@@ -1,39 +1,33 @@
 import fs from 'fs'
-import Twitter from 'twitter';
+import { TwitterApi } from 'twitter-api-v2';
 
 import { twitter } from '../config.mjs';
 import { getLogger } from './logging.mjs';
 
-const twitterClient = new Twitter(twitter);
+const twitterClient = new TwitterApi(twitter);
 
-const tweetStatus = (status, media = null) => {
-   const data = media ? Object.assign({ status }, { media_ids: media }) : { status };
+const tweetStatus = async (status, media = null) => {
+   getLogger().info(`[TWITTER] Tweeting status: ${status} with media: ${media ? 'yes' : 'no'}`);
 
-   twitterClient.post('statuses/update', data, function(error, tweets, response) {
-      if (error) {
-         getLogger().error(error);
-      }
+   await twitterClient.v2.tweet({
+      text: status,
+      media: media ? { media_ids: [media] } : undefined
    });
 }
 
 const tweetMedia = (imagePath, cb) => {
    var media = fs.readFileSync(imagePath);
-
-   twitterClient.post('media/upload', { media }, function(error, media, response) {
-      if (!error)
-         cb(media.media_id_string); 
-      else
-         throw error;
+   twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' }).then(mediaId => {
+      cb(mediaId);
    });
 }
 
 
 const tweetImageMedia = (media, cb) => {
-   twitterClient.post('media/upload', { media }, function(error, media, response) {
-      if (!error)
-         cb(media.media_id_string); 
-      else
-         throw error;
+   getLogger().info(`[TWITTER] Uploading media for tweet...`);
+   twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' }).then(mediaId => {
+      getLogger().info(`[TWITTER] Media uploaded with media ID: ${mediaId}`);
+      cb(mediaId);
    });
 }
 

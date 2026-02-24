@@ -147,10 +147,10 @@ export const reserve_invasion = {
 }
 
 export const twitter = {
-   consumer_key: process.env.CONSUMER_KEY,
-   consumer_secret: process.env.CONSUMER_SECRET,
-   access_token_key: process.env.ACCESS_TOKEN_KEY,
-   access_token_secret: process.env.ACCESS_TOKEN_SECRET
+   appKey: process.env.TWITTER_API_KEY, 
+   appSecret: process.env.TWITTER_API_SECRET,
+   accessToken: process.env.TWITTER_ACCESS_TOKEN,
+   accessSecret: process.env.TWITTER_ACCESS_SECRET,
 }
 
 export const mapbox = {
