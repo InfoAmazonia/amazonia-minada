@@ -16,7 +16,6 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
     await jobEntrypoint(async () => {
         var invasionItem = await popItem('ReverseInvasionPT');
         while (invasionItem !== undefined && invasionItem !== null) {
-            getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
                 getLogger().info(`Tweeting Reserve Invasion PT: ${invasionItem.key} `);
 
@@ -28,6 +27,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                if (relatedReserveInvasions.length === 0) {
                     getLogger().info(`No related invasions found for ID: ${reserveInvasion.properties.ID} . Skipping... `);
                     await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'completed');
+                    invasionItem = await popItem('ReverseInvasionPT');
                     continue;
                 }
 
@@ -35,6 +35,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                 if (wasSomeReserveInvasionTweeted) {
                     getLogger().info(`Reserve Invasion PT: ${invasionItem.key} already tweeted. Skipping... `);
                     await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'completed');
+                    invasionItem = await popItem('ReverseInvasionPT');
                     continue;
                 }
 

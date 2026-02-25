@@ -17,7 +17,6 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
     await jobEntrypoint(async () => {
         var invasionItem = await popItem('InvasionEN');
         while (invasionItem !== undefined && invasionItem !== null) {
-            getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
                 getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} `);
 
@@ -29,6 +28,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 if(relatedInvasions.length === 0) {
                     getLogger().info(`No related invasions found for ID: ${invasion.properties.ID} . Skipping... `);
                     await updateItemStatus('InvasionEN', invasionItem._id, 'completed');
+                    invasionItem = await popItem('InvasionEN');
                     continue;
                 }
 
@@ -36,6 +36,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 if (wasSomeInvasionTweeted) {
                     getLogger().info(`Invasion EN: ${invasionItem.key} already tweeted. Skipping... `);
                     await updateItemStatus('InvasionEN', invasionItem._id, 'completed');
+                    invasionItem = await popItem('InvasionEN');
                     continue;
                 }
 

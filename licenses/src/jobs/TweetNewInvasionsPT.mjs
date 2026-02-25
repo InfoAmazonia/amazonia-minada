@@ -18,7 +18,6 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 
         var invasionItem = await popItem('InvasionPT');
         while (invasionItem !== undefined && invasionItem !== null) {
-            getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
                 getLogger().info(`Tweeting Invasion PT: ${invasionItem.key} `);
 
@@ -30,6 +29,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 if (relatedInvasions.length === 0) {
                     getLogger().info(`No related invasions found for ID: ${invasion.properties.ID} . Skipping... `);
                     await updateItemStatus('InvasionPT', invasionItem._id, 'completed');
+                    invasionItem = await popItem('InvasionPT');
                     continue;
                 }
 
@@ -37,6 +37,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 if (wasSomeInvasionTweeted) {
                     getLogger().info(`Invasion PT: ${invasionItem.key} already tweeted. Skipping... `);
                     await updateItemStatus('InvasionPT', invasionItem._id, 'completed');
+                    invasionItem = await popItem('InvasionPT');
                     continue;
                 }
 
