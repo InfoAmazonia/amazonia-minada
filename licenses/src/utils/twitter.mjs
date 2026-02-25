@@ -4,7 +4,7 @@ import { TwitterApi } from 'twitter-api-v2';
 import { twitter } from '../config.mjs';
 import { getLogger } from './logging.mjs';
 
-const twitterClient = new TwitterApi(twitter);
+const twitterClient = new TwitterApi(twitter.appKey);
 
 const tweetStatus = async (status, media = null) => {
    getLogger().info(`[TWITTER] Tweeting status: ${status} with media: ${media ? 'yes' : 'no'}`);
