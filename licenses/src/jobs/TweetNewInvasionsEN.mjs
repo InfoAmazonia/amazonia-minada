@@ -21,17 +21,21 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
             try {
                 getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} , DATA: ${invasionItem.data} `);
 
-                console.log('First 10 char codes:', [...invasionItem.data].slice(0, 10).map(c => c.charCodeAt(0)));
-                console.log('Raw data:', invasionItem.data);
-
-                const invasion = JSON.parse(invasionItem.data.trim());
+                const invasion = JSON.parse(invasionItem.data);
                 const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
 
                 getLogger().info(`Found ${relatedInvasions.length} related invasions for ID: ${invasion.properties.ID} `);
 
+                if(relatedInvasions.length === 0) {
+                    getLogger().info(`No related invasions found for ID: ${invasion.properties.ID} . Skipping... `);
+                    await updateItemStatus('InvasionEN', invasionItem._id, 'completed');
+                    continue;
+                }
+
                 const wasSomeInvasionTweeted = relatedInvasions.some(inv => inv.tweeted);
                 if (wasSomeInvasionTweeted) {
                     getLogger().info(`Invasion EN: ${invasionItem.key} already tweeted. Skipping... `);
+                    await updateItemStatus('InvasionEN', invasionItem._id, 'completed');
                     continue;
                 }
 

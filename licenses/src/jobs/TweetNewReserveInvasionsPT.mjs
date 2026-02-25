@@ -25,9 +25,16 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
 
                 getLogger().info(`Found ${relatedReserveInvasions.length} related reserve invasions for ID: ${reserveInvasion.properties.ID} `);
 
+               if (relatedReserveInvasions.length === 0) {
+                    getLogger().info(`No related invasions found for ID: ${reserveInvasion.properties.ID} . Skipping... `);
+                    await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'completed');
+                    continue;
+                }
+
                 const wasSomeReserveInvasionTweeted = relatedReserveInvasions.some(reserveInv => reserveInv.tweeted);
                 if (wasSomeReserveInvasionTweeted) {
                     getLogger().info(`Reserve Invasion PT: ${invasionItem.key} already tweeted. Skipping... `);
+                    await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'completed');
                     continue;
                 }
 
