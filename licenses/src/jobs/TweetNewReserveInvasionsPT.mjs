@@ -70,5 +70,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                 await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'failed');
             }
         }
+
+        getLogger().info(`No more items in queue for Reserve Invasion PT. Exiting... `);
     })
 })();

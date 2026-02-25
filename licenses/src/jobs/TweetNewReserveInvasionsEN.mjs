@@ -70,5 +70,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                 await updateItemStatus('ReverseInvasionEN', invasionItem._id, 'failed');
             }
         }
+
+        getLogger().info(`No more items in queue for Reserve Invasion EN. Exiting... `);
     });
 })();

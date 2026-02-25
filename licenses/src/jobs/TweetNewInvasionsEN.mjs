@@ -16,9 +16,6 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 (async () => {
     await jobEntrypoint(async () => {
         const invasionItem = await popItem('InvasionEN');
-
-        getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
-
         while (invasionItem !== undefined && invasionItem !== null) {
             getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
@@ -74,5 +71,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 await updateItemStatus('InvasionEN', invasionItem._id, 'failed');
             }
         }
+
+        getLogger().info(`No more items in queue for Invasion EN. Exiting... `);
     });
 })();

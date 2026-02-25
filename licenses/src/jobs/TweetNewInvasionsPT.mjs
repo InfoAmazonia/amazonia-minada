@@ -72,5 +72,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 await updateItemStatus('InvasionPT', invasionItem._id, 'failed');
             }
         }
+
+        getLogger().info(`No more items in queue for Invasion PT. Exiting... `);
     });
 })();

@@ -22,6 +22,9 @@ export async function jobEntrypoint(cb) {
         await mongoose.connect(database.uri, database.options);
 
         await cb();
+
+        getLogger().info("ICFG Job finished.");
+        process.exit(0);
     }
     catch (err) {
         getLogger().error(err);
