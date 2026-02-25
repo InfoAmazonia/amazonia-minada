@@ -82,7 +82,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
                 status: `⚠ Há atualmente ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral ativos na Amazônia. A área total desses processos minerários é aproximadamente equivalente ao tamanho do país ${countryName}. #AmazoniaMinada ${dashboardLink}`
             };
 
-            tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+            const mediaId = await tweetImageMedia(tweet.media);
+            await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
             getLogger().error(`Failed TweetTotalCountrySizeInvasions: ${ex} `);
         }

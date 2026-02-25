@@ -18,7 +18,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
                 status: `⚠ MINÉRIO ILEGAL: As 49 unidades de conservação de proteção integral da Amazônia são alvo de ${total} requerimentos de mineração ativos na ANM. A lei 9.985/00 proíbe qualquer tipo de atividade mineradora nessas áreas. #AmazoniaMinada ${dashboardLink}`
             };
 
-            tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+            const mediaId = await tweetImageMedia(tweet.media);
+            await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
             getLogger().error(`Failed Tweet Total Invasions: ${ex} `);
         }

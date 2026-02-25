@@ -68,7 +68,8 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
 
                 const tweet = { media: image, status: status };
                 getLogger().info(`Sending tweet for Invasion EN: ${invasionItem.key} `);
-                tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+                const mediaId = await tweetImageMedia(tweet.media);
+                await tweetStatus(tweet.status, mediaId);
 
                 getLogger().info(`Tweet sent for Invasion EN: ${invasionItem.key} `);
 

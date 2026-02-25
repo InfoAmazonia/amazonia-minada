@@ -83,7 +83,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
                 status: `⚠ ILLEGAL MINING: Brazilian Government Agency has ${totalReserveInvasions} mining requests within indigenous lands and ${totalInvasions} within protected areas of the Amazon. The total area of these mining requests is approximately the size of ${countryName}. #MinedAmazon https://bit.ly/3nw3byM`
             };
 
-            tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+            const mediaId = await tweetImageMedia(tweet.media);
+            await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
             getLogger().error(`Failed TweetTotalCountrySizeInvasions: ${ex} `);
         }

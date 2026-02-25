@@ -18,7 +18,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
                 status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada ${dashboardLink}`
             };
 
-            tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+           const mediaId = await tweetImageMedia(tweet.media);
+            await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
             getLogger().error(`Failed Tweet Total Reverse Invasions: ${ex} `);
         }

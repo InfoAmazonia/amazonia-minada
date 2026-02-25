@@ -17,25 +17,15 @@ const tweetStatus = async (status, media = null) => {
    getLogger().info(`[TWITTER] Status tweeted with ID: ${resp}`);
 }
 
-const tweetMedia = (imagePath, cb) => {
+const tweetMedia = async (imagePath) => {
    var media = fs.readFileSync(imagePath);
-   twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' }).then(mediaId => {
-      getLogger().info(`[TWITTER] Media uploaded with media ID: ${mediaId}`);
-      cb(mediaId);
-   }).catch(err => {
-      getLogger().error(`[TWITTER] Error uploading media: ${err}`);
-   });
+   return twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' });
 }
 
 
-const tweetImageMedia = (media, cb) => {
+const tweetImageMedia = async (media) => {
    getLogger().info(`[TWITTER] Uploading media for tweet...`);
-   twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' }).then(mediaId => {
-      getLogger().info(`[TWITTER] Media uploaded with media ID: ${mediaId}`);
-      cb(mediaId);
-   }).catch(err => {
-      getLogger().error(`[TWITTER] Error uploading media: ${err}`);
-   });
+   return twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' });
 }
 
 export {

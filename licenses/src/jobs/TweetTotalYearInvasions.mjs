@@ -72,7 +72,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
                 status: `⚠ Nosso simpático robô já detectou ${totalReserveInvasions} requerimentos minerários em terras indígenas e ${totalInvasions} em UCs de proteção integral em ${currentYear} na Amazônia. A área alvo desses pedidos ativos na ANM é equivalente a ${totalCampos} campos de futebol. #AmazoniaMinada ${dashboardLink}`
             };
 
-            tweetImageMedia(tweet.media, (media_id) => tweetStatus(tweet.status, media_id));
+           const mediaId = await tweetImageMedia(tweet.media);
+            await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
             getLogger().error(`Failed Tweet Total Year: ${ex} `);
         }
