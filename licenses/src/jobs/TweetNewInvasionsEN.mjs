@@ -19,7 +19,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
         while (invasionItem !== undefined && invasionItem !== null) {
             getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
-                getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} , DATA: ${invasionItem.data} `);
+                getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} `);
 
                 const invasion = JSON.parse(invasionItem.data);
                 const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
