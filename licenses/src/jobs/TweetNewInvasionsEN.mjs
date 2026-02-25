@@ -21,7 +21,7 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
             try {
                 getLogger().info(`Tweeting Invasion EN: ${invasionItem.key} , DATA: ${invasionItem.data} `);
 
-                const invasion = JSON.parse(invasionItem.data);
+                const invasion = JSON.parse(invasionItem.data.trim());
                 const relatedInvasions = await Invasion.find({ 'properties.ID': invasion.properties.ID });
 
                 getLogger().info(`Found ${relatedInvasions.length} related invasions for ID: ${invasion.properties.ID} `);
