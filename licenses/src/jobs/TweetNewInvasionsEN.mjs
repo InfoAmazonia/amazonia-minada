@@ -17,6 +17,8 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
     await jobEntrypoint(async () => {
         const invasionItem = await popItem('InvasionEN');
 
+        getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
+
         while (invasionItem !== undefined && invasionItem !== null) {
             getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
