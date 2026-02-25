@@ -71,6 +71,8 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 getLogger().error(`Failed to tweet Invasion PT: ${invasionItem.key} -> \r\n ${ex} `);
                 await updateItemStatus('InvasionPT', invasionItem._id, 'failed');
             }
+
+            invasionItem = await popItem('InvasionPT');
         }
 
         getLogger().info(`No more items in queue for Invasion PT. Exiting... `);

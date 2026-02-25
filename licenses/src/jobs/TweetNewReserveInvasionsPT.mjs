@@ -69,6 +69,8 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                 getLogger().error(`Failed to tweet Reserve Invasion PT: ${invasionItem.key} -> \r\n ${ex} `);
                 await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'failed');
             }
+            
+            invasionItem = await popItem('ReverseInvasionPT');
         }
 
         getLogger().info(`No more items in queue for Reserve Invasion PT. Exiting... `);

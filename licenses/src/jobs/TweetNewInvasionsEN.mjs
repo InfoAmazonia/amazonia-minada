@@ -67,9 +67,12 @@ import { getInvasionAreaNamesText } from '../core/jobs.mjs';
                 await updateTweetStatus({ 'properties.ID': invasion.properties.ID });
                 await updateItemStatus('InvasionEN', invasionItem._id, 'completed');
             } catch (ex) {
-                getLogger().error(`Failed to tweet Invasion EN: ${invasionItem.key} -> \r\n ${ex} `);
+                var stackTrace = ex.stack || '';
+                getLogger().error(`Failed to tweet Invasion EN: ${invasionItem.key} -> \r\n ${ex} \r\n ${stackTrace} `);
                 await updateItemStatus('InvasionEN', invasionItem._id, 'failed');
             }
+
+            invasionItem = await popItem('InvasionEN');
         }
 
         getLogger().info(`No more items in queue for Invasion EN. Exiting... `);
