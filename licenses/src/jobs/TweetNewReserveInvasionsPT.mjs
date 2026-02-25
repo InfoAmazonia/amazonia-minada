@@ -14,7 +14,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
 
 (async () => {
     await jobEntrypoint(async () => {
-        const invasionItem = await popItem('ReverseInvasionPT');
+        var invasionItem = await popItem('ReverseInvasionPT');
         while (invasionItem !== undefined && invasionItem !== null) {
             getLogger().info(`DEBUG: ${JSON.stringify(invasionItem)}`);
             try {
@@ -69,7 +69,7 @@ import { getReserveInvasionAreaNamesText } from '../core/jobs.mjs';
                 getLogger().error(`Failed to tweet Reserve Invasion PT: ${invasionItem.key} -> \r\n ${ex} `);
                 await updateItemStatus('ReverseInvasionPT', invasionItem._id, 'failed');
             }
-            
+
             invasionItem = await popItem('ReverseInvasionPT');
         }
 
