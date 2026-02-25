@@ -1,8 +1,8 @@
 FROM node:24-alpine
 
 LABEL "com.icfj.licenses"="ICFJ" \
-      maintainer="Rodrigo Brabo <brabo.rodrigo@gmail.com>" \
-      version="1.0"
+      maintainer="Marcelo Junior <marcelo.junior@studiocuboweb.com.br>" \
+      version="1.1"
 
 WORKDIR /srv/licenses
 
