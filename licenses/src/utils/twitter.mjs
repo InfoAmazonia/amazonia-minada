@@ -4,7 +4,7 @@ import { TwitterApi } from 'twitter-api-v2';
 import { twitter } from '../config.mjs';
 import { getLogger } from './logging.mjs';
 
-const twitterClient = new TwitterApi(twitter.appKey);
+const twitterClient = new TwitterApi(twitter);
 
 const tweetStatus = async (status, media = null) => {
    getLogger().info(`[TWITTER] Tweeting status: ${status} with media: ${media ? 'yes' : 'no'}`);
@@ -17,7 +17,7 @@ const tweetStatus = async (status, media = null) => {
    getLogger().info(`[TWITTER] Status tweeted with ID: ${resp}`);
 }
 
-const tweetMedia = async (imagePath) => {
+const tweetMedia = async (imagePath,) => {
    var media = fs.readFileSync(imagePath);
    return twitterClient.v1.uploadMedia(media, { mimeType: 'image/jpeg' });
 }
