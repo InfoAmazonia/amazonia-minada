@@ -41,7 +41,7 @@ export const license = {
    unziped_folder: '',
    shapefile: `BRASIL.shp`,
    dbf: `BRASIL.dbf`,
-   encoding: 'latin1',
+   encoding: 'utf8',
    properties: [
       'PROCESSO',
       'ID',
