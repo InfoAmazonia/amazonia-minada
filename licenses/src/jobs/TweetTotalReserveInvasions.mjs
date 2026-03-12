@@ -13,6 +13,8 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
         try {
             const total = await getUniqueInvasionsNumber(ReserveInvasion);
 
+            getLogger().info(`[Tweet] Total Reserve Invasions: ${total}`);
+
             const tweet = {
                 media: await getGeralImage(),
                 status: `⚠ MINÉRIO ILEGAL: Terras indígenas da Amazônia são alvo de ${total} requerimentos para exploração mineral. A Constituição brasileira proíbe qualquer exploração nessas áreas sem autorização do Congresso e consulta aos povos afetados. #AmazoniaMinada ${dashboardLink}`
@@ -21,7 +23,7 @@ import { getUniqueInvasionsNumber } from '../core/jobs.mjs';
            const mediaId = await tweetImageMedia(tweet.media);
             await tweetStatus(tweet.status, mediaId);
         } catch (ex) {
-            getLogger().error(`Failed Tweet Total Reverse Invasions: ${ex} `);
+            getLogger().error(`Failed Tweet Total Reserve Invasions: ${ex} `);
         }
     });
 })();
