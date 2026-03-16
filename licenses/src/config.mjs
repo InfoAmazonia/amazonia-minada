@@ -35,7 +35,7 @@ export const database = {
 
 export const license = {
    id: 'requerimentos',
-   uri: 'https://app.anm.gov.br/dadosabertos/SIGMINE/PROCESSOS_MINERARIOS/BRASIL.zip',
+   uri: 'https://minadaproxy.infoamazonia.org/download/PROCESSOS_MINERARIOS_BRASIL.zip',
    zipfile: 'BRASIL.zip',
    output: `./files/licencas`,
    unziped_folder: '',
