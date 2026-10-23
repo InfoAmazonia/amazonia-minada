@@ -1,0 +1,6 @@
+# Compose >= 2.24.4. Apply after provisioning the application roles/users.
+services:
+  licenses:
+    env_file: !override
+      - ./.secrets/licenses.env
+    environment: !override {}

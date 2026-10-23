@@ -62,3 +62,6 @@ jspm_packages
 
 # editor config files
 .vscode
+
+# Service-specific credentials (never commit)
+/.secrets/

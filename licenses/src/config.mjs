@@ -21,6 +21,8 @@ function getDatabaseUri() {
 export const database = {
    uri: getDatabaseUri(),
    options: {
+      autoCreate: false,
+      autoIndex: false,
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
