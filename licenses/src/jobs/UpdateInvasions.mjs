@@ -31,7 +31,7 @@ import { getLogger } from '../utils/logging.mjs';
                 _id: {
                     $in: invasions
                         .filter(invasion => invasion.properties.ANO !== new Date().getFullYear())
-                        .map(invasion => mongoose.Types.ObjectId(invasion._id))
+                        .map(invasion => new mongoose.Types.ObjectId(invasion._id))
                 }
             });
 
@@ -43,6 +43,7 @@ import { getLogger } from '../utils/logging.mjs';
             }            
         } catch (ex) {
             getLogger().error(`Failed Update Invasions: ${ex} `);
+            throw ex;
         }
     });
 })();

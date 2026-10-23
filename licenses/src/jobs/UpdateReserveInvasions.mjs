@@ -34,7 +34,7 @@ import { addItem } from '../core/queue.mjs';
                 _id: {
                     $in: reserveInvasions
                         .filter(invasion => invasion.properties.ANO !== new Date().getFullYear())
-                        .map(invasion => mongoose.Types.ObjectId(invasion._id))
+                        .map(invasion => new mongoose.Types.ObjectId(invasion._id))
                 }
             });
 
@@ -49,6 +49,7 @@ import { addItem } from '../core/queue.mjs';
             }
         } catch (ex) {
             getLogger().error(`Failed Update Reverse Invasions: ${ex} `);
+            throw ex;
         }
     });
 })();

@@ -13,6 +13,7 @@ services:
       - 5100:5100
     command: npm run production
     volumes:
+      - ./runtime/licenses-files:/srv/licenses/files
       - ./licenses:/srv/data/licenses
       - ./files/licencas:/srv/data/licenses/files/licencas
       - ./files/requerimentos:/srv/data/licenses/files/requerimentos
