@@ -42,7 +42,7 @@ services:
     volumes:
       - ./sysbkp/data:/data
     ports:
-      - 27017:27017
+      - "127.0.0.1:27017:27017"
     restart: always
     env_file:
       - .env
