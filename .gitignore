@@ -65,3 +65,5 @@ jspm_packages
 
 # Persistent importer cache and generated artifacts
 /runtime/
+# Service-specific credentials (never commit)
+/.secrets/
