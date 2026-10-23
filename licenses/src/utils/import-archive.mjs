@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { createHash } from 'node:crypto';
+import { assertFreshANMReceipt } from './anm-freshness.mjs';
 import path from 'path';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
@@ -44,18 +46,33 @@ const openResponse = (uri, redirects = 0) => new Promise((resolve, reject) => {
 });
 
 // Never replace an existing download with a partial response or an HTTP error page.
-export async function downloadArchive(uri, destination) {
+export async function downloadArchive(uri, destination, { requireFreshANM = false } = {}) {
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     const partial = `${destination}.part`;
     try {
         const response = await openResponse(uri);
+        let receipt;
+        try {
+            if (requireFreshANM) receipt = assertFreshANMReceipt(response.headers);
+        } catch (error) {
+            response.destroy();
+            throw error;
+        }
         await pipe(response, fs.createWriteStream(partial));
         const size = fs.statSync(partial).size;
         const expected = response.headers['content-length'];
         if (!response.complete || !size || (expected !== undefined && size !== Number(expected))) {
             throw new Error('Archive download incomplete');
         }
+        if (receipt) {
+            const hash = createHash('sha256');
+            for await (const chunk of fs.createReadStream(partial)) hash.update(chunk);
+            if (size !== receipt.bytes || hash.digest('hex') !== receipt.sha256) {
+                throw new Error('ANM ZIP does not match Azure validation receipt');
+            }
+        }
         fs.renameSync(partial, destination);
+        return receipt;
     } finally {
         fs.rmSync(partial, { force: true });
     }

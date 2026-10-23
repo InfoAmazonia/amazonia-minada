@@ -17,8 +17,8 @@ test('MongoDB staging and atomic promotion', { skip: !process.env.MONGO_TEST_URI
     schema.index({ 'properties.ID': 1 });
     const Model = mongoose.model('ImportSafetyTest', schema, 'licenses');
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'minada-import-'));
-    let bytes, status;
-    const server = http.createServer((_, res) => { res.statusCode = status; res.end(bytes); });
+    let bytes, status, receiptHeaders = {};
+    const server = http.createServer((_, res) => { res.statusCode = status; for (const [name,value] of Object.entries(receiptHeaders)) res.setHeader(name,value); res.end(bytes); });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
     t.after(async () => {
         await new Promise(resolve => server.close(resolve));
@@ -36,7 +36,7 @@ test('MongoDB staging and atomic promotion', { skip: !process.env.MONGO_TEST_URI
         await Model.create({ type: 'Feature', properties: { ID: 'previous' } });
         fs.writeFileSync(path.join(dir, 'BRASIL.shp'), 'old SHP');
         fs.writeFileSync(path.join(dir, 'BRASIL.dbf'), 'old DBF');
-        bytes = archiveBuffer(); status = 200;
+        bytes = archiveBuffer(); status = 200; receiptHeaders = {}; delete source.requireFreshArchive;
     };
     const preserved = async () => {
         assert.equal(await Model.countDocuments(), 1);
@@ -46,9 +46,11 @@ test('MongoDB staging and atomic promotion', { skip: !process.env.MONGO_TEST_URI
         assert.equal(await mongoose.connection.db.listCollections({ name: 'licenses_importing' }).hasNext(), false);
         assert.equal(await mongoose.connection.db.collection('import_locks').countDocuments(), 0);
     };
-    for (const kind of ['403', 'html', 'missing', 'bad-shape', 'parse', 'write', 'empty', 'short-records', 'rename']) {
+    for (const kind of ['403', 'html', 'missing', 'bad-shape', 'parse', 'write', 'empty', 'short-records', 'rename', 'unvalidated', 'stale-source']) {
         await t.test(`preserve live collection and cache on ${kind} failure`, async () => {
             await baseline();
+            if (['unvalidated', 'stale-source'].includes(kind)) source.requireFreshArchive = true;
+            if (kind === 'stale-source') receiptHeaders = {'X-ANM-Downloaded-At':'2020-01-01T03:00:00Z','X-ANM-Validated-At':'2020-01-01T03:01:00Z','X-ANM-SHA256':'a'.repeat(64),'X-ANM-Bytes':String(bytes.length)};
             if (kind === '403') status = 403;
             if (kind === 'html') bytes = Buffer.from('<html>Forbidden</html>');
             if (kind === 'missing') bytes = archiveBuffer({ missing: true });

@@ -30,8 +30,8 @@ const makeTmp = (output) => {
    return _tmpPath;
 }
 
-const download = (uri, output, name) => downloadArchive(
-   uri, path.resolve(fileManager.storagePath(), output, 'tmp', name)
+const download = (uri, output, name, options = {}) => downloadArchive(
+   uri, path.resolve(fileManager.storagePath(), output, 'tmp', name), options
 );
 
 const loadLocal = async (localPath, output, name) => {

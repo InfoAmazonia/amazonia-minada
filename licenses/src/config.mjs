@@ -34,6 +34,7 @@ export const database = {
 }
 
 export const license = {
+   requireFreshArchive: true,
    id: 'requerimentos',
    uri: 'https://minadaproxy.infoamazonia.org/download/PROCESSOS_MINERARIOS_BRASIL.zip',
    zipfile: 'BRASIL.zip',

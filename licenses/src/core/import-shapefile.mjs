@@ -29,7 +29,9 @@ export async function importShapefile(source, Model, { local = false, transform 
         removeTmp(source.output);
         makeTmp(source.output);
         const required = [source.shapefile, source.dbf].map(file => path.posix.join(source.unziped_folder, file));
-        await (local ? loadLocal : download)(source.uri, source.output, source.zipfile);
+        const receipt = await (local ? loadLocal : download)(source.uri, source.output, source.zipfile,
+            { requireFreshANM: source.requireFreshArchive === true });
+        if (receipt) getLogger().info(`Validated ANM source: ${JSON.stringify(receipt)}`);
         await unzip(source.output, source.zipfile, required);
         const extracted = path.join(source.output, 'tmp', source.unziped_folder);
         const records = validateShapefile(
