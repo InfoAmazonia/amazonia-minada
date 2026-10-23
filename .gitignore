@@ -62,3 +62,8 @@ jspm_packages
 
 # editor config files
 .vscode
+
+# Persistent importer cache and generated artifacts
+/runtime/
+# Service-specific credentials (never commit)
+/.secrets/

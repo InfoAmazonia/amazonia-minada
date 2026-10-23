@@ -1,25 +1,12 @@
-FROM node:24-alpine
-
-LABEL "com.icfj.licenses"="ICFJ" \
-      maintainer="Marcelo Junior <marcelo.junior@studiocuboweb.com.br>" \
-      version="1.1"
-
+FROM node:24.22.1-alpine@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS dependencies
 WORKDIR /srv/licenses
-
-COPY . .
-
-ENV LANG=en_US.UTF-8 \
-LANGUAGE=en_US.UTF-8
-
-RUN apk update
-RUN apk upgrade
-RUN apk add ca-certificates && update-ca-certificates
-RUN apk add --update --no-cache tzdata
-
-ENV TZ=America/Sao_Paulo
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apk add --update npm
-RUN npm install
-
-CMD ["npm", "run", "production"]
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+FROM node:24.22.1-alpine@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53
+WORKDIR /srv/licenses
+ENV NODE_ENV=production TZ=America/Sao_Paulo LANG=C.UTF-8
+RUN apk add --no-cache ca-certificates tzdata
+COPY --from=dependencies /srv/licenses/node_modules ./node_modules
+COPY package.json ./
+COPY src ./src
+CMD ["node", "src/index.mjs"]

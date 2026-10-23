@@ -1,3 +1,8 @@
+import mongoose from 'mongoose';
+
+// Preserve legacy query behavior with Mongoose-level settings.
+mongoose.set('strictQuery', false);
+mongoose.set('maxTimeMS', 900000);
 import { getLogger } from "./utils/logging.mjs";
 
 function getDatabaseUri() {
@@ -6,7 +11,7 @@ function getDatabaseUri() {
    if (process.env.MONGO_URI == undefined) {
       uri = `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD
          }@${!process.env.MONGO_DB_ADDRESS ? 'database' : process.env.MONGO_DB_ADDRESS
-         }:27017/icfj?authSource=admin&&ssl=false`;
+         }:27017/icfj?authSource=admin&ssl=false`;
    }
    else {
       uri = process.env.MONGO_URI;
@@ -21,19 +26,18 @@ function getDatabaseUri() {
 export const database = {
    uri: getDatabaseUri(),
    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
+      autoCreate: false,
+      autoIndex: false,
       serverSelectionTimeoutMS: 900000, // 15 minutes
       socketTimeoutMS: 900000, // 15 minutes
       connectTimeoutMS: 900000, // 15 minutes
       maxIdleTimeMS: 900000, // 15 minutes
-      maxTimeMS: 900000 // 15 minutes
    },
    debug: false
 }
 
 export const license = {
+   requireFreshArchive: true,
    id: 'requerimentos',
    uri: 'https://minadaproxy.infoamazonia.org/download/PROCESSOS_MINERARIOS_BRASIL.zip',
    zipfile: 'BRASIL.zip',
