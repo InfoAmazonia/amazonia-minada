@@ -29,8 +29,14 @@ for (const kind of ['403', 'html', 'truncated', 'missing', 'crc', 'unsafe']) {
         }
         if (kind === 'unsafe') {
             const zip = new AdmZip(bytes);
-            zip.addFile('../escape.txt', Buffer.from('bad'));
+            // New adm-zip versions sanitize paths while creating archives. Patch
+            // equal-length local/central names so the fixture remains malicious.
+            zip.addFile('aa/escape.txt', Buffer.from('bad'));
             bytes = zip.toBuffer();
+            const safe = Buffer.from('aa/escape.txt'), unsafe = Buffer.from('../escape.txt');
+            for (let offset = bytes.indexOf(safe); offset !== -1; offset = bytes.indexOf(safe, offset + safe.length)) {
+                unsafe.copy(bytes, offset);
+            }
         }
         const server = http.createServer((_, res) => { res.statusCode = kind === '403' ? 403 : 200; res.end(bytes); });
         await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));

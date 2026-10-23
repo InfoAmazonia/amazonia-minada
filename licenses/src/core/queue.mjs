@@ -22,7 +22,7 @@ export async function popItem(sub, lockTimeoutMs = 60000) {
         },
         {
             sort: { createdAt: 1 }, // FIFO
-            new: true
+            returnDocument: 'after'
         }
     );
 
