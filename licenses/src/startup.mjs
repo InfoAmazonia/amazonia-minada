@@ -1,32 +1,23 @@
 import { getLogger, InitLogger } from './utils/logging.mjs';
 import mongoose from 'mongoose';
 import { database } from './config.mjs';
+import { runJob } from './utils/run-job.mjs';
 
 export async function jobEntrypoint(cb) {
-    try {
-        InitLogger();
-        getLogger().info("ICFG Job");
-
-        process.on('uncaughtException', (err) => {
-            getLogger()?.error(`Unhandled Exception: ${err}`);
-
-            process.exit(-1000);
-        });
-
-        process.on('unhandledRejection', (reason, promise) => {
-            getLogger()?.error(`Unhandled Rejection at: ${promise} reason: ${reason}`);
-            process.exit(-1001);
-        });
-
-        getLogger().info("ICFG Connection to the Database");
-        await mongoose.connect(database.uri, database.options);
-
-        await cb();
-
-        getLogger().info("ICFG Job finished.");
-        process.exit(0);
-    }
-    catch (err) {
-        getLogger().error(err);
-    }
+    InitLogger();
+    getLogger().info('ICFG Job');
+    process.on('uncaughtException', error => {
+        getLogger().error(`Unhandled Exception: ${error.stack || error}`);
+        process.exit(1);
+    });
+    process.on('unhandledRejection', error => {
+        getLogger().error(`Unhandled Rejection: ${error?.stack || error}`);
+        process.exit(1);
+    });
+    const code = await runJob(cb, {
+        connect: () => mongoose.connect(database.uri, database.options),
+        disconnect: () => mongoose.disconnect(),
+        logger: getLogger()
+    });
+    process.exit(code);
 }

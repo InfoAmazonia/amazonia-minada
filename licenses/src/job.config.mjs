@@ -2,12 +2,8 @@ import later from '@breejs/later';
 
 export const jobs = [
     {
-        name: 'UpdateInvasions',
+        name: 'UpdateANMPipeline',
         interval: later.parse.cron('30 0 * * *'),
-    },
-    {
-        name: 'UpdateReserveInvasions',
-        interval: later.parse.cron('30 1 * * *'),
     },
     {
         name: 'TweetTotalYearInvasions',
