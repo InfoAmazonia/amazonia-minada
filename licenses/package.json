@@ -12,7 +12,7 @@
     "cors": "^2.8.5",
     "cron": "^1.7.2",
     "express": "^5.1.0",
-    "mongoose": "9.11.3",
+    "mongoose": "9.11.4",
     "morgan": "^1.10.1",
     "request": "^2.88.0",
     "saslprep": "^1.0.3",
